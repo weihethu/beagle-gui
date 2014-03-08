@@ -9,7 +9,12 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import model.ELTSModule;
+import model.automata.State;
+
 public class CreateStateTool extends Tool {
+
+	private State state = null;
 	public CreateStateTool(EditorCanvas view, ELTSModuleDrawer drawer) {
 		super(view, drawer);
 	}
@@ -18,14 +23,17 @@ public class CreateStateTool extends Tool {
 		URL url = getClass().getResource("/assets/icons/state.gif");
 		return new ImageIcon(url);
 	}
-
+	
+	private ELTSModule getModule() {
+		return (ELTSModule) super.getObject();
+	}
+	
 	public void mousePressed(MouseEvent event) {
-		System.out.println("pressed");
-
+		state = getModule().createState(event.getPoint());
 	}
 
 	public void mouseDragged(MouseEvent event) {
-
+		state.setPoint(event.getPoint());
 	}
 
 	@Override

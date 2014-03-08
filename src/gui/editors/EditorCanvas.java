@@ -1,9 +1,7 @@
 package gui.editors;
 
-import events.ObjectEditEvent;
-import events.listeners.ObjectEditListener;
 import gui.drawers.ObjectDrawer;
-import gui.drawers.ELTSModelDrawer;
+import gui.toolbars.ToolBar;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,10 +10,12 @@ import javax.swing.JPanel;
 
 public class EditorCanvas extends JPanel {
 	protected ObjectDrawer drawer;
+	private ToolBar toolbar = null;;
 
 	public EditorCanvas(ObjectDrawer drawer) {
 		this.drawer = drawer;
-		drawer.getObject().addObjectEditListener(new Listener());
+		// drawer.getObject().addObjectEditListener(new Listener());
+		drawer.setView(this);
 	}
 
 	public void paintComponent(Graphics graphics) {
@@ -23,14 +23,20 @@ public class EditorCanvas extends JPanel {
 		graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 		this.drawer.drawInternal(graphics);
+		if (this.toolbar != null)
+			this.toolbar.drawTool(graphics);
 	}
 
-	private class Listener implements ObjectEditListener {
-
-		@Override
-		public void objectEdit(ObjectEditEvent event) {
-			EditorCanvas.this.repaint();
-		}
-
+	public void setToolbar(ToolBar bar) {
+		this.toolbar = bar;
 	}
+
+	// private class Listener implements ObjectEditListener {
+	//
+	// @Override
+	// public void objectEdit(ObjectEditEvent event) {
+	// EditorCanvas.this.repaint();
+	// }
+	//
+	// }
 }

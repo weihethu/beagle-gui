@@ -1,5 +1,7 @@
 package model;
 
+import events.ModuleEditEvent;
+import events.listeners.ObjectEditListener;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
@@ -10,12 +12,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ELTSModel extends DrawableObject{
+public class ELTSModel extends DrawableObject {
 	private Set<ELTSModule> modules;
 	private ELTSModule[] cachedModules = null;
+	private Set<ObjectEditListener> moduleListeners = null;
 
 	public ELTSModel() {
 		modules = new HashSet<ELTSModule>();
+		moduleListeners = new HashSet<ObjectEditListener>();
 	}
 
 	public ELTSModule createModule(Point pt) {
@@ -24,7 +28,8 @@ public class ELTSModel extends DrawableObject{
 			id++;
 		ELTSModule module = new ELTSModule(id, pt, this);
 		addModule(module);
-		distributeObjectEditEvent();
+		distributeModuleEditEvent(new ModuleEditEvent(module, true, false,
+				false));
 		return module;
 	}
 
@@ -74,5 +79,17 @@ public class ELTSModel extends DrawableObject{
 		ELTSModule[] modules = getModules();
 		for (ELTSModule module : modules)
 			module.setSelect(false);
+	}
+
+	public void addModuleListener(ObjectEditListener listener) {
+		this.moduleListeners.add(listener);
+	}
+
+	public void distributeModuleEditEvent(ModuleEditEvent event) {
+		Iterator<ObjectEditListener> iter = moduleListeners.iterator();
+		while (iter.hasNext()) {
+			ObjectEditListener currentListener = iter.next();
+			currentListener.objectEdit(event);
+		}
 	}
 }

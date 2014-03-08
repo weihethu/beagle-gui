@@ -1,7 +1,6 @@
 package gui.toolbars;
 
 import gui.drawers.ObjectDrawer;
-import gui.drawers.ELTSModelDrawer;
 import gui.editors.EditorCanvas;
 import gui.toolbars.toolboxes.ToolBox;
 import gui.toolbars.tools.DeleteTool;
@@ -9,6 +8,7 @@ import gui.toolbars.tools.Tool;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -29,6 +29,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 	private Map<JToggleButton, Tool> buttonsToTools = null;
 	private Component view;
 	private List<Tool> tools;
+	private Tool currentTool = null;
 
 	public ToolBar(EditorCanvas canvas, ObjectDrawer drawer, ToolBox box) {
 		this.adapter = new ToolAdapter();
@@ -38,6 +39,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 		initBar();
 		view.addMouseListener(this.adapter);
 		view.addMouseMotionListener(this.adapter);
+		currentTool = null;
 	}
 
 	private void initBar() {
@@ -74,5 +76,12 @@ public class ToolBar extends JToolBar implements ActionListener {
 					"Delete");
 			this.view.setCursor(deleteCursor);
 		}
+		this.currentTool = tool;
+	}
+
+	public void drawTool(Graphics graphics) {
+		if (this.currentTool == null)
+			return;
+		this.currentTool.draw(graphics);
 	}
 }

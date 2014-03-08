@@ -7,6 +7,7 @@ import gui.toolbars.tools.CreateStateTool;
 import gui.toolbars.tools.DeleteTool;
 import gui.toolbars.tools.ModuleDrawerCursorTool;
 import gui.toolbars.tools.Tool;
+import gui.toolbars.tools.TransitionTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ModuleDrawerToolBox implements ToolBox {
 			
 			tools.add(new ModuleDrawerCursorTool(view, (ELTSModuleDrawer)drawer));
 			tools.add(new CreateStateTool(view, (ELTSModuleDrawer) drawer));
+			tools.add(new TransitionTool(view, (ELTSModuleDrawer)drawer));
 			tools.add(new DeleteTool(view, drawer));
 			return tools;
 		} else

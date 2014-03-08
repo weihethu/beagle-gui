@@ -1,5 +1,6 @@
 package model.automata;
 
+import events.StateEditEvent;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
@@ -27,7 +28,8 @@ public class State extends DrawableObject {
 
 	public void setPoint(Point point) {
 		this.point = point;
-		module.distributeObjectEditEvent();
+		module.distributeStateEditEvent(new StateEditEvent(this, false, true,
+				false));
 	}
 
 	public int getID() {
@@ -48,6 +50,11 @@ public class State extends DrawableObject {
 
 	public void setName(String name) {
 		this.name = name;
-		module.distributeObjectEditEvent();
+		module.distributeStateEditEvent(new StateEditEvent(this, false, false,
+				true));
+	}
+
+	public ELTSModule getModule() {
+		return this.module;
 	}
 }

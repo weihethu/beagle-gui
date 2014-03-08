@@ -3,6 +3,7 @@ package gui.toolbars.tools;
 import gui.drawers.ObjectDrawer;
 import gui.editors.EditorCanvas;
 
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.net.URL;
 
@@ -37,5 +38,9 @@ public class Tool extends MouseAdapter {
 
 	protected EditorCanvas getView() {
 		return view;
+	}
+
+	public void draw(Graphics graphics) {
+
 	}
 }

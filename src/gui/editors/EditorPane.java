@@ -1,10 +1,10 @@
 package gui.editors;
 
-import java.awt.BorderLayout;
-
 import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 import gui.toolbars.toolboxes.ToolBox;
+
+import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -29,7 +29,8 @@ public class EditorPane extends JComponent {
 		mainPanel.setBorder(new BevelBorder(1));
 
 		this.toolbar = new ToolBar(this.canvas, drawer, toolBox);
-
+		canvas.setToolbar(toolbar);
+		
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(this.toolbar, BorderLayout.NORTH);
 	}

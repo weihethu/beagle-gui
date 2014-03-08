@@ -13,6 +13,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -28,6 +29,7 @@ public class ModuleDrawerCursorTool extends Tool {
 	public ModuleDrawerCursorTool(EditorCanvas view, ELTSModuleDrawer drawer) {
 		super(view, drawer);
 	}
+
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/arrow.gif");
 		return new ImageIcon(url);
@@ -125,29 +127,39 @@ public class ModuleDrawerCursorTool extends Tool {
 
 	private class StateMenu extends JPopupMenu implements ActionListener {
 		private State state;
+		private JCheckBoxMenuItem makeInitial;
 		private JMenuItem setName;
 		private JMenuItem edit;
 
 		public StateMenu() {
+			this.makeInitial = new JCheckBoxMenuItem("Initial");
+			this.makeInitial.addActionListener(this);
+
 			this.setName = new JMenuItem("Set Name");
 			this.setName.addActionListener(this);
 
 			this.edit = new JMenuItem("Edit");
 			this.edit.addActionListener(this);
 
+			add(this.makeInitial);
 			add(this.setName);
 			add(this.edit);
 		}
 
 		public void show(State state, Component parent, Point pt) {
 			this.state = state;
+			this.makeInitial.setSelected(ModuleDrawerCursorTool.this.getModule().getInitialState() == state);
 			show(parent, pt.x, pt.y);
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem menuItem = (JMenuItem) event.getSource();
-			if (menuItem == this.setName) {
+			if (menuItem == this.makeInitial) {
+				if(!menuItem.isSelected())
+					this.state = null;
+				getModule().setInitialState(this.state);
+			} else if (menuItem == this.setName) {
 				String currentName = this.state.getName();
 				String newName = (String) JOptionPane.showInputDialog(this,
 						"Input a new name", "New Name",
