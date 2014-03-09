@@ -12,53 +12,51 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class ELTSModel extends DrawableObject {
-	private Set<ELTSModule> modules;
-	private ELTSModule[] cachedModules = null;
+public class Model extends DrawableObject {
+	private Set<Module> modules;
+	private Module[] cachedModules = null;
 	private Set<ObjectEditListener> moduleListeners = null;
 
-	public ELTSModel() {
-		modules = new HashSet<ELTSModule>();
+	public Model() {
+		modules = new HashSet<Module>();
 		moduleListeners = new HashSet<ObjectEditListener>();
 	}
 
-	public ELTSModule createModule(Point pt) {
+	public Module createModule(Point pt) {
 		int id = 0;
 		while (getModuleWithID(id) != null)
 			id++;
-		ELTSModule module = new ELTSModule(id, pt, this);
+		Module module = new Module(id, pt, this);
 		addModule(module);
 		distributeModuleEditEvent(new ModuleEditEvent(module, true, false,
 				false));
 		return module;
 	}
 
-	public ELTSModule getModuleWithID(int id) {
-		Iterator<ELTSModule> iter = this.modules.iterator();
+	public Module getModuleWithID(int id) {
+		Iterator<Module> iter = this.modules.iterator();
 		while (iter.hasNext()) {
-			ELTSModule currentModule = iter.next();
+			Module currentModule = iter.next();
 			if (currentModule.getID() == id)
 				return currentModule;
 		}
 		return null;
 	}
 
-	private void addModule(ELTSModule module) {
+	private void addModule(Module module) {
 		this.modules.add(module);
 		this.cachedModules = null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public ELTSModule[] getModules() {
+	public Module[] getModules() {
 		if (this.cachedModules == null) {
-			this.cachedModules = (ELTSModule[]) this.modules
-					.toArray(new ELTSModule[0]);
+			this.cachedModules = (Module[]) this.modules.toArray(new Module[0]);
 			Arrays.sort(this.cachedModules, new Comparator() {
 
 				@Override
 				public int compare(Object obj1, Object obj2) {
-					return ((ELTSModule) obj1).getID()
-							- ((ELTSModule) obj2).getID();
+					return ((Module) obj1).getID() - ((Module) obj2).getID();
 				}
 
 			});
@@ -67,7 +65,7 @@ public class ELTSModel extends DrawableObject {
 	}
 
 	public void selectModulesWithinBounds(Rectangle rect) {
-		ELTSModule[] modules = getModules();
+		Module[] modules = getModules();
 		for (int i = 0; i < modules.length; i++) {
 			modules[i].setSelect(false);
 			if (rect.contains(modules[i].getPoint()))
@@ -76,8 +74,8 @@ public class ELTSModel extends DrawableObject {
 	}
 
 	public void unselectAll() {
-		ELTSModule[] modules = getModules();
-		for (ELTSModule module : modules)
+		Module[] modules = getModules();
+		for (Module module : modules)
 			module.setSelect(false);
 	}
 

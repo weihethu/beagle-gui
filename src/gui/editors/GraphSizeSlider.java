@@ -32,7 +32,7 @@ public class GraphSizeSlider extends JSlider {
 		@Override
 		public void stateChanged(ChangeEvent event) {
 			JSlider slider = (JSlider) event.getSource();
-			double scale = (double)slider.getValue() / SIZE_INIT;
+			double scale = (double) slider.getValue() / SIZE_INIT;
 			GraphSizeSlider.this.view.setScale(scale);
 			GraphSizeSlider.this.view.requestTransform();
 		}

@@ -10,6 +10,6 @@ import javax.swing.JToolBar;
 
 public interface ToolBox {
 	public List<Tool> getTools(Canvas view, ObjectDrawer drawer);
-	
+
 	public void addExtras(JToolBar toolbar);
 }

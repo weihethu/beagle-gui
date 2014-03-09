@@ -1,6 +1,6 @@
 package gui.toolbars.tools;
 
-import gui.drawers.ELTSModuleDrawer;
+import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
 
 import java.awt.BasicStroke;
@@ -15,7 +15,7 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import model.ELTSModule;
+import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 
@@ -25,7 +25,7 @@ public class TransitionTool extends Tool {
 	private static Stroke STROKE = new BasicStroke(2.4F);
 	private static Color COLOR = new Color(0.5F, 0.5F, 0.5F, 0.5F);
 
-	public TransitionTool(Canvas view, ELTSModuleDrawer drawer) {
+	public TransitionTool(Canvas view, ModuleDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -35,8 +35,8 @@ public class TransitionTool extends Tool {
 	}
 
 	@Override
-	public ELTSModuleDrawer getDrawer() {
-		return (ELTSModuleDrawer) super.getDrawer();
+	public ModuleDrawer getDrawer() {
+		return (ModuleDrawer) super.getDrawer();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class TransitionTool extends Tool {
 
 		State endState = getDrawer().stateAtPoint(event.getPoint());
 		if (endState != null) {
-			((ELTSModule) super.getObject()).addTransition(new Transition(
+			((Module) super.getObject()).addTransition(new Transition(
 					firstState, endState));
 		}
 		this.firstState = null;

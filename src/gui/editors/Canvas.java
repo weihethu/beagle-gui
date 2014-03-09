@@ -16,7 +16,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
-public class Canvas extends JPanel implements Scrollable{
+public class Canvas extends JPanel implements Scrollable {
 	protected ObjectDrawer drawer;
 	private ToolBar toolbar = null;;
 	private AffineTransform transform = new AffineTransform();
@@ -35,16 +35,15 @@ public class Canvas extends JPanel implements Scrollable{
 
 		graphics.setColor(Color.white);
 		graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-		
-		Graphics2D graphics2D = (Graphics2D)graphics;
+
+		Graphics2D graphics2D = (Graphics2D) graphics.create();
 		graphics2D.transform(this.transform);
-		
+
 		this.drawer.drawInternal(graphics2D);
 		if (this.toolbar != null)
 			this.toolbar.drawTool(graphics2D);
 		
-		graphics2D.scale(1 / transform.getScaleX(), 1 / transform.getScaleY());
-		graphics2D.translate(-transform.getTranslateX(), -transform.getTranslateY());
+		graphics2D.dispose();
 	}
 
 	public void setToolbar(ToolBar bar) {
@@ -67,8 +66,8 @@ public class Canvas extends JPanel implements Scrollable{
 		Point pt = new Point(
 				(int) (visibleRect.x - this.transform.getTranslateX()),
 				(int) (visibleRect.y - this.transform.getTranslateY()));
-		Point pt1 = new Point(Math.min(objectSizeRect.x, Math.min(0, pt.x)), Math.min(
-				objectSizeRect.y, Math.min(0, pt.y)));
+		Point pt1 = new Point(Math.min(objectSizeRect.x, Math.min(0, pt.x)),
+				Math.min(objectSizeRect.y, Math.min(0, pt.y)));
 
 		this.transform = new AffineTransform();
 		this.drawer.setTransform(this.transform);
@@ -77,11 +76,10 @@ public class Canvas extends JPanel implements Scrollable{
 		this.transform.translate(-pt1.x, -pt1.y);
 		this.transform.scale(this.scaleBy, this.scaleBy);
 
-		Dimension dim = new Dimension(Math.max(objectSizeRect.width + objectSizeRect.x, pt.x
-				+ visibleRect.width)
-				- pt1.x, Math.max(objectSizeRect.height + objectSizeRect.y, pt.y
-				+ visibleRect.height)
-				- pt1.y);
+		Dimension dim = new Dimension(Math.max(objectSizeRect.width
+				+ objectSizeRect.x, pt.x + visibleRect.width)
+				- pt1.x, Math.max(objectSizeRect.height + objectSizeRect.y,
+				pt.y + visibleRect.height) - pt1.y);
 
 		if (dim.equals(getPreferredSize()))
 			return;
@@ -103,19 +101,19 @@ public class Canvas extends JPanel implements Scrollable{
 		this.transformNeedsReform = true;
 		repaint();
 	}
-	
+
 	public void processMouseEvent(MouseEvent event) {
 		transformMouseEvent(event);
 		super.processMouseEvent(event);
 	}
-	
+
 	public void processMouseMotionEvent(MouseEvent event) {
 		transformMouseEvent(event);
 		super.processMouseMotionEvent(event);
 	}
-	
+
 	private void transformMouseEvent(MouseEvent event) {
-		if(this.transformNeedsReform)
+		if (this.transformNeedsReform)
 			reformTransform();
 		Point destPt = new Point(), srcPt = event.getPoint();
 		try {
@@ -125,14 +123,6 @@ public class Canvas extends JPanel implements Scrollable{
 		}
 		event.translatePoint(destPt.x - srcPt.x, destPt.y - srcPt.y);
 	}
-	// private class Listener implements ObjectEditListener {
-	//
-	// @Override
-	// public void objectEdit(ObjectEditEvent event) {
-	// EditorCanvas.this.repaint();
-	// }
-	//
-	// }
 
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
@@ -142,7 +132,7 @@ public class Canvas extends JPanel implements Scrollable{
 	@Override
 	public int getScrollableBlockIncrement(Rectangle visibleRect,
 			int orientation, int direction) {
-		return orientation == 1? visibleRect.height: visibleRect.width;
+		return orientation == 1 ? visibleRect.height : visibleRect.width;
 	}
 
 	@Override

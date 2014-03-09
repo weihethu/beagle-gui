@@ -1,8 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.Environment;
-import gui.drawers.ELTSModelDrawer;
-import gui.drawers.ELTSModuleDrawer;
+import gui.drawers.ModelDrawer;
 import gui.editors.Canvas;
 import gui.editors.EditorPane;
 import gui.toolbars.toolboxes.ModuleDrawerToolBox;
@@ -21,15 +20,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import model.ELTSModel;
-import model.ELTSModule;
+import model.Model;
+import model.Module;
 
 public class ModelDrawerCursorTool extends Tool {
-	private ELTSModule lastClickedModule = null;
+	private Module lastClickedModule = null;
 	private Point initialPointClicked = new Point();
 	private ModuleMenu moduleMenu = new ModuleMenu();
 
-	public ModelDrawerCursorTool(Canvas view, ELTSModelDrawer drawer) {
+	public ModelDrawerCursorTool(Canvas view, ModelDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -43,13 +42,13 @@ public class ModelDrawerCursorTool extends Tool {
 		return "Attribute Editor";
 	}
 
-	private ELTSModel getModel() {
-		return (ELTSModel) super.getObject();
+	private Model getModel() {
+		return (Model) super.getObject();
 	}
 
 	@Override
-	protected ELTSModelDrawer getDrawer() {
-		return (ELTSModelDrawer) super.getDrawer();
+	protected ModelDrawer getDrawer() {
+		return (ModelDrawer) super.getDrawer();
 	}
 
 	@Override
@@ -87,8 +86,8 @@ public class ModelDrawerCursorTool extends Tool {
 			Point currentPt = event.getPoint();
 
 			// drag all selected modules
-			ELTSModule[] modules = getModel().getModules();
-			for (ELTSModule module : modules) {
+			Module[] modules = getModel().getModules();
+			for (Module module : modules) {
 				if (module.isSelected()) {
 					Point oldPoint = module.getPoint();
 					module.setPoint(new Point(oldPoint.x + currentPt.x
@@ -129,15 +128,15 @@ public class ModelDrawerCursorTool extends Tool {
 					event.getPoint());
 	}
 
-	private void editModule(ELTSModule module) {
+	private void editModule(Module module) {
 		Environment.getInstance().addTab(
-				new EditorPane(new ELTSModuleDrawer(module),
+				new EditorPane(Environment.getInstance().getDrawer(module),
 						new ModuleDrawerToolBox()),
 				module.getName() + "'s editor");
 	}
 
 	private class ModuleMenu extends JPopupMenu implements ActionListener {
-		private ELTSModule module;
+		private Module module;
 		private JMenuItem setName;
 		private JMenuItem edit;
 
@@ -152,7 +151,7 @@ public class ModelDrawerCursorTool extends Tool {
 			add(this.edit);
 		}
 
-		public void show(ELTSModule module, Component parent, Point pt) {
+		public void show(Module module, Component parent, Point pt) {
 			this.module = module;
 			show(parent, pt.x, pt.y);
 		}

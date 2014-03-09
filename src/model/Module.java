@@ -21,10 +21,10 @@ import java.util.Set;
 import model.automata.State;
 import model.automata.Transition;
 
-public class ELTSModule extends DrawableObject {
+public class Module extends DrawableObject {
 	private Point point;
 	private int id;
-	private ELTSModel model;
+	private Model model;
 	private String name = null;
 	private boolean selected = false;
 	private Set<State> states;
@@ -38,7 +38,7 @@ public class ELTSModule extends DrawableObject {
 	private Map<State, Transition[]> transitionArrayFromStateMap = null;
 	private Map<State, Transition[]> transitionArrayToStateMap = null;
 
-	public ELTSModule(int id, Point pt, ELTSModel model) {
+	public Module(int id, Point pt, Model model) {
 		this.point = pt;
 		this.id = id;
 		this.model = model;

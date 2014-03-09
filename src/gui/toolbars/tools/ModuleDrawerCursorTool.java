@@ -1,6 +1,6 @@
 package gui.toolbars.tools;
 
-import gui.drawers.ELTSModuleDrawer;
+import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
 
 import java.awt.Component;
@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import model.ELTSModule;
+import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 
@@ -28,7 +28,7 @@ public class ModuleDrawerCursorTool extends Tool {
 	private StateMenu stateMenu = new StateMenu();
 	private Transition selectedTransition = null;
 
-	public ModuleDrawerCursorTool(Canvas view, ELTSModuleDrawer drawer) {
+	public ModuleDrawerCursorTool(Canvas view, ModuleDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -42,13 +42,13 @@ public class ModuleDrawerCursorTool extends Tool {
 		return "Attribute Editor";
 	}
 
-	private ELTSModule getModule() {
-		return (ELTSModule) super.getObject();
+	private Module getModule() {
+		return (Module) super.getObject();
 	}
 
 	@Override
-	protected ELTSModuleDrawer getDrawer() {
-		return (ELTSModuleDrawer) super.getDrawer();
+	protected ModuleDrawer getDrawer() {
+		return (ModuleDrawer) super.getDrawer();
 	}
 
 	@Override
@@ -68,25 +68,9 @@ public class ModuleDrawerCursorTool extends Tool {
 		}
 
 		if (transition != null) {
-
 			if (event.getClickCount() == 1) {
-				// Transition transition = getDrawer().transitionAtPoint(
-				// event.getPoint());
-				// if (transition != null) {
-				// if (transition.isSelected()) {
-				// transition.setSelect(false);
-				// this.selectedTransition = null;
-				// } else {
-				// if (this.selectedTransition != null)
-				// this.selectedTransition.setSelect(false);
-				// transition.setSelect(true);
-				// this.selectedTransition = transition;
-				// }
-				// }
-				// if (transition == null) {
 				getModule().unselectAll();
 				getView().repaint();
-				// }
 			} else if (event.getClickCount() == 2
 					&& event.getButton() == MouseEvent.BUTTON1) {
 			}

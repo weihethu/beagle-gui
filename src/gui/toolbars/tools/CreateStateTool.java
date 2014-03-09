@@ -1,6 +1,6 @@
 package gui.toolbars.tools;
 
-import gui.drawers.ELTSModuleDrawer;
+import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
 
 import java.awt.event.MouseEvent;
@@ -9,14 +9,14 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import model.ELTSModule;
+import model.Module;
 import model.automata.State;
 
 public class CreateStateTool extends Tool {
 
 	private State state = null;
 
-	public CreateStateTool(Canvas view, ELTSModuleDrawer drawer) {
+	public CreateStateTool(Canvas view, ModuleDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -25,8 +25,8 @@ public class CreateStateTool extends Tool {
 		return new ImageIcon(url);
 	}
 
-	private ELTSModule getModule() {
-		return (ELTSModule) super.getObject();
+	private Module getModule() {
+		return (Module) super.getObject();
 	}
 
 	public void mousePressed(MouseEvent event) {

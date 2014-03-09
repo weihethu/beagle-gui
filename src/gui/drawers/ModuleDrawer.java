@@ -7,32 +7,29 @@ import events.listeners.ObjectEditListener;
 import gui.entities.CurvedArrow;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import model.ELTSModule;
+import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 
-public class ELTSModuleDrawer extends ObjectDrawer {
+public class ModuleDrawer extends ObjectDrawer {
 	private Rectangle selectionBounds = new Rectangle(0, 0, -1, -1);
 	private Map<CurvedArrow, Transition> arrowToTransitionMap = null;
 	private Map<Transition, CurvedArrow> transitionToArrowMap = null;
-//	private boolean valid = false;
-//	private boolean validBounds = false;
 	private Rectangle cachedBounds = null;
 	public static final Color STATE_COLOR = new Color(255, 255, 150);
 	public static int STATE_RADIUS = 20;
+	private boolean ignoreSelected = false;
 
-	public ELTSModuleDrawer(ELTSModule module) {
+	public ModuleDrawer(Module module) {
 		super(module);
 		arrowToTransitionMap = new HashMap<CurvedArrow, Transition>();
 		transitionToArrowMap = new HashMap<Transition, CurvedArrow>();
@@ -44,9 +41,10 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 
 	@Override
 	public void drawInternal(Graphics2D graphics) {
-		Graphics2D tmpGraphics2D = (Graphics2D)graphics.create();
-		tmpGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+		Graphics2D tmpGraphics2D = (Graphics2D) graphics.create();
+		tmpGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+
 		if (!this.valid)
 			refreshArrowMap();
 
@@ -55,12 +53,19 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 		for (State state : states) {
 			drawState(state, tmpGraphics2D);
 		}
-		drawSelectionBox(tmpGraphics2D);
+		if (!ignoreSelected)
+			drawSelectionBox(tmpGraphics2D);
 		tmpGraphics2D.dispose();
 	}
 
+	public void drawExternal(Graphics2D graphics) {
+		ignoreSelected = true;
+		drawInternal(graphics);
+		ignoreSelected = false;
+	}
+
 	@Override
-	public Rectangle getBounds() {
+	public Rectangle getUntransformedBounds() {
 		if (this.validBounds)
 			return this.cachedBounds;
 
@@ -83,33 +88,29 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 			resultRect.add(arrow.getBounds());
 		}
 		this.validBounds = true;
-		return this.cachedBounds = this.currentTransform
-				.createTransformedShape(resultRect).getBounds();
-//		return this.cachedBounds = resultRect.getBounds();
+		return this.cachedBounds = resultRect;
 	}
 
 	public Rectangle getBounds(State state) {
 		Point pt = state.getPoint();
 		if (getModule().getInitialState() == state) {
-			return new Rectangle(pt.x - 2 * ELTSModuleDrawer.STATE_RADIUS, pt.y
-					- ELTSModuleDrawer.STATE_RADIUS,
-					3 * ELTSModuleDrawer.STATE_RADIUS,
-					2 * ELTSModuleDrawer.STATE_RADIUS);
+			return new Rectangle(pt.x - 2 * ModuleDrawer.STATE_RADIUS, pt.y
+					- ModuleDrawer.STATE_RADIUS, 3 * ModuleDrawer.STATE_RADIUS,
+					2 * ModuleDrawer.STATE_RADIUS);
 		} else
-			return new Rectangle(pt.x - ELTSModuleDrawer.STATE_RADIUS, pt.y
-					- ELTSModuleDrawer.STATE_RADIUS,
-					2 * ELTSModuleDrawer.STATE_RADIUS,
-					2 * ELTSModuleDrawer.STATE_RADIUS);
+			return new Rectangle(pt.x - ModuleDrawer.STATE_RADIUS, pt.y
+					- ModuleDrawer.STATE_RADIUS, 2 * ModuleDrawer.STATE_RADIUS,
+					2 * ModuleDrawer.STATE_RADIUS);
 	}
 
-	public ELTSModule getModule() {
-		return (ELTSModule) target;
+	public Module getModule() {
+		return (Module) target;
 	}
 
 	public State stateAtPoint(Point pt) {
 		State[] states = getModule().getStates();
 		for (State state : states) {
-			if (pt.distance(state.getPoint()) <= ELTSModuleDrawer.STATE_RADIUS)
+			if (pt.distance(state.getPoint()) <= ModuleDrawer.STATE_RADIUS)
 				return state;
 		}
 		return null;
@@ -142,7 +143,7 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 		Iterator<CurvedArrow> iter = arrows.iterator();
 		while (iter.hasNext()) {
 			CurvedArrow arrow = iter.next();
-			if (arrow.getTransition().isSelected()) {
+			if (arrow.getTransition().isSelected() && !ignoreSelected) {
 				arrow.drawHighlight(graphics);
 				arrow.drawControlPoint(graphics);
 			} else {
@@ -210,36 +211,26 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 
 	private Point pointOnState(State state, double ang) {
 		Point pt = new Point(state.getPoint());
-		double dx = Math.cos(ang) * ELTSModuleDrawer.STATE_RADIUS;
-		double dy = Math.sin(ang) * ELTSModuleDrawer.STATE_RADIUS;
+		double dx = Math.cos(ang) * ModuleDrawer.STATE_RADIUS;
+		double dy = Math.sin(ang) * ModuleDrawer.STATE_RADIUS;
 		pt.translate((int) dx, (int) dy);
 		return pt;
 	}
 
 	private void stateEditHandler(StateEditEvent event) {
-		if(event.getIsAdd())
+		if (event.getIsAdd())
 			invalidateBounds();
-		else if(event.getIsMove())
+		else if (event.getIsMove())
 			invalidate();
-		//this.valid = false;
-		getView().repaint();
+		if (getView() != null)
+			getView().repaint();
 	}
 
 	private void transitionEditHandler(TransitionEditEvent event) {
-		//this.valid = false;
 		invalidate();
-		getView().repaint();
+		if (getView() != null)
+			getView().repaint();
 	}
-	
-//	@Override
-//	public void invalidate() {
-//		this.valid = false;
-//	}
-//	
-//	@Override
-//	public void invalidateBounds() {
-//
-//	}
 
 	private void drawState(State state, Graphics2D graphics) {
 		drawStateBackground(graphics, state, state.getPoint(), STATE_COLOR);
@@ -252,18 +243,16 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 
 		graphics.drawString(state.getName(), currentPt.x - strWidth,
 				currentPt.y - strHeight);
-		graphics.drawOval(currentPt.x - ELTSModuleDrawer.STATE_RADIUS,
-				currentPt.y - ELTSModuleDrawer.STATE_RADIUS,
-				2 * ELTSModuleDrawer.STATE_RADIUS,
-				2 * ELTSModuleDrawer.STATE_RADIUS);
+		graphics.drawOval(currentPt.x - ModuleDrawer.STATE_RADIUS, currentPt.y
+				- ModuleDrawer.STATE_RADIUS, 2 * ModuleDrawer.STATE_RADIUS,
+				2 * ModuleDrawer.STATE_RADIUS);
 
 		if (state.getModule().getInitialState() == state) {
-			int[] xs = { currentPt.x - ELTSModuleDrawer.STATE_RADIUS,
-					currentPt.x - (ELTSModuleDrawer.STATE_RADIUS << 1),
-					currentPt.x - (ELTSModuleDrawer.STATE_RADIUS << 1) };
-			int[] ys = { currentPt.y,
-					currentPt.y - ELTSModuleDrawer.STATE_RADIUS,
-					currentPt.y + ELTSModuleDrawer.STATE_RADIUS };
+			int[] xs = { currentPt.x - ModuleDrawer.STATE_RADIUS,
+					currentPt.x - (ModuleDrawer.STATE_RADIUS << 1),
+					currentPt.x - (ModuleDrawer.STATE_RADIUS << 1) };
+			int[] ys = { currentPt.y, currentPt.y - ModuleDrawer.STATE_RADIUS,
+					currentPt.y + ModuleDrawer.STATE_RADIUS };
 
 			graphics.setColor(Color.white);
 			graphics.fillPolygon(xs, ys, 3);
@@ -272,16 +261,15 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 		}
 	}
 
-	private void drawStateBackground(Graphics2D graphics, State state, Point pt,
-			Color color) {
+	private void drawStateBackground(Graphics2D graphics, State state,
+			Point pt, Color color) {
 		graphics.setColor(color);
-		if (state.isSelected())
+		if (state.isSelected() && !ignoreSelected)
 			graphics.setColor(new Color(100, 200, 200));
 
-		graphics.fillOval(pt.x - ELTSModuleDrawer.STATE_RADIUS, pt.y
-				- ELTSModuleDrawer.STATE_RADIUS,
-				2 * ELTSModuleDrawer.STATE_RADIUS,
-				2 * ELTSModuleDrawer.STATE_RADIUS);
+		graphics.fillOval(pt.x - ModuleDrawer.STATE_RADIUS, pt.y
+				- ModuleDrawer.STATE_RADIUS, 2 * ModuleDrawer.STATE_RADIUS,
+				2 * ModuleDrawer.STATE_RADIUS);
 	}
 
 	private class DrawerListener implements ObjectEditListener {
@@ -294,6 +282,5 @@ public class ELTSModuleDrawer extends ObjectDrawer {
 				transitionEditHandler((TransitionEditEvent) event);
 			}
 		}
-
 	}
 }

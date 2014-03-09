@@ -5,20 +5,20 @@ import gui.drawers.DrawableObject;
 
 import java.awt.Point;
 
-import model.ELTSModule;
+import model.Module;
 
 public class State extends DrawableObject {
 	private Point point;
 	private int id;
-	private ELTSModule module;
+	private Module module;
 	private String name = null;
 	private boolean selected = false;
 
-	public State(int id, Point pt, ELTSModule module) {
+	public State(int id, Point pt, Module module) {
 		this.point = pt;
 		this.id = id;
 		this.module = module;
-		this.name = "Module";
+		this.name = "State";
 		this.selected = false;
 	}
 
@@ -54,7 +54,7 @@ public class State extends DrawableObject {
 				true));
 	}
 
-	public ELTSModule getModule() {
+	public Module getModule() {
 		return this.module;
 	}
 }

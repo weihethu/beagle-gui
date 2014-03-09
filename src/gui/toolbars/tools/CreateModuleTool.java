@@ -1,6 +1,6 @@
 package gui.toolbars.tools;
 
-import gui.drawers.ELTSModelDrawer;
+import gui.drawers.ModelDrawer;
 import gui.editors.Canvas;
 
 import java.awt.event.MouseEvent;
@@ -9,23 +9,23 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import model.ELTSModel;
-import model.ELTSModule;
+import model.Model;
+import model.Module;
 
 public class CreateModuleTool extends Tool {
-	public CreateModuleTool(Canvas view, ELTSModelDrawer drawer) {
+	public CreateModuleTool(Canvas view, ModelDrawer drawer) {
 		super(view, drawer);
 	}
 
-	private ELTSModule module = null;
+	private Module module = null;
 
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/module.gif");
 		return new ImageIcon(url);
 	}
 
-	private ELTSModel getModel() {
-		return (ELTSModel) super.getObject();
+	private Model getModel() {
+		return (Model) super.getObject();
 	}
 
 	public void mousePressed(MouseEvent event) {

@@ -1,6 +1,6 @@
 package gui.toolbars.toolboxes;
 
-import gui.drawers.ELTSModelDrawer;
+import gui.drawers.ModelDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.editors.Canvas;
 import gui.toolbars.tools.CreateModuleTool;
@@ -12,18 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
-import javax.swing.JScrollBar;
 import javax.swing.JToolBar;
 
 public class ModelDrawerToolBox implements ToolBox {
 
 	@Override
 	public List<Tool> getTools(Canvas view, ObjectDrawer drawer) {
-		if (drawer instanceof ELTSModelDrawer) {
+		if (drawer instanceof ModelDrawer) {
 			List<Tool> tools = new ArrayList<Tool>();
 
-			tools.add(new ModelDrawerCursorTool(view, (ELTSModelDrawer) drawer));
-			tools.add(new CreateModuleTool(view, (ELTSModelDrawer) drawer));
+			tools.add(new ModelDrawerCursorTool(view, (ModelDrawer) drawer));
+			tools.add(new CreateModuleTool(view, (ModelDrawer) drawer));
 			tools.add(new DeleteTool(view, drawer));
 			return tools;
 		} else
@@ -35,5 +34,4 @@ public class ModelDrawerToolBox implements ToolBox {
 		toolbar.addSeparator();
 		toolbar.add(new JCheckBox("details"));
 	}
-
 }
