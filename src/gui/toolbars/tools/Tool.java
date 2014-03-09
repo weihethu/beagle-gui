@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ObjectDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -11,10 +11,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class Tool extends MouseAdapter {
-	private EditorCanvas view;
+	private Canvas view;
 	private ObjectDrawer drawer;
 
-	public Tool(EditorCanvas view, ObjectDrawer drawer) {
+	public Tool(Canvas view, ObjectDrawer drawer) {
 		this.view = view;
 		this.drawer = drawer;
 	}
@@ -36,7 +36,7 @@ public class Tool extends MouseAdapter {
 		return drawer;
 	}
 
-	protected EditorCanvas getView() {
+	protected Canvas getView() {
 		return view;
 	}
 

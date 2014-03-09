@@ -3,7 +3,7 @@ package gui.toolbars.tools;
 import gui.Environment;
 import gui.drawers.ELTSModelDrawer;
 import gui.drawers.ELTSModuleDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 import gui.editors.EditorPane;
 import gui.toolbars.toolboxes.ModuleDrawerToolBox;
 
@@ -29,7 +29,7 @@ public class ModelDrawerCursorTool extends Tool {
 	private Point initialPointClicked = new Point();
 	private ModuleMenu moduleMenu = new ModuleMenu();
 
-	public ModelDrawerCursorTool(EditorCanvas view, ELTSModelDrawer drawer) {
+	public ModelDrawerCursorTool(Canvas view, ELTSModelDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -128,12 +128,14 @@ public class ModelDrawerCursorTool extends Tool {
 			this.moduleMenu.show(this.lastClickedModule, getView(),
 					event.getPoint());
 	}
-	
+
 	private void editModule(ELTSModule module) {
-		Environment.getInstance().addTab(new EditorPane(new ELTSModuleDrawer(module),
-				new ModuleDrawerToolBox()), module.getName() + "'s editor");
+		Environment.getInstance().addTab(
+				new EditorPane(new ELTSModuleDrawer(module),
+						new ModuleDrawerToolBox()),
+				module.getName() + "'s editor");
 	}
-	
+
 	private class ModuleMenu extends JPopupMenu implements ActionListener {
 		private ELTSModule module;
 		private JMenuItem setName;

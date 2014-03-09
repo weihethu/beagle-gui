@@ -16,4 +16,15 @@ public class StateEditEvent extends ObjectEditEvent {
 		this.isAttributeChange = attributeChange;
 	}
 
+	public boolean getIsAdd() {
+		return isAdd;
+	}
+
+	public boolean getIsMove() {
+		return isMove;
+	}
+
+	public boolean getIsAttributeChange() {
+		return isAttributeChange;
+	}
 }

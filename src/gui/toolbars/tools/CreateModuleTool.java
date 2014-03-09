@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ELTSModelDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -13,7 +13,7 @@ import model.ELTSModel;
 import model.ELTSModule;
 
 public class CreateModuleTool extends Tool {
-	public CreateModuleTool(EditorCanvas view, ELTSModelDrawer drawer) {
+	public CreateModuleTool(Canvas view, ELTSModelDrawer drawer) {
 		super(view, drawer);
 	}
 

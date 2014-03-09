@@ -8,7 +8,6 @@ import gui.drawers.DrawableObject;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -160,6 +159,11 @@ public class ELTSModule extends DrawableObject {
 	public void addTransition(Transition transition) {
 		if (this.transitions.contains(transition))
 			return;
+		for (Transition eachTransition : transitions) {
+			if (eachTransition.getFromState() == transition.getFromState()
+					&& eachTransition.getToState() == transition.getToState())
+				return;
+		}
 
 		if (transition.getFromState() == null
 				|| transition.getToState() == null)
@@ -174,15 +178,14 @@ public class ELTSModule extends DrawableObject {
 				true, false));
 	}
 
-	public Transition[] getTransitionsFromStateToState(State fromState,
+	public Transition getTransitionsFromStateToState(State fromState,
 			State toState) {
 		Transition[] transitions = getTransitionsFromState(fromState);
-		List<Transition> results = new ArrayList<Transition>();
 		for (int i = 0; i < transitions.length; i++) {
 			if (transitions[i].getToState() == toState)
-				results.add(transitions[i]);
+				return transitions[i];
 		}
-		return results.toArray(new Transition[0]);
+		return null;
 	}
 
 	public Transition[] getTransitionsFromState(State state) {

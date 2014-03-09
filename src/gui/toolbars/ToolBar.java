@@ -1,7 +1,7 @@
 package gui.toolbars;
 
 import gui.drawers.ObjectDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 import gui.toolbars.toolboxes.ToolBox;
 import gui.toolbars.tools.DeleteTool;
 import gui.toolbars.tools.Tool;
@@ -31,7 +31,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 	private List<Tool> tools;
 	private Tool currentTool = null;
 
-	public ToolBar(EditorCanvas canvas, ObjectDrawer drawer, ToolBox box) {
+	public ToolBar(Canvas canvas, ObjectDrawer drawer, ToolBox box) {
 		this.adapter = new ToolAdapter();
 		this.view = canvas;
 		this.tools = box.getTools(canvas, drawer);

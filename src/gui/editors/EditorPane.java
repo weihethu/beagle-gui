@@ -13,11 +13,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 
 public class EditorPane extends JComponent {
-	protected EditorCanvas canvas;
+	protected Canvas canvas;
 	protected ToolBar toolbar;
+	protected GraphSizeSlider slider;
 
 	public EditorPane(ObjectDrawer drawer, ToolBox toolBox) {
-		this.canvas = new EditorCanvas(drawer);
+		this.canvas = new Canvas(drawer);
 		this.setLayout(new BorderLayout());
 
 		JPanel mainPanel = new JPanel();
@@ -29,10 +30,13 @@ public class EditorPane extends JComponent {
 		mainPanel.setBorder(new BevelBorder(1));
 
 		this.toolbar = new ToolBar(this.canvas, drawer, toolBox);
+		toolBox.addExtras(toolbar);
 		canvas.setToolbar(toolbar);
-		
+
+		this.slider = new GraphSizeSlider(this.canvas, drawer);
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(this.toolbar, BorderLayout.NORTH);
+		this.add(this.slider, BorderLayout.SOUTH);
 	}
 
 }

@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ELTSModuleDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.Component;
 import java.awt.Point;
@@ -20,13 +20,15 @@ import javax.swing.JPopupMenu;
 
 import model.ELTSModule;
 import model.automata.State;
+import model.automata.Transition;
 
 public class ModuleDrawerCursorTool extends Tool {
 	private State lastClickedState = null;
 	private Point initialPointClicked = new Point();
 	private StateMenu stateMenu = new StateMenu();
+	private Transition selectedTransition = null;
 
-	public ModuleDrawerCursorTool(EditorCanvas view, ELTSModuleDrawer drawer) {
+	public ModuleDrawerCursorTool(Canvas view, ELTSModuleDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -51,11 +53,43 @@ public class ModuleDrawerCursorTool extends Tool {
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
-		if (event.getClickCount() == 1) {
-			getModule().unselectAll();
-			getView().repaint();
-		} else if (event.getClickCount() == 2
-				&& event.getButton() == MouseEvent.BUTTON1) {
+
+		Transition transition = getDrawer().transitionAtPoint(event.getPoint());
+		if (transition != null) {
+			if (transition.isSelected()) {
+				transition.setSelect(false);
+				this.selectedTransition = null;
+			} else {
+				if (this.selectedTransition != null)
+					this.selectedTransition.setSelect(false);
+				transition.setSelect(true);
+				this.selectedTransition = transition;
+			}
+		}
+
+		if (transition != null) {
+
+			if (event.getClickCount() == 1) {
+				// Transition transition = getDrawer().transitionAtPoint(
+				// event.getPoint());
+				// if (transition != null) {
+				// if (transition.isSelected()) {
+				// transition.setSelect(false);
+				// this.selectedTransition = null;
+				// } else {
+				// if (this.selectedTransition != null)
+				// this.selectedTransition.setSelect(false);
+				// transition.setSelect(true);
+				// this.selectedTransition = transition;
+				// }
+				// }
+				// if (transition == null) {
+				getModule().unselectAll();
+				getView().repaint();
+				// }
+			} else if (event.getClickCount() == 2
+					&& event.getButton() == MouseEvent.BUTTON1) {
+			}
 		}
 	}
 
@@ -148,7 +182,8 @@ public class ModuleDrawerCursorTool extends Tool {
 
 		public void show(State state, Component parent, Point pt) {
 			this.state = state;
-			this.makeInitial.setSelected(ModuleDrawerCursorTool.this.getModule().getInitialState() == state);
+			this.makeInitial.setSelected(ModuleDrawerCursorTool.this
+					.getModule().getInitialState() == state);
 			show(parent, pt.x, pt.y);
 		}
 
@@ -156,7 +191,7 @@ public class ModuleDrawerCursorTool extends Tool {
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem menuItem = (JMenuItem) event.getSource();
 			if (menuItem == this.makeInitial) {
-				if(!menuItem.isSelected())
+				if (!menuItem.isSelected())
 					this.state = null;
 				getModule().setInitialState(this.state);
 			} else if (menuItem == this.setName) {

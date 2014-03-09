@@ -9,7 +9,7 @@ public class ObjectEditEvent extends EventObject {
 
 	public ObjectEditEvent(DrawableObject target) {
 		super(target);
-		
+
 		this.target = target;
 	}
 

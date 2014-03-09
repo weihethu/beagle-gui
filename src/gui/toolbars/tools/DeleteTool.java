@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ObjectDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -10,7 +10,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class DeleteTool extends Tool {
-	public DeleteTool(EditorCanvas view, ObjectDrawer drawer) {
+	public DeleteTool(Canvas view, ObjectDrawer drawer) {
 		super(view, drawer);
 	}
 

@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ELTSModuleDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -25,7 +25,7 @@ public class TransitionTool extends Tool {
 	private static Stroke STROKE = new BasicStroke(2.4F);
 	private static Color COLOR = new Color(0.5F, 0.5F, 0.5F, 0.5F);
 
-	public TransitionTool(EditorCanvas view, ELTSModuleDrawer drawer) {
+	public TransitionTool(Canvas view, ELTSModuleDrawer drawer) {
 		super(view, drawer);
 	}
 

@@ -1,9 +1,11 @@
 package gui.entities;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.QuadCurve2D;
 
 import model.automata.Transition;
@@ -19,6 +21,8 @@ public class CurvedArrow {
 	private static double ARROW_ANGLE = Math.PI / 10;
 	private static double ARROW_LENGTH = 15.0;
 	private static double HEIGHT = 30;
+	private static int CONTROLPT_RADIUS = 5;
+	private static Color HIGHLIGHT_COLOR = new Color(255, 0, 0, 128);
 
 	public CurvedArrow(Point start, Point end, double curvy,
 			Transition transition) {
@@ -59,13 +63,17 @@ public class CurvedArrow {
 			refreshCurve();
 		graphics.draw(this.curve);
 		drawArrow(graphics);
-		 //drawText(graphics);
-//		graphics.drawString("arrow", 100, 100);
-//		System.out.println("Draw Arrow");
+		// drawText(graphics);
 	}
 
 	public void drawHighlight(Graphics2D graphics) {
-
+		if (this.needsRefresh)
+			refreshCurve();
+		Graphics2D tmpGraphics = (Graphics2D) graphics.create();
+		tmpGraphics.setStroke(new BasicStroke(6.0F));
+		tmpGraphics.setColor(HIGHLIGHT_COLOR);
+		tmpGraphics.draw(this.curve);
+		tmpGraphics.dispose();
 	}
 
 	private void drawArrow(Graphics graphics) {
@@ -96,7 +104,7 @@ public class CurvedArrow {
 
 		if (this.transition.getControl() == null) {
 			this.controlPt.x = (int) (midX + this.curvy * HEIGHT * sin);
-			this.controlPt.y = (int) (midY + this.curvy * HEIGHT * cos);
+			this.controlPt.y = (int) (midY - this.curvy * HEIGHT * cos);
 		} else {
 			this.controlPt.x = this.transition.getControl().x;
 			this.controlPt.y = this.transition.getControl().y;
@@ -109,6 +117,34 @@ public class CurvedArrow {
 	}
 
 	public void drawControlPoint(Graphics2D graphics) {
+		graphics.setColor(Color.black);
+		graphics.drawOval(this.controlPt.x - CONTROLPT_RADIUS, this.controlPt.y
+				- CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS);
+	}
 
+	public boolean isNear(Point pt, int maxDist) {
+		if (this.needsRefresh)
+			refreshCurve();
+		return intersects(pt, maxDist, this.curve);
+	}
+
+	private boolean intersects(Point pt, int maxDist, QuadCurve2D.Double curve) {
+		if (!curve.intersects(pt.x - maxDist, pt.y - maxDist, 2 * maxDist,
+				2 * maxDist))
+			return false;
+		if (curve.getFlatness() < maxDist)
+			return true;
+		QuadCurve2D.Double leftCurve = new QuadCurve2D.Double();
+		QuadCurve2D.Double rightCurve = new QuadCurve2D.Double();
+		curve.subdivide(leftCurve, rightCurve);
+		return intersects(pt, maxDist, leftCurve)
+				|| intersects(pt, maxDist, rightCurve);
+	}
+
+	public Rectangle getBounds() {
+		if (this.needsRefresh)
+			refreshCurve();
+		Rectangle rect = this.curve.getBounds();
+		return rect;
 	}
 }

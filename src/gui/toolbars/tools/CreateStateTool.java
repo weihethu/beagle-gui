@@ -1,7 +1,7 @@
 package gui.toolbars.tools;
 
 import gui.drawers.ELTSModuleDrawer;
-import gui.editors.EditorCanvas;
+import gui.editors.Canvas;
 
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -15,7 +15,8 @@ import model.automata.State;
 public class CreateStateTool extends Tool {
 
 	private State state = null;
-	public CreateStateTool(EditorCanvas view, ELTSModuleDrawer drawer) {
+
+	public CreateStateTool(Canvas view, ELTSModuleDrawer drawer) {
 		super(view, drawer);
 	}
 
@@ -23,11 +24,11 @@ public class CreateStateTool extends Tool {
 		URL url = getClass().getResource("/assets/icons/state.gif");
 		return new ImageIcon(url);
 	}
-	
+
 	private ELTSModule getModule() {
 		return (ELTSModule) super.getObject();
 	}
-	
+
 	public void mousePressed(MouseEvent event) {
 		state = getModule().createState(event.getPoint());
 	}
