@@ -5,6 +5,7 @@ import gui.drawers.ModelDrawer;
 import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.editors.EditorPane;
+import gui.menus.MenuBarCreator;
 import gui.toolbars.toolboxes.ModelDrawerToolBox;
 
 import java.awt.BorderLayout;
@@ -13,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
 import model.Model;
@@ -26,9 +30,10 @@ public class Environment extends JFrame {
 	private Environment() {
 		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
 
-		this.setLayout(new BorderLayout());
-		tabbedPane = new JTabbedPane();
 
+		tabbedPane = new JTabbedPane();
+		this.setJMenuBar(MenuBarCreator.getMenuBar());
+		this.setLayout(new BorderLayout());
 		this.add(tabbedPane, BorderLayout.CENTER);
 
 		this.setTitle("beagle-gui");
