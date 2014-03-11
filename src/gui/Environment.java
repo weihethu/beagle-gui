@@ -30,7 +30,6 @@ public class Environment extends JFrame {
 	private Environment() {
 		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
 
-
 		tabbedPane = new JTabbedPane();
 		this.setJMenuBar(MenuBarCreator.getMenuBar());
 		this.setLayout(new BorderLayout());

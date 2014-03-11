@@ -38,14 +38,14 @@ public abstract class ObjectDrawer {
 
 	public Rectangle getBounds() {
 		Rectangle rect = getUntransformedBounds();
-		if(rect == null)
+		if (rect == null)
 			return null;
-		return (Rectangle) this.currentTransform
-				.createTransformedShape(rect).getBounds();
+		return (Rectangle) this.currentTransform.createTransformedShape(rect)
+				.getBounds();
 	}
-	
+
 	public Rectangle getUntransformedBounds() {
-		return null;		
+		return null;
 	}
 
 	public void invalidate() {

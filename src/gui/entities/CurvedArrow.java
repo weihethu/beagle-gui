@@ -91,7 +91,7 @@ public class CurvedArrow {
 		graphics.drawLine(this.endPt.x, this.endPt.y, endX, endY);
 	}
 
-	private void refreshCurve() {
+	public void refreshCurve() {
 		this.needsRefresh = false;
 		double dx = this.endPt.x - this.startPt.x;
 		double dy = this.endPt.y - this.startPt.y;
@@ -146,5 +146,9 @@ public class CurvedArrow {
 			refreshCurve();
 		Rectangle rect = this.curve.getBounds();
 		return rect;
+	}
+
+	public QuadCurve2D.Double getCurve() {
+		return this.curve;
 	}
 }

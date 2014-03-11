@@ -57,7 +57,7 @@ public class TransitionTool extends Tool {
 		if (this.firstState == null)
 			return;
 		this.hoverPt = event.getPoint();
-		getView().repaint();
+		getCanvas().repaint();
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class TransitionTool extends Tool {
 					firstState, endState));
 		}
 		this.firstState = null;
-		getView().repaint();
+		getCanvas().repaint();
 	}
 
 	@Override

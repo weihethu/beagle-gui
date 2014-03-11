@@ -42,7 +42,7 @@ public class Canvas extends JPanel implements Scrollable {
 		this.drawer.drawInternal(graphics2D);
 		if (this.toolbar != null)
 			this.toolbar.drawTool(graphics2D);
-		
+
 		graphics2D.dispose();
 	}
 
@@ -122,6 +122,12 @@ public class Canvas extends JPanel implements Scrollable {
 			e.printStackTrace();
 		}
 		event.translatePoint(destPt.x - srcPt.x, destPt.y - srcPt.y);
+	}
+
+	public Point transfromFromCanvasToView(Point pt) {
+		Point dest = new Point();
+		this.transform.transform(pt, dest);
+		return dest;
 	}
 
 	@Override

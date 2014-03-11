@@ -27,18 +27,18 @@ import javax.swing.JToolBar;
 public class ToolBar extends JToolBar implements ActionListener {
 	private ToolAdapter adapter;
 	private Map<JToggleButton, Tool> buttonsToTools = null;
-	private Component view;
+	private Component canvas;
 	private List<Tool> tools;
 	private Tool currentTool = null;
 
 	public ToolBar(Canvas canvas, ObjectDrawer drawer, ToolBox box) {
 		this.adapter = new ToolAdapter();
-		this.view = canvas;
+		this.canvas = canvas;
 		this.tools = box.getTools(canvas, drawer);
 
 		initBar();
-		view.addMouseListener(this.adapter);
-		view.addMouseMotionListener(this.adapter);
+		canvas.addMouseListener(this.adapter);
+		canvas.addMouseMotionListener(this.adapter);
 		currentTool = null;
 	}
 
@@ -64,7 +64,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 
 		if (tool != null) {
 			this.adapter.setAdapter(tool);
-			this.view.setCursor(new Cursor(0));
+			this.canvas.setCursor(new Cursor(0));
 		}
 		if (tool instanceof DeleteTool) {
 			Toolkit localToolkit = Toolkit.getDefaultToolkit();
@@ -74,7 +74,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 			Point pt = new Point(5, 5);
 			Cursor deleteCursor = localToolkit.createCustomCursor(image, pt,
 					"Delete");
-			this.view.setCursor(deleteCursor);
+			this.canvas.setCursor(deleteCursor);
 		}
 		this.currentTool = tool;
 	}

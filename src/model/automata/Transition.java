@@ -42,4 +42,8 @@ public class Transition extends DrawableObject {
 	public Point getControl() {
 		return this.controlPt;
 	}
+
+	public void setControl(Point pt) {
+		this.controlPt = pt;
+	}
 }

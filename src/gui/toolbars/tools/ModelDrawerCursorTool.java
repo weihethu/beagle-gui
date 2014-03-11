@@ -55,7 +55,7 @@ public class ModelDrawerCursorTool extends Tool {
 	public void mouseClicked(MouseEvent event) {
 		if (event.getClickCount() == 1) {
 			getModel().unselectAll();
-			getView().repaint();
+			getCanvas().repaint();
 		} else if (event.getClickCount() == 2
 				&& event.getButton() == MouseEvent.BUTTON1) {
 			editModule(getDrawer().moduleAtPoint(event.getPoint()));
@@ -76,7 +76,7 @@ public class ModelDrawerCursorTool extends Tool {
 				getModel().unselectAll();
 				this.lastClickedModule.setSelect(true);
 			}
-			getView().repaint();
+			getCanvas().repaint();
 		}
 	}
 
@@ -96,7 +96,7 @@ public class ModelDrawerCursorTool extends Tool {
 				}
 			}
 			this.initialPointClicked.setLocation(currentPt);
-			getView().repaint();
+			getCanvas().repaint();
 		} else {
 			int currentX = event.getPoint().x;
 			int currentY = event.getPoint().y;
@@ -108,7 +108,7 @@ public class ModelDrawerCursorTool extends Tool {
 					Math.abs(currentY - initY));
 			getDrawer().getModel().selectModulesWithinBounds(rect);
 			getDrawer().setSelectionBounds(rect);
-			getView().repaint();
+			getCanvas().repaint();
 		}
 	}
 
@@ -119,13 +119,13 @@ public class ModelDrawerCursorTool extends Tool {
 		}
 		getDrawer().setSelectionBounds(new Rectangle(0, 0, -1, -1));
 		this.lastClickedModule = null;
-		getView().repaint();
+		getCanvas().repaint();
 	}
 
 	private void showPopup(MouseEvent event) {
 		if (this.lastClickedModule != null)
-			this.moduleMenu.show(this.lastClickedModule, getView(),
-					event.getPoint());
+			this.moduleMenu.show(this.lastClickedModule, getCanvas(),
+					getCanvas().transfromFromCanvasToView(event.getPoint()));
 	}
 
 	private void editModule(Module module) {

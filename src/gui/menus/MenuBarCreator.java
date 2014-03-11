@@ -31,7 +31,7 @@ public class MenuBarCreator {
 
 	private static JMenu getFileMenu() {
 		JMenu fileMenu = new JMenu("File");
-		
+
 		fileMenu.add(new JMenuItem("PlaceHolder"));
 		// addItem(fileMenu, new NewAction());
 		// addItem(fileMenu, new OpenAction());
@@ -45,7 +45,7 @@ public class MenuBarCreator {
 	private static JMenu getVerificationMenu() {
 		JMenu verificationMenu = new JMenu("Verification");
 		verificationMenu.add(new JMenuItem("PlaceHolder"));
-		
+
 		return verificationMenu;
 	}
 

@@ -90,4 +90,11 @@ public class Model extends DrawableObject {
 			currentListener.objectEdit(event);
 		}
 	}
+
+	public void removeModule(Module module) {
+		this.modules.remove(module);
+		this.cachedModules = null;
+		this.distributeModuleEditEvent(new ModuleEditEvent(module, false,
+				false, false));
+	}
 }

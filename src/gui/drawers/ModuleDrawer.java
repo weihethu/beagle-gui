@@ -23,7 +23,7 @@ import model.automata.Transition;
 public class ModuleDrawer extends ObjectDrawer {
 	private Rectangle selectionBounds = new Rectangle(0, 0, -1, -1);
 	private Map<CurvedArrow, Transition> arrowToTransitionMap = null;
-	private Map<Transition, CurvedArrow> transitionToArrowMap = null;
+	public Map<Transition, CurvedArrow> transitionToArrowMap = null;
 	private Rectangle cachedBounds = null;
 	public static final Color STATE_COLOR = new Color(255, 255, 150);
 	public static int STATE_RADIUS = 20;

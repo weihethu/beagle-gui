@@ -33,6 +33,7 @@ public class Module extends DrawableObject {
 	private Map<State, List<Transition>> transitionFromStateMap = new HashMap<State, List<Transition>>();
 	private Map<State, List<Transition>> transitionToStateMap = new HashMap<State, List<Transition>>();
 	private Set<Transition> transitions = null;
+	private Transition[] cachedTransitions = null;
 	private Set<ObjectEditListener> stateListeners = null;
 	private Set<ObjectEditListener> transitionListeners = null;
 	private Map<State, Transition[]> transitionArrayFromStateMap = null;
@@ -115,6 +116,28 @@ public class Module extends DrawableObject {
 				false));
 	}
 
+	public void removeState(State state) {
+		Transition[] transitions = getTransitionsFromState(state);
+		for (Transition transition : transitions)
+			removeTransition(transition);
+		transitions = getTransitionsToState(state);
+		for (Transition transition : transitions)
+			removeTransition(transition);
+
+		this.distributeStateEditEvent(new StateEditEvent(state, false, false,
+				false));
+
+		this.states.remove(state);
+		if (state == this.initialState)
+			this.initialState = null;
+		this.transitionFromStateMap.remove(state);
+		this.transitionToStateMap.remove(state);
+		this.transitionArrayFromStateMap.remove(state);
+		this.transitionArrayToStateMap.remove(state);
+
+		this.cachedStates = null;
+	}
+
 	@SuppressWarnings("unchecked")
 	public State[] getStates() {
 		if (this.cachedStates == null) {
@@ -174,8 +197,24 @@ public class Module extends DrawableObject {
 		this.transitionToStateMap.get(transition.getToState()).add(transition);
 		this.transitionArrayFromStateMap.remove(transition.getFromState());
 		this.transitionArrayToStateMap.remove(transition.getToState());
+		this.cachedTransitions = null;
 		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
 				true, false));
+	}
+
+	public void removeTransition(Transition transition) {
+		this.transitions.remove(transition);
+		this.transitionFromStateMap.get(transition.getFromState()).remove(
+				transition);
+		this.transitionToStateMap.get(transition.getToState()).remove(
+				transition);
+
+		this.transitionArrayFromStateMap.remove(transition.getFromState());
+		this.transitionArrayToStateMap.remove(transition.getToState());
+		this.cachedTransitions = null;
+
+		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
+				false, false));
 	}
 
 	public Transition getTransitionsFromStateToState(State fromState,
@@ -207,6 +246,13 @@ public class Module extends DrawableObject {
 			this.transitionArrayToStateMap.put(state, cachedResults);
 		}
 		return cachedResults;
+	}
+
+	public Transition[] getTransitions() {
+		if (this.cachedTransitions == null)
+			this.cachedTransitions = (Transition[]) this.transitions
+					.toArray(new Transition[0]);
+		return this.cachedTransitions;
 	}
 
 	public void addStateListener(ObjectEditListener listener) {

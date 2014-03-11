@@ -11,11 +11,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public class Tool extends MouseAdapter {
-	private Canvas view;
+	private Canvas canvas;
 	private ObjectDrawer drawer;
 
 	public Tool(Canvas view, ObjectDrawer drawer) {
-		this.view = view;
+		this.canvas = view;
 		this.drawer = drawer;
 	}
 
@@ -36,8 +36,8 @@ public class Tool extends MouseAdapter {
 		return drawer;
 	}
 
-	protected Canvas getView() {
-		return view;
+	protected Canvas getCanvas() {
+		return canvas;
 	}
 
 	public void draw(Graphics graphics) {
