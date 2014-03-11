@@ -116,6 +116,10 @@ public class ModelDrawer extends ObjectDrawer {
 							- internalBounds.height / 2, internalBounds.width,
 					internalBounds.height), MODULE_COLOR);
 			tmpGraphics2D.setColor(Color.black);
+			int strHeight = (int) tmpGraphics2D.getFontMetrics().getAscent();
+			tmpGraphics2D.drawString(module.getName(), currentPt.x
+					- internalBounds.width / 2, currentPt.y
+					- internalBounds.height / 2 + strHeight);
 			tmpGraphics2D.drawRect(currentPt.x - internalBounds.width / 2,
 					currentPt.y - internalBounds.height / 2,
 					internalBounds.width, internalBounds.height);

@@ -1,6 +1,7 @@
 package model;
 
 import events.ModuleEditEvent;
+import events.ObjectEditEvent;
 import events.StateEditEvent;
 import events.TransitionEditEvent;
 import events.listeners.ObjectEditListener;
@@ -18,12 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import model.automata.State;
 import model.automata.Transition;
 
 public class Module extends DrawableObject {
 	private Point point;
-	private int id;
 	private Model model;
 	private String name = null;
 	private boolean selected = false;
@@ -39,11 +41,10 @@ public class Module extends DrawableObject {
 	private Map<State, Transition[]> transitionArrayFromStateMap = null;
 	private Map<State, Transition[]> transitionArrayToStateMap = null;
 
-	public Module(int id, Point pt, Model model) {
+	public Module(String name, Point pt, Model model) {
 		this.point = pt;
-		this.id = id;
 		this.model = model;
-		this.name = "Module";
+		this.name = name;
 		this.selected = false;
 		this.states = new HashSet<State>();
 		this.initialState = null;
@@ -52,6 +53,19 @@ public class Module extends DrawableObject {
 		this.transitionListeners = new HashSet<ObjectEditListener>();
 		this.transitionArrayFromStateMap = new HashMap<State, Transition[]>();
 		this.transitionArrayToStateMap = new HashMap<State, Transition[]>();
+
+		this.addStateListener(new ObjectEditListener() {
+
+			@Override
+			public void objectEdit(ObjectEditEvent event) {
+				if (event instanceof StateEditEvent) {
+					StateEditEvent stateEvt = (StateEditEvent) event;
+					if (stateEvt.isNameChange)
+						Module.this.cachedStates = null;
+				}
+			}
+
+		});
 	}
 
 	public Point getPoint() {
@@ -64,8 +78,22 @@ public class Module extends DrawableObject {
 				false));
 	}
 
-	public int getID() {
-		return this.id;
+	public void setName(String name) {
+		if (this.name.equals(name))
+			return;
+		Module modules[] = model.getModules();
+		for (Module module : modules) {
+			if (module == this)
+				continue;
+			if (module.name.equals(name)) {
+				JOptionPane.showMessageDialog(null,
+						"Name used by other modules! Please pick another one!");
+				return;
+			}
+		}
+		this.name = name;
+		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, false,
+				true));
 	}
 
 	public String getName() {
@@ -80,31 +108,12 @@ public class Module extends DrawableObject {
 		return this.selected;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, false,
-				true));
-	}
-
 	public State createState(Point pt) {
-		int id = 0;
-		while (getStateWithID(id) != null)
-			id++;
-		State state = new State(id, pt, this);
+		State state = new State(getDefaultStateName(), pt, this);
 		addState(state);
 		this.distributeStateEditEvent(new StateEditEvent(state, true, false,
 				false));
 		return state;
-	}
-
-	public State getStateWithID(int id) {
-		Iterator<State> iter = this.states.iterator();
-		while (iter.hasNext()) {
-			State currentState = iter.next();
-			if (currentState.getID() == id)
-				return currentState;
-		}
-		return null;
 	}
 
 	private void addState(State state) {
@@ -146,7 +155,8 @@ public class Module extends DrawableObject {
 
 				@Override
 				public int compare(Object obj1, Object obj2) {
-					return ((State) obj1).getID() - ((State) obj2).getID();
+					return ((State) obj1).getName().compareTo(
+							((State) obj2).getName());
 				}
 
 			});
@@ -199,7 +209,7 @@ public class Module extends DrawableObject {
 		this.transitionArrayToStateMap.remove(transition.getToState());
 		this.cachedTransitions = null;
 		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
-				true, false));
+				true));
 	}
 
 	public void removeTransition(Transition transition) {
@@ -214,7 +224,7 @@ public class Module extends DrawableObject {
 		this.cachedTransitions = null;
 
 		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
-				false, false));
+				false));
 	}
 
 	public Transition getTransitionsFromStateToState(State fromState,
@@ -276,6 +286,22 @@ public class Module extends DrawableObject {
 		while (iter.hasNext()) {
 			ObjectEditListener currentListener = iter.next();
 			currentListener.objectEdit(event);
+		}
+	}
+
+	private String getDefaultStateName() {
+		State[] states = this.getStates();
+		for (int i = 1;; i++) {
+			String name = "state_" + i;
+			boolean noConflict = true;
+			for (State state : states) {
+				if (name.equals(state.getName())) {
+					noConflict = false;
+					break;
+				}
+			}
+			if (noConflict)
+				return name;
 		}
 	}
 }

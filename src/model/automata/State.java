@@ -5,20 +5,20 @@ import gui.drawers.DrawableObject;
 
 import java.awt.Point;
 
+import javax.swing.JOptionPane;
+
 import model.Module;
 
 public class State extends DrawableObject {
 	private Point point;
-	private int id;
 	private Module module;
 	private String name = null;
 	private boolean selected = false;
 
-	public State(int id, Point pt, Module module) {
+	public State(String name, Point pt, Module module) {
 		this.point = pt;
-		this.id = id;
+		this.name = name;
 		this.module = module;
-		this.name = "State";
 		this.selected = false;
 	}
 
@@ -30,10 +30,6 @@ public class State extends DrawableObject {
 		this.point = point;
 		module.distributeStateEditEvent(new StateEditEvent(this, false, true,
 				false));
-	}
-
-	public int getID() {
-		return this.id;
 	}
 
 	public String getName() {
@@ -49,6 +45,18 @@ public class State extends DrawableObject {
 	}
 
 	public void setName(String name) {
+		if (this.name.equals(name))
+			return;
+		State states[] = module.getStates();
+		for (State state : states) {
+			if (state == this)
+				continue;
+			if (state.name.equals(name)) {
+				JOptionPane.showMessageDialog(null,
+						"Name used by other states! Please pick another one!");
+				return;
+			}
+		}
 		this.name = name;
 		module.distributeStateEditEvent(new StateEditEvent(this, false, false,
 				true));

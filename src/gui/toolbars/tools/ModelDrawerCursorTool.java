@@ -166,7 +166,7 @@ public class ModelDrawerCursorTool extends Tool {
 						JOptionPane.QUESTION_MESSAGE, null, null, currentName);
 				if (newName == null || newName.trim().isEmpty())
 					return;
-				this.module.setName(newName);
+				this.module.setName(newName.trim());
 			} else if (menuItem == this.edit) {
 				editModule(this.module);
 			}

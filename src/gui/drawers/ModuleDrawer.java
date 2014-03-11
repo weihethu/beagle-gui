@@ -26,7 +26,7 @@ public class ModuleDrawer extends ObjectDrawer {
 	public Map<Transition, CurvedArrow> transitionToArrowMap = null;
 	private Rectangle cachedBounds = null;
 	public static final Color STATE_COLOR = new Color(255, 255, 150);
-	public static int STATE_RADIUS = 20;
+	public static int STATE_RADIUS = 30;
 	private boolean ignoreSelected = false;
 
 	public ModuleDrawer(Module module) {
@@ -218,9 +218,9 @@ public class ModuleDrawer extends ObjectDrawer {
 	}
 
 	private void stateEditHandler(StateEditEvent event) {
-		if (event.getIsAdd())
+		if (event.isAdd)
 			invalidateBounds();
-		else if (event.getIsMove())
+		else if (event.isMove)
 			invalidate();
 		if (getView() != null)
 			getView().repaint();

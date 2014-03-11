@@ -1,6 +1,7 @@
 package model;
 
 import events.ModuleEditEvent;
+import events.ObjectEditEvent;
 import events.listeners.ObjectEditListener;
 import gui.drawers.DrawableObject;
 
@@ -20,27 +21,27 @@ public class Model extends DrawableObject {
 	public Model() {
 		modules = new HashSet<Module>();
 		moduleListeners = new HashSet<ObjectEditListener>();
+
+		this.addModuleListener(new ObjectEditListener() {
+
+			@Override
+			public void objectEdit(ObjectEditEvent event) {
+				if (event instanceof ModuleEditEvent) {
+					ModuleEditEvent moduleEvt = (ModuleEditEvent) event;
+					if (moduleEvt.isNameChange)
+						Model.this.cachedModules = null;
+				}
+			}
+
+		});
 	}
 
 	public Module createModule(Point pt) {
-		int id = 0;
-		while (getModuleWithID(id) != null)
-			id++;
-		Module module = new Module(id, pt, this);
+		Module module = new Module(getDefaultModuleName(), pt, this);
 		addModule(module);
 		distributeModuleEditEvent(new ModuleEditEvent(module, true, false,
 				false));
 		return module;
-	}
-
-	public Module getModuleWithID(int id) {
-		Iterator<Module> iter = this.modules.iterator();
-		while (iter.hasNext()) {
-			Module currentModule = iter.next();
-			if (currentModule.getID() == id)
-				return currentModule;
-		}
-		return null;
 	}
 
 	private void addModule(Module module) {
@@ -56,7 +57,8 @@ public class Model extends DrawableObject {
 
 				@Override
 				public int compare(Object obj1, Object obj2) {
-					return ((Module) obj1).getID() - ((Module) obj2).getID();
+					return ((Module) obj1).getName().compareTo(
+							((Module) obj2).getName());
 				}
 
 			});
@@ -96,5 +98,21 @@ public class Model extends DrawableObject {
 		this.cachedModules = null;
 		this.distributeModuleEditEvent(new ModuleEditEvent(module, false,
 				false, false));
+	}
+
+	private String getDefaultModuleName() {
+		Module[] modules = this.getModules();
+		for (int i = 1;; i++) {
+			String name = "module_" + i;
+			boolean noConflict = true;
+			for (Module module : modules) {
+				if (name.equals(module.getName())) {
+					noConflict = false;
+					break;
+				}
+			}
+			if (noConflict)
+				return name;
+		}
 	}
 }

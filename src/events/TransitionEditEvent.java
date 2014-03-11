@@ -4,12 +4,9 @@ import gui.drawers.DrawableObject;
 
 public class TransitionEditEvent extends ObjectEditEvent {
 	boolean isAdd;
-	boolean isAttributeChange;
 
-	public TransitionEditEvent(DrawableObject target, boolean add,
-			boolean attributeChange) {
+	public TransitionEditEvent(DrawableObject target, boolean add) {
 		super(target);
 		this.isAdd = add;
-		this.isAttributeChange = attributeChange;
 	}
 }
