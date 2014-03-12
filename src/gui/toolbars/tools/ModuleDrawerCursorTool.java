@@ -1,7 +1,9 @@
 package gui.toolbars.tools;
 
+import gui.Environment;
 import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
+import gui.editors.TransitionEditor;
 import gui.entities.CurvedArrow;
 
 import java.awt.Component;
@@ -205,7 +207,7 @@ public class ModuleDrawerCursorTool extends Tool {
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem item = (JMenuItem) event.getSource();
 			if (item == this.edit) {
-
+				Environment.getInstance().addTab(new TransitionEditor(), "transition editor");
 			}
 		}
 
