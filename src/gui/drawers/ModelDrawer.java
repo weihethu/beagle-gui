@@ -1,5 +1,10 @@
 package gui.drawers;
 
+import events.ModuleEditEvent;
+import events.ObjectEditEvent;
+import events.listeners.ObjectEditListener;
+import gui.Environment;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -8,10 +13,6 @@ import java.awt.RenderingHints;
 
 import model.Model;
 import model.Module;
-import events.ModuleEditEvent;
-import events.ObjectEditEvent;
-import events.listeners.ObjectEditListener;
-import gui.Environment;
 
 public class ModelDrawer extends ObjectDrawer {
 	public static int MODULE_RADIUS = 40;

@@ -4,20 +4,19 @@ import gui.drawers.DrawableObject;
 import gui.drawers.ModelDrawer;
 import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
-import gui.editors.EditorPane;
 import gui.menus.MenuBarCreator;
-import gui.toolbars.toolboxes.ModelDrawerToolBox;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import model.Model;
 import model.Module;
@@ -26,12 +25,14 @@ public class Environment extends JFrame {
 	private JTabbedPane tabbedPane;
 	private static Environment instance = null;
 	private Map<DrawableObject, ObjectDrawer> mapObjectsDrawers = null;
+	private Set<ChangeListener> changeListeners = null;
 
 	private Environment() {
+		changeListeners = new HashSet<ChangeListener>();
 		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
 
 		tabbedPane = new JTabbedPane();
-		this.setJMenuBar(MenuBarCreator.getMenuBar());
+		this.setJMenuBar(MenuBarCreator.getMenuBar(this));
 		this.setLayout(new BorderLayout());
 		this.add(tabbedPane, BorderLayout.CENTER);
 
@@ -41,15 +42,42 @@ public class Environment extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 
-		Model model = new Model();
-		ModelDrawer modelDrawer = (ModelDrawer) this.getDrawer(model);
-		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
-				"Editor");
+		this.tabbedPane.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				distributeChangeEvent();
+			}
+
+		});
+	}
+
+	public void addChangeListeners(ChangeListener listener) {
+		this.changeListeners.add(listener);
+	}
+
+	private void distributeChangeEvent() {
+		ChangeEvent event = new ChangeEvent(this);
+		for (ChangeListener listener : changeListeners)
+			listener.stateChanged(event);
 	}
 
 	public void addTab(Component tab, String title) {
 		this.tabbedPane.add(tab, title);
 		this.tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+		this.distributeChangeEvent();
+	}
+
+	public int getActiveTabIndex() {
+		return this.tabbedPane.getSelectedIndex();
+	}
+
+	public Component getActiveTab() {
+		return this.tabbedPane.getSelectedComponent();
+	}
+
+	public void removeCurrentTab() {
+		this.tabbedPane.remove(this.tabbedPane.getSelectedIndex());
 	}
 
 	public static Environment getInstance() {

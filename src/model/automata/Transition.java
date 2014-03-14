@@ -3,16 +3,43 @@ package model.automata;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import utils.Pair;
 
 public class Transition extends DrawableObject {
 	private State fromState, toState;
 	private boolean selected = false;
 	private Point controlPt;
+	private Map<String, Pair<String, String>> labelsMap = null;
 
 	public Transition(State from, State to) {
 		this.setFromState(from);
 		this.setToState(to);
 		controlPt = null;
+		labelsMap = new HashMap<String, Pair<String, String>>();
+	}
+
+	public void clear() {
+		this.labelsMap.clear();
+	}
+
+	public void addLabel(String label) {
+		this.labelsMap.put(label, new Pair<String, String>(null, null));
+	}
+
+	public void addLabel(String label, String guard, String action) {
+		this.labelsMap.put(label, new Pair<String, String>(guard, action));
+	}
+
+	public Pair<String, String> getLabel(String label) {
+		return labelsMap.get(label);
+	}
+
+	public Set<String> getLabels() {
+		return this.labelsMap.keySet();
 	}
 
 	public State getFromState() {

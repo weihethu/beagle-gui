@@ -207,7 +207,9 @@ public class ModuleDrawerCursorTool extends Tool {
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem item = (JMenuItem) event.getSource();
 			if (item == this.edit) {
-				Environment.getInstance().addTab(new TransitionEditor(), "transition editor");
+				Environment.getInstance().addTab(
+						new TransitionEditor(this.transition),
+						"transition editor");
 			}
 		}
 

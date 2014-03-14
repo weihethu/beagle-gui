@@ -1,14 +1,19 @@
 package gui.menus;
 
+import gui.Environment;
+
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import actions.CloseButton;
+
 public class MenuBarCreator {
 
-	public static JMenuBar getMenuBar() {
+	public static JMenuBar getMenuBar(Environment env) {
 		JMenuBar menubar = new JMenuBar();
 
 		JMenu fileMenu = getFileMenu();
@@ -20,6 +25,10 @@ public class MenuBarCreator {
 		JMenu helpMenu = getHelpMenu();
 		if (helpMenu.getItemCount() > 0)
 			menubar.add(helpMenu);
+
+		CloseButton closeBtn = new CloseButton(env);
+		menubar.add(Box.createGlue());
+		menubar.add(closeBtn);
 		return menubar;
 	}
 
