@@ -3,8 +3,6 @@ package gui.toolbars.tools;
 import gui.Environment;
 import gui.drawers.ModelDrawer;
 import gui.editors.Canvas;
-import gui.editors.EditorPane;
-import gui.toolbars.toolboxes.ModuleDrawerToolBox;
 
 import java.awt.Component;
 import java.awt.Point;

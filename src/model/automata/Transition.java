@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import model.Module;
-
 import utils.Pair;
 
 public class Transition extends DrawableObject {

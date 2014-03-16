@@ -12,6 +12,7 @@ import gui.editors.TransitionEditor;
 import gui.menus.MenuBarCreator;
 import gui.toolbars.toolboxes.ModelDrawerToolBox;
 import gui.toolbars.toolboxes.ModuleDrawerToolBox;
+import gui.verifiers.VerifierPane;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -63,7 +64,7 @@ public class Environment extends JFrame {
 		});
 		ModelDrawer modelDrawer = (ModelDrawer) this.getDrawer(this.getModel());
 		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
-				"Editor");
+				"Model's Editor");
 
 		model.addModuleListener(new ObjectEditListener() {
 
@@ -123,6 +124,20 @@ public class Environment extends JFrame {
 		}
 	}
 
+	public void openVerifyTab() {
+		for (int i = 0; i < this.tabbedPane.getTabCount(); i++) {
+			if (this.tabbedPane.getComponentAt(i) instanceof VerifierPane) {
+				((VerifierPane) this.tabbedPane.getComponentAt(i)).init();
+				this.tabbedPane.setSelectedIndex(i);
+				return;
+			}
+		}
+		VerifierPane verifier = new VerifierPane();
+		this.addTab(verifier, "Verifier");
+
+		verifier.validate();
+	}
+
 	public void addTab(Component tab, String title) {
 		this.tabbedPane.add(tab, title);
 		this.tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
@@ -175,5 +190,12 @@ public class Environment extends JFrame {
 						(Model) object));
 		}
 		return this.mapObjectsDrawers.get(object);
+	}
+
+	public Set<String> getProperties() {
+		Set<String> properties = new HashSet<String>();
+		properties.add("google");
+		properties.add("microsoft");
+		return properties;
 	}
 }

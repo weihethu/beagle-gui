@@ -3,18 +3,15 @@ package gui.editors;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.TableModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import model.Module;
 import model.automata.State;

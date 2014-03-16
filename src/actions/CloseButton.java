@@ -3,7 +3,6 @@ package actions;
 import gui.Environment;
 import gui.editors.TransitionEditor;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
