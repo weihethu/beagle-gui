@@ -51,6 +51,14 @@ public class DeleteTool extends Tool {
 					.transitionAtPoint(event.getPoint());
 			if (transition != null) {
 				Module module = (Module) super.getObject();
+				if (!transition.getLabels().isEmpty()) {
+					if (JOptionPane
+							.showConfirmDialog(
+									getCanvas(),
+									"Deleting this transition will delete all its associated labels, guards and actions! Please confirm!",
+									"Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
+						return;
+				}
 				module.removeTransition(transition);
 				getCanvas().repaint();
 			}

@@ -74,8 +74,8 @@ public class Module extends DrawableObject {
 
 	public void setPoint(Point point) {
 		this.point = point;
-		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, true,
-				false));
+		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, false,
+				true, false));
 	}
 
 	public void setName(String name) {
@@ -93,7 +93,7 @@ public class Module extends DrawableObject {
 		}
 		this.name = name;
 		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, false,
-				true));
+				false, true));
 	}
 
 	public String getName() {
@@ -209,7 +209,7 @@ public class Module extends DrawableObject {
 		this.transitionArrayToStateMap.remove(transition.getToState());
 		this.cachedTransitions = null;
 		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
-				true));
+				true, false));
 	}
 
 	public void removeTransition(Transition transition) {
@@ -224,7 +224,7 @@ public class Module extends DrawableObject {
 		this.cachedTransitions = null;
 
 		this.distributeTransitionEditEvent(new TransitionEditEvent(transition,
-				false));
+				false, false));
 	}
 
 	public Transition getTransitionsFromStateToState(State fromState,

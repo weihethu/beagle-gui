@@ -24,7 +24,6 @@ public class CloseButton extends JButton {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				Component tab = env.getActiveTab();
 				if (env.getActiveTab() instanceof TransitionEditor) {
 					TransitionEditor editor = (TransitionEditor) env
 							.getActiveTab();

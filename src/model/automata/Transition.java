@@ -1,11 +1,14 @@
 package model.automata;
 
+import events.TransitionEditEvent;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import model.Module;
 
 import utils.Pair;
 
@@ -14,16 +17,34 @@ public class Transition extends DrawableObject {
 	private boolean selected = false;
 	private Point controlPt;
 	private Map<String, Pair<String, String>> labelsMap = null;
+	private Module module;
 
-	public Transition(State from, State to) {
+	public Transition(State from, State to, Module module) {
 		this.setFromState(from);
 		this.setToState(to);
+		this.module = module;
 		controlPt = null;
 		labelsMap = new HashMap<String, Pair<String, String>>();
 	}
 
+	public void descriptionChange() {
+		module.distributeTransitionEditEvent(new TransitionEditEvent(this,
+				false, true));
+	}
+
 	public void clear() {
 		this.labelsMap.clear();
+	}
+
+	public String getDescription() {
+		Set<String> labels = labelsMap.keySet();
+		String desc = "";
+		for (String label : labels) {
+			desc += (label + ";");
+		}
+		if (!desc.isEmpty())
+			desc = desc.substring(0, desc.length() - 1);
+		return desc;
 	}
 
 	public void addLabel(String label) {

@@ -62,23 +62,28 @@ public class ModuleDrawerCursorTool extends Tool {
 	public void mouseClicked(MouseEvent event) {
 		Transition transition = getDrawer().transitionAtPoint(event.getPoint());
 		if (transition != null) {
-			if (transition.isSelected()) {
-				transition.setSelect(false);
-				this.selectedTransition = null;
-			} else {
-				if (this.selectedTransition != null)
+			if (event.getClickCount() == 1) {
+				if (transition.isSelected()) {
+					transition.setSelect(false);
+					this.selectedTransition = null;
+				} else {
+					if (this.selectedTransition != null)
+						this.selectedTransition.setSelect(false);
+					transition.setSelect(true);
+					this.selectedTransition = transition;
+				}
+			} else if (event.getClickCount() == 2
+					&& event.getButton() == MouseEvent.BUTTON1) {
+				if(this.selectedTransition != null)
 					this.selectedTransition.setSelect(false);
 				transition.setSelect(true);
 				this.selectedTransition = transition;
+				editTransition(transition);
 			}
-		}
-
-		if (transition != null) {
+		} else {
 			if (event.getClickCount() == 1) {
 				getModule().unselectAll();
 				getCanvas().repaint();
-			} else if (event.getClickCount() == 2
-					&& event.getButton() == MouseEvent.BUTTON1) {
 			}
 		}
 	}
@@ -177,6 +182,11 @@ public class ModuleDrawerCursorTool extends Tool {
 		getCanvas().repaint();
 	}
 
+	private void editTransition(Transition transition) {
+		Environment.getInstance().addTab(new TransitionEditor(transition),
+				"transition editor");
+	}
+
 	private void showPopup(MouseEvent event) {
 		if (this.lastClickedState != null) {
 			this.stateMenu.show(this.lastClickedState, getCanvas(), getCanvas()
@@ -207,9 +217,7 @@ public class ModuleDrawerCursorTool extends Tool {
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem item = (JMenuItem) event.getSource();
 			if (item == this.edit) {
-				Environment.getInstance().addTab(
-						new TransitionEditor(this.transition),
-						"transition editor");
+				editTransition(this.transition);
 			}
 		}
 

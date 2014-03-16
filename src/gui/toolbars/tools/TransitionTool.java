@@ -68,7 +68,7 @@ public class TransitionTool extends Tool {
 		State endState = getDrawer().stateAtPoint(event.getPoint());
 		if (endState != null) {
 			((Module) super.getObject()).addTransition(new Transition(
-					firstState, endState));
+					firstState, endState, (Module) super.getObject()));
 		}
 		this.firstState = null;
 		getCanvas().repaint();

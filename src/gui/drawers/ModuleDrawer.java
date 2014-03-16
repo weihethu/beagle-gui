@@ -172,6 +172,7 @@ public class ModuleDrawer extends ObjectDrawer {
 					double curvy = (transition_ji != null) ? 0.5 : 0;
 					CurvedArrow arrow = new CurvedArrow(startPt, endPt, curvy,
 							transition_ij);
+					arrow.setLabel(transition_ij.getDescription());
 					this.arrowToTransitionMap.put(arrow, transition_ij);
 					this.transitionToArrowMap.put(transition_ij, arrow);
 				}
@@ -183,6 +184,7 @@ public class ModuleDrawer extends ObjectDrawer {
 					double curvy = (transition_ij != null) ? 0.5 : 0;
 					CurvedArrow arrow = new CurvedArrow(startPt, endPt, curvy,
 							transition_ji);
+					arrow.setLabel(transition_ji.getDescription());
 					this.arrowToTransitionMap.put(arrow, transition_ji);
 					this.transitionToArrowMap.put(transition_ji, arrow);
 				}
@@ -196,6 +198,8 @@ public class ModuleDrawer extends ObjectDrawer {
 
 				CurvedArrow arrow = new CurvedArrow(startPt, endPt, -2.0,
 						transition_ii);
+
+				arrow.setLabel(transition_ii.getDescription());
 				this.arrowToTransitionMap.put(arrow, transition_ii);
 				this.transitionToArrowMap.put(transition_ii, arrow);
 			}

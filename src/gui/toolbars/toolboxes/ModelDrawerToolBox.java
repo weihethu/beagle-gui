@@ -13,12 +13,17 @@ import java.util.List;
 
 import javax.swing.JCheckBox;
 import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class ModelDrawerToolBox implements ToolBox {
+
+	private ModelDrawer modelDrawer = null;
 
 	@Override
 	public List<Tool> getTools(Canvas view, ObjectDrawer drawer) {
 		if (drawer instanceof ModelDrawer) {
+			modelDrawer = (ModelDrawer) drawer;
 			List<Tool> tools = new ArrayList<Tool>();
 
 			tools.add(new ModelDrawerCursorTool(view, (ModelDrawer) drawer));
@@ -32,6 +37,16 @@ public class ModelDrawerToolBox implements ToolBox {
 	@Override
 	public void addExtras(JToolBar toolbar) {
 		toolbar.addSeparator();
-		toolbar.add(new JCheckBox("details"));
+		final JCheckBox showInternalCB = new JCheckBox("show module internals");
+		showInternalCB.setSelected(false);
+		showInternalCB.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				modelDrawer.setDrawInternal(showInternalCB.isSelected());
+			}
+
+		});
+		toolbar.add(showInternalCB);
 	}
 }

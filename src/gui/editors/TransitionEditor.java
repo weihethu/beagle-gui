@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -71,7 +72,7 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 		leftPanel.add(new JLabel("Labels:"), BorderLayout.NORTH);
 
 		tableSp = new JScrollPane(table);
-		tableSp.setPreferredSize(new Dimension(200, this.getHeight() - 100));
+		tableSp.setPreferredSize(new Dimension(200, this.getHeight() - 50));
 		leftPanel.add(tableSp, BorderLayout.CENTER);
 
 		this.labelTableModel.addTableModelListener(new TableModelListener() {
@@ -141,8 +142,34 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 
 		});
 
-		JPanel leftBottomPanel = new JPanel();
-		leftBottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		// JPanel leftBottomPanel = new JPanel();
+		// leftBottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+		// leftBottomPanel.add(addBtn);
+		// leftBottomPanel.add(removeBtn);
+		// leftPanel.add(leftBottomPanel, BorderLayout.SOUTH);
+
+		JPanel rightPanel = new JPanel();
+		rightPanel.setLayout(new BorderLayout());
+
+		JPanel rightTopPanel = new JPanel();
+		rightTopPanel.setLayout(new BorderLayout());
+		rightTopPanel.add(new JLabel("Guard:"), BorderLayout.WEST);
+
+		guardTf = new JTextField();
+		rightTopPanel.add(guardTf, BorderLayout.CENTER);
+
+		rightPanel.add(rightTopPanel, BorderLayout.NORTH);
+
+		JPanel rightBottomPanel = new JPanel();
+		rightBottomPanel.setLayout(new BorderLayout());
+		rightBottomPanel.add(new JLabel("Action:"), BorderLayout.NORTH);
+
+		actionTa = new JTextArea();
+		rightBottomPanel.add(new JScrollPane(actionTa), BorderLayout.CENTER);
+		rightPanel.add(rightBottomPanel, BorderLayout.CENTER);
+
+		JToolBar toolbar = new JToolBar();
 
 		JButton addBtn = new JButton("Add");
 		addBtn.addActionListener(new ActionListener() {
@@ -170,30 +197,10 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 
 		});
 
-		leftBottomPanel.add(addBtn);
-		leftBottomPanel.add(removeBtn);
-		leftPanel.add(leftBottomPanel, BorderLayout.SOUTH);
+		toolbar.add(addBtn);
+		toolbar.add(removeBtn);
 
-		JPanel rightPanel = new JPanel();
-		rightPanel.setLayout(new BorderLayout());
-
-		JPanel rightTopPanel = new JPanel();
-		rightTopPanel.setLayout(new BorderLayout());
-		rightTopPanel.add(new JLabel("Guard:"), BorderLayout.WEST);
-
-		guardTf = new JTextField();
-		rightTopPanel.add(guardTf, BorderLayout.CENTER);
-
-		rightPanel.add(rightTopPanel, BorderLayout.NORTH);
-
-		JPanel rightBottomPanel = new JPanel();
-		rightBottomPanel.setLayout(new BorderLayout());
-		rightBottomPanel.add(new JLabel("Action:"), BorderLayout.NORTH);
-
-		actionTa = new JTextArea();
-		rightBottomPanel.add(new JScrollPane(actionTa), BorderLayout.CENTER);
-		rightPanel.add(rightBottomPanel, BorderLayout.CENTER);
-
+		this.add(toolbar, BorderLayout.NORTH);
 		this.add(leftPanel, BorderLayout.WEST);
 		this.add(rightPanel, BorderLayout.CENTER);
 	}
@@ -221,7 +228,7 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent event) {
-		tableSp.setPreferredSize(new Dimension(200, this.getHeight() - 100));
+		tableSp.setPreferredSize(new Dimension(200, this.getHeight() - 50));
 	}
 
 	@Override
@@ -252,6 +259,7 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 					.get(i).getSecond().getFirst(), dataInEdit.get(i)
 					.getSecond().getSecond());
 		}
+		this.transition.descriptionChange();
 		return true;
 	}
 }

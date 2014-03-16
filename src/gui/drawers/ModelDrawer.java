@@ -20,7 +20,7 @@ public class ModelDrawer extends ObjectDrawer {
 	private static final Color MODULE_COLOR = new Color(255, 255, 150);
 	private static final Color SELECTED_COLOR = new Color(100, 200, 200);
 	private Rectangle cachedBounds = null;
-	private boolean detailed = true;
+	private boolean detailed = false;
 	private static final int MARGINAL_LEN = 10;
 
 	public ModelDrawer(Model model) {
@@ -28,6 +28,11 @@ public class ModelDrawer extends ObjectDrawer {
 
 		DrawerListener listener = new DrawerListener();
 		this.getModel().addModuleListener(listener);
+	}
+
+	public void setDrawInternal(boolean enabled) {
+		detailed = enabled;
+		getView().repaint();
 	}
 
 	@Override

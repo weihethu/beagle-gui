@@ -58,7 +58,9 @@ public class ModelDrawerCursorTool extends Tool {
 			getCanvas().repaint();
 		} else if (event.getClickCount() == 2
 				&& event.getButton() == MouseEvent.BUTTON1) {
-			editModule(getDrawer().moduleAtPoint(event.getPoint()));
+			Module module = getDrawer().moduleAtPoint(event.getPoint());
+			if(module != null)
+				editModule(module);
 		}
 	}
 
@@ -129,10 +131,7 @@ public class ModelDrawerCursorTool extends Tool {
 	}
 
 	private void editModule(Module module) {
-		Environment.getInstance().addTab(
-				new EditorPane(Environment.getInstance().getDrawer(module),
-						new ModuleDrawerToolBox()),
-				module.getName() + "'s editor");
+		Environment.getInstance().openModuleEditor(module);
 	}
 
 	private class ModuleMenu extends JPopupMenu implements ActionListener {
