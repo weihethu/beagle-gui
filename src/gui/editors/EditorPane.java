@@ -5,10 +5,12 @@ import gui.toolbars.ToolBar;
 import gui.toolbars.toolboxes.ToolBox;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 

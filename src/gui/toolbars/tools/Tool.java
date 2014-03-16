@@ -14,8 +14,8 @@ public class Tool extends MouseAdapter {
 	private Canvas canvas;
 	private ObjectDrawer drawer;
 
-	public Tool(Canvas view, ObjectDrawer drawer) {
-		this.canvas = view;
+	public Tool(Canvas canvas, ObjectDrawer drawer) {
+		this.canvas = canvas;
 		this.drawer = drawer;
 	}
 

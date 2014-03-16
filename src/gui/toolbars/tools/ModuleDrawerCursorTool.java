@@ -35,8 +35,8 @@ public class ModuleDrawerCursorTool extends Tool {
 	private Transition selectedTransition = null;
 	private boolean transitionInFlux = false;
 
-	public ModuleDrawerCursorTool(Canvas view, ModuleDrawer drawer) {
-		super(view, drawer);
+	public ModuleDrawerCursorTool(Canvas canvas, ModuleDrawer drawer) {
+		super(canvas, drawer);
 	}
 
 	public Icon getIcon() {
@@ -74,7 +74,7 @@ public class ModuleDrawerCursorTool extends Tool {
 				}
 			} else if (event.getClickCount() == 2
 					&& event.getButton() == MouseEvent.BUTTON1) {
-				if(this.selectedTransition != null)
+				if (this.selectedTransition != null)
 					this.selectedTransition.setSelect(false);
 				transition.setSelect(true);
 				this.selectedTransition = transition;

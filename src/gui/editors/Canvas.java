@@ -4,6 +4,7 @@ import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,18 +15,25 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.Scrollable;
 
 public class Canvas extends JPanel implements Scrollable {
-	protected ObjectDrawer drawer;
+	private ObjectDrawer drawer;
 	private ToolBar toolbar = null;;
 	private AffineTransform transform = new AffineTransform();
 	private double scaleBy = 1.0;
 	private boolean transformNeedsReform = true;
+	private JTable table = null;
+	private Point tablePoint = null;
 
 	public Canvas(ObjectDrawer drawer) {
 		this.drawer = drawer;
 		drawer.setView(this);
+	}
+
+	public ObjectDrawer getDrawer() {
+		return drawer;
 	}
 
 	public void paintComponent(Graphics graphics) {
@@ -128,6 +136,33 @@ public class Canvas extends JPanel implements Scrollable {
 		Point dest = new Point();
 		this.transform.transform(pt, dest);
 		return dest;
+	}
+
+	@Override
+	public Component add(Component comp) {
+		if (comp instanceof JTable)
+			this.table = (JTable) comp;
+		return super.add(comp);
+	}
+
+	@Override
+	public void remove(Component comp) {
+		if (comp instanceof JTable) {
+			this.table = null;
+			this.tablePoint = null;
+		}
+		super.remove(comp);
+	}
+
+	public void setTablePoint(Point pt) {
+		this.tablePoint = pt;
+	}
+
+	@Override
+	public void doLayout() {
+		super.doLayout();
+		if (this.table != null && this.tablePoint != null)
+			this.table.setLocation(this.tablePoint);
 	}
 
 	@Override

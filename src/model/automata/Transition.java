@@ -17,19 +17,17 @@ public class Transition extends DrawableObject {
 	private boolean selected = false;
 	private Point controlPt;
 	private Map<String, Pair<String, String>> labelsMap = null;
-	private Module module;
 
-	public Transition(State from, State to, Module module) {
+	public Transition(State from, State to) {
 		this.setFromState(from);
 		this.setToState(to);
-		this.module = module;
 		controlPt = null;
 		labelsMap = new HashMap<String, Pair<String, String>>();
 	}
 
 	public void descriptionChange() {
-		module.distributeTransitionEditEvent(new TransitionEditEvent(this,
-				false, true));
+		fromState.getModule().distributeTransitionEditEvent(
+				new TransitionEditEvent(this, false, true));
 	}
 
 	public void clear() {

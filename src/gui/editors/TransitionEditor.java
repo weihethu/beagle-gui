@@ -142,13 +142,6 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 
 		});
 
-		// JPanel leftBottomPanel = new JPanel();
-		// leftBottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-		// leftBottomPanel.add(addBtn);
-		// leftBottomPanel.add(removeBtn);
-		// leftPanel.add(leftBottomPanel, BorderLayout.SOUTH);
-
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BorderLayout());
 

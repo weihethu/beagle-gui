@@ -18,8 +18,8 @@ import model.automata.State;
 import model.automata.Transition;
 
 public class DeleteTool extends Tool {
-	public DeleteTool(Canvas view, ObjectDrawer drawer) {
-		super(view, drawer);
+	public DeleteTool(Canvas canvas, ObjectDrawer drawer) {
+		super(canvas, drawer);
 	}
 
 	public Icon getIcon() {

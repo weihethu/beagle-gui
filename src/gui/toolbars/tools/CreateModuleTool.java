@@ -13,8 +13,8 @@ import model.Model;
 import model.Module;
 
 public class CreateModuleTool extends Tool {
-	public CreateModuleTool(Canvas view, ModelDrawer drawer) {
-		super(view, drawer);
+	public CreateModuleTool(Canvas canvas, ModelDrawer drawer) {
+		super(canvas, drawer);
 	}
 
 	private Module module = null;

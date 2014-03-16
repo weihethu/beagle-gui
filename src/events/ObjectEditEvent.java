@@ -12,9 +12,8 @@ public class ObjectEditEvent extends EventObject {
 
 		this.target = target;
 	}
-	
-	public DrawableObject getTarget()
-	{
+
+	public DrawableObject getTarget() {
 		return target;
 	}
 }

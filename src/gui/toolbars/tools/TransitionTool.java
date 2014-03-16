@@ -2,6 +2,7 @@ package gui.toolbars.tools;
 
 import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
+import gui.editors.TransitionCreator;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,18 +16,18 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import model.Module;
 import model.automata.State;
-import model.automata.Transition;
 
 public class TransitionTool extends Tool {
 	private State firstState;
 	private Point hoverPt;
 	private static Stroke STROKE = new BasicStroke(2.4F);
 	private static Color COLOR = new Color(0.5F, 0.5F, 0.5F, 0.5F);
+	private TransitionCreator creator = null;
 
-	public TransitionTool(Canvas view, ModuleDrawer drawer) {
-		super(view, drawer);
+	public TransitionTool(Canvas canvas, ModuleDrawer drawer) {
+		super(canvas, drawer);
+		creator = new TransitionCreator(canvas);
 	}
 
 	public Icon getIcon() {
@@ -67,8 +68,7 @@ public class TransitionTool extends Tool {
 
 		State endState = getDrawer().stateAtPoint(event.getPoint());
 		if (endState != null) {
-			((Module) super.getObject()).addTransition(new Transition(
-					firstState, endState, (Module) super.getObject()));
+			creator.createTransition(firstState, endState);
 		}
 		this.firstState = null;
 		getCanvas().repaint();

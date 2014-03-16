@@ -28,8 +28,8 @@ public class ModelDrawerCursorTool extends Tool {
 	private Point initialPointClicked = new Point();
 	private ModuleMenu moduleMenu = new ModuleMenu();
 
-	public ModelDrawerCursorTool(Canvas view, ModelDrawer drawer) {
-		super(view, drawer);
+	public ModelDrawerCursorTool(Canvas canvas, ModelDrawer drawer) {
+		super(canvas, drawer);
 	}
 
 	public Icon getIcon() {
@@ -59,7 +59,7 @@ public class ModelDrawerCursorTool extends Tool {
 		} else if (event.getClickCount() == 2
 				&& event.getButton() == MouseEvent.BUTTON1) {
 			Module module = getDrawer().moduleAtPoint(event.getPoint());
-			if(module != null)
+			if (module != null)
 				editModule(module);
 		}
 	}

@@ -16,8 +16,8 @@ public class CreateStateTool extends Tool {
 
 	private State state = null;
 
-	public CreateStateTool(Canvas view, ModuleDrawer drawer) {
-		super(view, drawer);
+	public CreateStateTool(Canvas canvas, ModuleDrawer drawer) {
+		super(canvas, drawer);
 	}
 
 	public Icon getIcon() {
