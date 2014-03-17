@@ -1,5 +1,7 @@
 package gui.editors;
 
+import gui.Note;
+import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 
@@ -10,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -17,6 +21,8 @@ import java.awt.geom.NoninvertibleTransformException;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.Scrollable;
+
+import model.Module;
 
 public class Canvas extends JPanel implements Scrollable {
 	private ObjectDrawer drawer;
@@ -26,10 +32,18 @@ public class Canvas extends JPanel implements Scrollable {
 	private boolean transformNeedsReform = true;
 	private JTable table = null;
 	private Point tablePoint = null;
+	private EditorPane pane = null;
 
-	public Canvas(ObjectDrawer drawer) {
+	public Canvas(ObjectDrawer drawer, EditorPane pane) {
 		this.drawer = drawer;
+		this.pane = pane;
 		drawer.setView(this);
+
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent evt) {
+				requestTransform();
+			}
+		});
 	}
 
 	public ObjectDrawer getDrawer() {
@@ -52,6 +66,13 @@ public class Canvas extends JPanel implements Scrollable {
 			this.toolbar.drawTool(graphics2D);
 
 		graphics2D.dispose();
+
+		if (this.drawer instanceof ModuleDrawer) {
+			Module module = (Module) this.drawer.getObject();
+			for (Note note : module.getNotes()) {
+				note.updateView();
+			}
+		}
 	}
 
 	public void setToolbar(ToolBar bar) {
@@ -190,5 +211,9 @@ public class Canvas extends JPanel implements Scrollable {
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
 			int orientation, int direction) {
 		return 5;
+	}
+
+	public EditorPane getCreator() {
+		return pane;
 	}
 }

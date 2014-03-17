@@ -4,9 +4,11 @@ import events.ObjectEditEvent;
 import events.StateEditEvent;
 import events.TransitionEditEvent;
 import events.listeners.ObjectEditListener;
+import gui.Note;
 import gui.entities.CurvedArrow;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -64,8 +66,7 @@ public class ModuleDrawer extends ObjectDrawer {
 		ignoreSelected = false;
 	}
 
-	@Override
-	public Rectangle getUntransformedBounds() {
+	public Rectangle getUntransformedBounds(boolean ignoreNotes) {
 		if (this.validBounds)
 			return this.cachedBounds;
 
@@ -80,7 +81,16 @@ public class ModuleDrawer extends ObjectDrawer {
 		for (int i = 1; i < states.length; i++) {
 			resultRect.add(getBounds(states[i]));
 		}
-
+		if (!ignoreNotes) {
+			Note[] notes = getModule().getNotes();
+			for (Note note : notes) {
+				if (note.isVisible()) {
+					Rectangle rect = new Rectangle(note.getAutoPoint(),
+							new Dimension(note.getBounds().getSize()));
+					resultRect.add(rect);
+				}
+			}
+		}
 		Iterator<CurvedArrow> iter = this.arrowToTransitionMap.keySet()
 				.iterator();
 		while (iter.hasNext()) {
@@ -89,6 +99,11 @@ public class ModuleDrawer extends ObjectDrawer {
 		}
 		this.validBounds = true;
 		return this.cachedBounds = resultRect;
+	}
+
+	@Override
+	public Rectangle getUntransformedBounds() {
+		return getUntransformedBounds(false);
 	}
 
 	public Rectangle getBounds(State state) {
@@ -160,9 +175,9 @@ public class ModuleDrawer extends ObjectDrawer {
 		for (int i = 0; i < states.length; i++) {
 			for (int j = i + 1; j < states.length; j++) {
 				Transition transition_ij = this.getModule()
-						.getTransitionsFromStateToState(states[i], states[j]);
+						.getTransitionFromStateToState(states[i], states[j]);
 				Transition transition_ji = this.getModule()
-						.getTransitionsFromStateToState(states[j], states[i]);
+						.getTransitionFromStateToState(states[j], states[i]);
 
 				if (transition_ij != null) {
 					double ang = angle(states[i], states[j]);
@@ -191,7 +206,7 @@ public class ModuleDrawer extends ObjectDrawer {
 			}
 
 			Transition transition_ii = this.getModule()
-					.getTransitionsFromStateToState(states[i], states[i]);
+					.getTransitionFromStateToState(states[i], states[i]);
 			if (transition_ii != null) {
 				Point startPt = pointOnState(states[i], -Math.PI / 3);
 				Point endPt = pointOnState(states[i], -Math.PI * 2 / 3);
@@ -222,12 +237,13 @@ public class ModuleDrawer extends ObjectDrawer {
 	}
 
 	private void stateEditHandler(StateEditEvent event) {
-		if (event.isAdd)
+		if (event.isAdd || event.isIntialChange)
 			invalidateBounds();
 		else if (event.isMove)
 			invalidate();
-		if (getView() != null)
-			getView().repaint();
+		if (getView() != null) {
+			getView().requestTransform();
+		}
 	}
 
 	private void transitionEditHandler(TransitionEditEvent event) {

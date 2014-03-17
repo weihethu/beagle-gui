@@ -1,16 +1,21 @@
 package gui.editors;
 
+import gui.Note;
+import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 import gui.toolbars.toolboxes.ToolBox;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
+
+import model.Module;
 
 public class EditorPane extends JComponent {
 	private Canvas canvas;
@@ -20,7 +25,7 @@ public class EditorPane extends JComponent {
 
 	public EditorPane(ObjectDrawer drawer, ToolBox toolBox) {
 		this.drawer = drawer;
-		this.canvas = new Canvas(drawer);
+		this.canvas = new Canvas(drawer, this);
 		this.setLayout(new BorderLayout());
 
 		JPanel mainPanel = new JPanel();
@@ -39,6 +44,18 @@ public class EditorPane extends JComponent {
 		this.add(mainPanel, BorderLayout.CENTER);
 		this.add(this.toolbar, BorderLayout.NORTH);
 		this.add(this.slider, BorderLayout.SOUTH);
+
+		if (drawer instanceof ModuleDrawer) {
+			Module module = (Module) drawer.getObject();
+			Note[] notes = module.getNotes();
+			for (int i = 0; i < notes.length; i++) {
+				notes[i].initializeForView(new Point(100 * i, 0), canvas);
+			}
+		}
+	}
+
+	public ToolBar getToolBar() {
+		return this.toolbar;
 	}
 
 	public ObjectDrawer getDrawer() {

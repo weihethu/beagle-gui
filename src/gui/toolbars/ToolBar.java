@@ -84,4 +84,8 @@ public class ToolBar extends JToolBar implements ActionListener {
 			return;
 		this.currentTool.draw(graphics);
 	}
+
+	public Tool getCurrentTool() {
+		return this.currentTool;
+	}
 }

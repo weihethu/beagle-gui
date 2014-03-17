@@ -5,6 +5,7 @@ import events.ObjectEditEvent;
 import events.StateEditEvent;
 import events.TransitionEditEvent;
 import events.listeners.ObjectEditListener;
+import gui.Note;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
@@ -40,6 +41,8 @@ public class Module extends DrawableObject {
 	private Set<ObjectEditListener> transitionListeners = null;
 	private Map<State, Transition[]> transitionArrayFromStateMap = null;
 	private Map<State, Transition[]> transitionArrayToStateMap = null;
+	private Note initActionNote;
+	private Note varNote;
 
 	public Module(String name, Point pt, Model model) {
 		this.point = pt;
@@ -53,6 +56,9 @@ public class Module extends DrawableObject {
 		this.transitionListeners = new HashSet<ObjectEditListener>();
 		this.transitionArrayFromStateMap = new HashMap<State, Transition[]>();
 		this.transitionArrayToStateMap = new HashMap<State, Transition[]>();
+		this.varNote = new Note("variables");
+		this.initActionNote = new Note("init actions");
+		this.initActionNote.setVisible(false);
 
 		this.addStateListener(new ObjectEditListener() {
 
@@ -76,6 +82,18 @@ public class Module extends DrawableObject {
 		this.point = point;
 		model.distributeModuleEditEvent(new ModuleEditEvent(this, false, false,
 				true, false));
+	}
+
+	public Note[] getNotes() {
+		return new Note[] { this.varNote, this.initActionNote };
+	}
+
+	public String getInitialAction() {
+		return this.initActionNote.getText();
+	}
+
+	public String getVarDeclaration() {
+		return this.varNote.getText();
 	}
 
 	public void setName(String name) {
@@ -112,7 +130,7 @@ public class Module extends DrawableObject {
 		State state = new State(getDefaultStateName(), pt, this);
 		addState(state);
 		this.distributeStateEditEvent(new StateEditEvent(state, true, false,
-				false));
+				false, false));
 		return state;
 	}
 
@@ -122,7 +140,7 @@ public class Module extends DrawableObject {
 		this.transitionToStateMap.put(state, new LinkedList<Transition>());
 		this.cachedStates = null;
 		this.distributeStateEditEvent(new StateEditEvent(state, true, false,
-				false));
+				false, false));
 	}
 
 	public void removeState(State state) {
@@ -134,11 +152,13 @@ public class Module extends DrawableObject {
 			removeTransition(transition);
 
 		this.distributeStateEditEvent(new StateEditEvent(state, false, false,
-				false));
+				false, false));
 
 		this.states.remove(state);
-		if (state == this.initialState)
+		if (state == this.initialState) {
 			this.initialState = null;
+			this.initActionNote.setVisible(false);
+		}
 		this.transitionFromStateMap.remove(state);
 		this.transitionToStateMap.remove(state);
 		this.transitionArrayFromStateMap.remove(state);
@@ -180,9 +200,19 @@ public class Module extends DrawableObject {
 	}
 
 	public void setInitialState(State state) {
+		State oldInitialState = this.initialState;
 		this.initialState = state;
-		this.distributeStateEditEvent(new StateEditEvent(state, false, false,
-				true));
+		if (state != null) {
+			this.initActionNote.setVisible(true);
+			this.distributeStateEditEvent(new StateEditEvent(state, false,
+					false, false, true));
+		} else {
+			if (oldInitialState != null) {
+				this.initActionNote.setVisible(false);
+				this.distributeStateEditEvent(new StateEditEvent(
+						oldInitialState, false, false, false, true));
+			}
+		}
 	}
 
 	public State getInitialState() {
@@ -227,7 +257,7 @@ public class Module extends DrawableObject {
 				false, false));
 	}
 
-	public Transition getTransitionsFromStateToState(State fromState,
+	public Transition getTransitionFromStateToState(State fromState,
 			State toState) {
 		Transition[] transitions = getTransitionsFromState(fromState);
 		for (int i = 0; i < transitions.length; i++) {

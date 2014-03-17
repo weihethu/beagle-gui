@@ -16,6 +16,7 @@ import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import model.Module;
 import model.automata.State;
 
 public class TransitionTool extends Tool {
@@ -66,9 +67,11 @@ public class TransitionTool extends Tool {
 		if (this.firstState == null)
 			return;
 
-		State endState = getDrawer().stateAtPoint(event.getPoint());
-		if (endState != null) {
-			creator.createTransition(firstState, endState);
+		State secondState = getDrawer().stateAtPoint(event.getPoint());
+		if (secondState != null
+				&& ((Module) getDrawer().getObject())
+						.getTransitionFromStateToState(firstState, secondState) == null) {
+			creator.createTransition(firstState, secondState);
 		}
 		this.firstState = null;
 		getCanvas().repaint();

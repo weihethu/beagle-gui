@@ -29,7 +29,7 @@ public class State extends DrawableObject {
 	public void setPoint(Point point) {
 		this.point = point;
 		module.distributeStateEditEvent(new StateEditEvent(this, false, true,
-				false));
+				false, false));
 	}
 
 	public String getName() {
@@ -59,7 +59,7 @@ public class State extends DrawableObject {
 		}
 		this.name = name;
 		module.distributeStateEditEvent(new StateEditEvent(this, false, false,
-				true));
+				true, false));
 	}
 
 	public Module getModule() {

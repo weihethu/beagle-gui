@@ -1,11 +1,17 @@
 package gui.editors;
 
+import gui.Note;
+import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
+
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import model.Module;
 
 public class GraphSizeSlider extends JSlider {
 	static final int SIZE_MIN = 1;
@@ -35,6 +41,13 @@ public class GraphSizeSlider extends JSlider {
 			double scale = (double) slider.getValue() / SIZE_INIT;
 			GraphSizeSlider.this.view.setScale(scale);
 			GraphSizeSlider.this.view.requestTransform();
+			ObjectDrawer drawer = GraphSizeSlider.this.view.getDrawer();
+			if (drawer instanceof ModuleDrawer) {
+				Module module = (Module) drawer.getObject();
+				for (Note note : module.getNotes())
+					note.setFont(new Font(null, Font.PLAIN,
+							slider.getValue() / 20));
+			}
 		}
 	}
 }

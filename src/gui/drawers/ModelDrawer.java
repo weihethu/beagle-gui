@@ -75,7 +75,7 @@ public class ModelDrawer extends ObjectDrawer {
 			ModuleDrawer moduleDrawer = (ModuleDrawer) Environment
 					.getInstance().getDrawer(module);
 
-			Rectangle moduleBounds = moduleDrawer.getUntransformedBounds();
+			Rectangle moduleBounds = moduleDrawer.getUntransformedBounds(true);
 			Rectangle internalBounds = new Rectangle(moduleBounds.x
 					- MARGINAL_LEN, moduleBounds.y - MARGINAL_LEN,
 					moduleBounds.width + 2 * MARGINAL_LEN, moduleBounds.height
@@ -111,7 +111,7 @@ public class ModelDrawer extends ObjectDrawer {
 			ModuleDrawer moduleDrawer = (ModuleDrawer) Environment
 					.getInstance().getDrawer(module);
 
-			Rectangle moduleBounds = moduleDrawer.getUntransformedBounds();
+			Rectangle moduleBounds = moduleDrawer.getUntransformedBounds(true);
 			Rectangle internalBounds = new Rectangle(moduleBounds.x
 					- MARGINAL_LEN, moduleBounds.y - MARGINAL_LEN,
 					moduleBounds.width + 2 * MARGINAL_LEN, moduleBounds.height
@@ -171,8 +171,9 @@ public class ModelDrawer extends ObjectDrawer {
 
 	private void moduleEditHandler(ModuleEditEvent event) {
 		invalidateBounds();
-		if (getView() != null)
-			this.getView().repaint();
+		if (getView() != null) {
+			this.getView().requestTransform();
+		}
 	}
 
 	private class DrawerListener implements ObjectEditListener {

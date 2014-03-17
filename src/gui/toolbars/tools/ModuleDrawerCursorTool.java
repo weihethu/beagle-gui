@@ -1,11 +1,13 @@
 package gui.toolbars.tools;
 
 import gui.Environment;
+import gui.Note;
 import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
 import gui.editors.TransitionEditor;
 import gui.entities.CurvedArrow;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -106,6 +108,13 @@ public class ModuleDrawerCursorTool extends Tool {
 				this.lastClickedState.setSelect(true);
 			}
 			getCanvas().repaint();
+		} else if (lastClickedTransition == null) {
+			Module module = getModule();
+			for (Note note : module.getNotes()) {
+				note.setEnabled(false);
+				note.setEditable(false);
+				note.setCaretColor(new Color(255, 255, 150));
+			}
 		}
 
 		Transition[] transitions = getModule().getTransitions();
@@ -245,8 +254,9 @@ public class ModuleDrawerCursorTool extends Tool {
 
 		public void show(State state, Component parent, Point pt) {
 			this.state = state;
-			this.makeInitial.setSelected(ModuleDrawerCursorTool.this
-					.getModule().getInitialState() == state);
+			boolean isInitial = ModuleDrawerCursorTool.this.getModule()
+					.getInitialState() == state;
+			this.makeInitial.setSelected(isInitial);
 			show(parent, pt.x, pt.y);
 		}
 
@@ -254,9 +264,10 @@ public class ModuleDrawerCursorTool extends Tool {
 		public void actionPerformed(ActionEvent event) {
 			JMenuItem menuItem = (JMenuItem) event.getSource();
 			if (menuItem == this.makeInitial) {
-				if (!menuItem.isSelected())
-					this.state = null;
-				getModule().setInitialState(this.state);
+				if (!menuItem.isSelected()) {
+					getModule().setInitialState(null);
+				} else
+					getModule().setInitialState(this.state);
 			} else if (menuItem == this.setName) {
 				String currentName = this.state.getName();
 				String newName = (String) JOptionPane.showInputDialog(this,

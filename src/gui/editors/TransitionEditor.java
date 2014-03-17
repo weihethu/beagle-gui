@@ -162,6 +162,7 @@ public class TransitionEditor extends JPanel implements ComponentListener {
 		rightPanel.add(rightBottomPanel, BorderLayout.CENTER);
 
 		JToolBar toolbar = new JToolBar();
+		toolbar.add(new JLabel("Label:"));
 
 		JButton addBtn = new JButton("Add");
 		addBtn.addActionListener(new ActionListener() {
