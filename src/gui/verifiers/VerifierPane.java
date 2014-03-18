@@ -25,15 +25,15 @@ import javax.swing.table.TableModel;
 public class VerifierPane extends JPanel {
 
 	JSplitPane innerPane, outerPane;
-	JTextArea modelTa = null;
-
+	LineNumberingTextPanel modelText = null;
+	
 	public VerifierPane() {
 		JPanel modelPanel = new JPanel();
 		modelPanel.setLayout(new BorderLayout());
 		modelPanel.add(new JLabel("model:"), BorderLayout.NORTH);
-		modelTa = new JTextArea();
-		modelTa.setEditable(false);
-		modelPanel.add(new JScrollPane(modelTa), BorderLayout.CENTER);
+		modelText = new LineNumberingTextPanel();
+		modelText.getTextArea().setEditable(false);
+		modelPanel.add(modelText, BorderLayout.CENTER);
 
 		JPanel propertiesPanel = new JPanel();
 		propertiesPanel.setLayout(new BorderLayout());
@@ -95,7 +95,7 @@ public class VerifierPane extends JPanel {
 	}
 
 	public void init() {
-		modelTa.setText(ELTSGenerator.getModelText(Environment.getInstance()
+		modelText.getTextArea().setText(ELTSGenerator.getModelText(Environment.getInstance()
 				.getModel()));
 	}
 
