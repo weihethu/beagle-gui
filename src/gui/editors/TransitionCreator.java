@@ -180,12 +180,11 @@ public class TransitionCreator {
 		canvas.add(this.editingTableSp);
 
 		if (pt == null) {
-			pt = canvas.transfromFromCanvasToView(new Point((transition
-					.getFromState().getPoint().x + transition.getToState()
-					.getPoint().x) / 2,
-					(transition.getFromState().getPoint().y + transition
-							.getToState().getPoint().y) / 2));
+			pt = new Point((transition.getFromState().getPoint().x + transition
+					.getToState().getPoint().x) / 2, (transition.getFromState()
+					.getPoint().y + transition.getToState().getPoint().y) / 2);
 		}
+		pt = canvas.transfromFromCanvasToView(pt);
 		pt.translate(-WIDTH / 2, 0);
 		this.editingTable.setCellSelectionEnabled(true);
 		this.editingTable.changeSelection(0, 0, false, false);
