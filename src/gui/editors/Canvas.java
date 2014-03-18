@@ -19,7 +19,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 
 import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 
 public class Canvas extends JPanel implements Scrollable {
@@ -28,8 +28,8 @@ public class Canvas extends JPanel implements Scrollable {
 	private AffineTransform transform = new AffineTransform();
 	private double scaleBy = 1.0;
 	private boolean transformNeedsReform = true;
-	private JTable table = null;
-	private Point tablePoint = null;
+	private JScrollPane tableSp = null;
+	private Point tableSpPoint = null;
 	private EditorPane pane = null;
 
 	public Canvas(ObjectDrawer drawer, EditorPane pane) {
@@ -158,29 +158,32 @@ public class Canvas extends JPanel implements Scrollable {
 
 	@Override
 	public Component add(Component comp) {
-		if (comp instanceof JTable)
-			this.table = (JTable) comp;
+		if (comp instanceof JScrollPane)
+			this.tableSp = (JScrollPane) comp;
 		return super.add(comp);
 	}
 
 	@Override
 	public void remove(Component comp) {
-		if (comp instanceof JTable) {
-			this.table = null;
-			this.tablePoint = null;
+		if (comp instanceof JScrollPane) {
+			this.tableSp = null;
+			this.tableSpPoint = null;
 		}
 		super.remove(comp);
 	}
 
-	public void setTablePoint(Point pt) {
-		this.tablePoint = pt;
+	public void setTableSpPoint(Point pt) {
+		this.tableSpPoint = pt;
 	}
 
 	@Override
 	public void doLayout() {
 		super.doLayout();
-		if (this.table != null && this.tablePoint != null)
-			this.table.setLocation(this.tablePoint);
+		if (this.tableSp != null && this.tableSpPoint != null) {
+			this.tableSp.setLocation(this.tableSpPoint);
+			this.tableSp.setSize(TransitionCreator.WIDTH,
+					TransitionCreator.HEIGHT);
+		}
 	}
 
 	@Override

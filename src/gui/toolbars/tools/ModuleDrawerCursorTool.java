@@ -1,10 +1,9 @@
 package gui.toolbars.tools;
 
-import gui.Environment;
 import gui.Note;
 import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
-import gui.editors.TransitionEditor;
+import gui.editors.TransitionCreator;
 import gui.entities.CurvedArrow;
 
 import java.awt.Color;
@@ -33,12 +32,13 @@ public class ModuleDrawerCursorTool extends Tool {
 	private Transition lastClickedTransition = null;
 	private Point initialPointClicked = new Point();
 	private StateMenu stateMenu = new StateMenu();
-	private TransitionMenu transitionMenu = new TransitionMenu();
 	private Transition selectedTransition = null;
 	private boolean transitionInFlux = false;
+	private TransitionCreator creator = null;
 
 	public ModuleDrawerCursorTool(Canvas canvas, ModuleDrawer drawer) {
 		super(canvas, drawer);
+		creator = new TransitionCreator(canvas);
 	}
 
 	public Icon getIcon() {
@@ -80,7 +80,7 @@ public class ModuleDrawerCursorTool extends Tool {
 					this.selectedTransition.setSelect(false);
 				transition.setSelect(true);
 				this.selectedTransition = transition;
-				editTransition(transition);
+				editTransition(transition, event.getPoint());
 			}
 		} else {
 			if (event.getClickCount() == 1) {
@@ -108,7 +108,8 @@ public class ModuleDrawerCursorTool extends Tool {
 				this.lastClickedState.setSelect(true);
 			}
 			getCanvas().repaint();
-		} else if (lastClickedTransition == null) {
+		} else if (lastClickedTransition != null) {
+		} else {
 			for (Note note : getDrawer().getNotes()) {
 				note.setEnabled(false);
 				note.setEditable(false);
@@ -190,9 +191,10 @@ public class ModuleDrawerCursorTool extends Tool {
 		getCanvas().repaint();
 	}
 
-	private void editTransition(Transition transition) {
-		Environment.getInstance().addTab(new TransitionEditor(transition),
-				"transition editor");
+	private void editTransition(Transition transition, Point pt) {
+		// Environment.getInstance().addTab(new TransitionEditor(transition),
+		// "transition editor");
+		creator.editTransition(transition, pt);
 	}
 
 	private void showPopup(MouseEvent event) {
@@ -201,38 +203,9 @@ public class ModuleDrawerCursorTool extends Tool {
 					.transfromFromCanvasToView(event.getPoint()));
 			return;
 		}
-		if (this.lastClickedTransition != null) {
-			this.transitionMenu.show(this.selectedTransition, getCanvas(),
-					getCanvas().transfromFromCanvasToView(event.getPoint()));
-		}
 
 		this.lastClickedState = null;
 		this.lastClickedTransition = null;
-	}
-
-	private class TransitionMenu extends JPopupMenu implements ActionListener {
-		private Transition transition;
-		private JMenuItem edit;
-
-		public TransitionMenu() {
-			this.edit = new JMenuItem("Edit");
-			this.edit.addActionListener(this);
-
-			add(this.edit);
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			JMenuItem item = (JMenuItem) event.getSource();
-			if (item == this.edit) {
-				editTransition(this.transition);
-			}
-		}
-
-		public void show(Transition transition, Component parent, Point pt) {
-			this.transition = transition;
-			show(parent, pt.x, pt.y);
-		}
 	}
 
 	private class StateMenu extends JPopupMenu implements ActionListener {

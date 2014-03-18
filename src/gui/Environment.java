@@ -8,7 +8,6 @@ import gui.drawers.ModelDrawer;
 import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.editors.EditorPane;
-import gui.editors.TransitionEditor;
 import gui.menus.MenuBarCreator;
 import gui.toolbars.toolboxes.ModelDrawerToolBox;
 import gui.toolbars.toolboxes.ModuleDrawerToolBox;
@@ -141,21 +140,12 @@ public class Environment extends JFrame {
 	public void addTab(Component tab, String title) {
 		this.tabbedPane.add(tab, title);
 		this.tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-		if (tab instanceof TransitionEditor) {
-			for (int i = 0; i < this.tabbedPane.getTabCount() - 1; i++) {
-				this.tabbedPane.setEnabledAt(i, false);
-			}
-		}
 		this.distributeChangeEvent();
 	}
 
 	public void removeCurrentTab() {
 		Component activeTab = this.getActiveTab();
-		if (activeTab instanceof TransitionEditor) {
-			for (int i = 0; i < this.tabbedPane.getTabCount() - 1; i++) {
-				this.tabbedPane.setEnabledAt(i, true);
-			}
-		} else if (activeTab instanceof EditorPane) {
+		if (activeTab instanceof EditorPane) {
 			EditorPane editor = (EditorPane) activeTab;
 			if (editor.getDrawer() instanceof ModuleDrawer) {
 				Module module = (Module) editor.getDrawer().getObject();

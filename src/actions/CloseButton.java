@@ -1,7 +1,6 @@
 package actions;
 
 import gui.Environment;
-import gui.editors.TransitionEditor;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -23,13 +22,7 @@ public class CloseButton extends JButton {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if (env.getActiveTab() instanceof TransitionEditor) {
-					TransitionEditor editor = (TransitionEditor) env
-							.getActiveTab();
-					if (editor.save())
-						env.removeCurrentTab();
-				} else
-					env.removeCurrentTab();
+				env.removeCurrentTab();
 			}
 
 		});
