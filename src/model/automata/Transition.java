@@ -25,7 +25,8 @@ public class Transition extends DrawableObject {
 
 	public void descriptionChange() {
 		fromState.getModule().distributeTransitionEditEvent(
-				new TransitionEditEvent(this, false, true));
+				new TransitionEditEvent(this,
+						TransitionEditEvent.EventType.DESC));
 	}
 
 	public void clear() {

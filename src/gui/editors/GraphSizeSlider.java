@@ -11,8 +11,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import model.Module;
-
 public class GraphSizeSlider extends JSlider {
 	static final int SIZE_MIN = 1;
 	static final int SIZE_MAX = 800;
@@ -43,8 +41,7 @@ public class GraphSizeSlider extends JSlider {
 			GraphSizeSlider.this.view.requestTransform();
 			ObjectDrawer drawer = GraphSizeSlider.this.view.getDrawer();
 			if (drawer instanceof ModuleDrawer) {
-				Module module = (Module) drawer.getObject();
-				for (Note note : module.getNotes())
+				for (Note note : ((ModuleDrawer) drawer).getNotes())
 					note.setFont(new Font(null, Font.PLAIN,
 							slider.getValue() / 20));
 			}

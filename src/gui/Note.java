@@ -6,7 +6,6 @@ import gui.toolbars.tools.ModuleDrawerCursorTool;
 import gui.toolbars.tools.Tool;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -16,6 +15,10 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import model.Module;
 
 public class Note extends JTextArea {
 	private Point myAutoPoint = null;
@@ -24,10 +27,17 @@ public class Note extends JTextArea {
 	private Canvas canvas;
 	private String title;
 	private final String EMPTY_STR = "<insert text>";
+	private Module module;
+	public static String VAR = "variables:";
+	public static String INIT_ACTION = "init actions:";
 
-	public Note(String title) {
+	public Note(Module module, String title, String content) {
+		this.module = module;
 		this.title = title;
-		setText(EMPTY_STR);
+		if (content != null && !content.isEmpty())
+			setText(content);
+		else
+			setText(EMPTY_STR);
 		this.canvas = null;
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(), title));
@@ -47,21 +57,35 @@ public class Note extends JTextArea {
 			}
 
 		});
+
+		this.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent event) {
+
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent event) {
+				onTextEdited();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent event) {
+				onTextEdited();
+			}
+
+		});
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension dim = super.getPreferredSize();
-		return new Dimension(Math.min(150, dim.width), dim.height);
-	}
-
-	@Override
-	public void setSize(Dimension dim) {
-		super.setSize(dim);
-	}
-
-	public String getTitle() {
-		return title;
+	public void onTextEdited() {
+		String value = "";
+		if (!this.getText().trim().equals(EMPTY_STR))
+			value = this.getText().trim();
+		if (this.title.equals(VAR))
+			module.setVarDeclaration(value);
+		else if (this.title.equals(INIT_ACTION))
+			module.setInitialAction(value);
 	}
 
 	public void initializeForView(Point pt, Canvas view) {

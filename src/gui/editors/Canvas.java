@@ -22,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.Scrollable;
 
-import model.Module;
-
 public class Canvas extends JPanel implements Scrollable {
 	private ObjectDrawer drawer;
 	private ToolBar toolbar = null;;
@@ -68,8 +66,7 @@ public class Canvas extends JPanel implements Scrollable {
 		graphics2D.dispose();
 
 		if (this.drawer instanceof ModuleDrawer) {
-			Module module = (Module) this.drawer.getObject();
-			for (Note note : module.getNotes()) {
+			for (Note note : ((ModuleDrawer) drawer).getNotes()) {
 				note.updateView();
 			}
 		}

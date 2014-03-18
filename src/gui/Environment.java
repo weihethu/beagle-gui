@@ -80,7 +80,7 @@ public class Environment extends JFrame {
 
 	private void onModuleEdit(ModuleEditEvent event) {
 		Module module = (Module) event.getTarget();
-		if (event.isNameChange) {
+		if (event.isNameChange()) {
 			if (this.moduleEditorsMap.containsKey(module)) {
 				EditorPane editor = this.moduleEditorsMap.get(module);
 				for (int i = 0; i < this.tabbedPane.getTabCount(); i++) {
@@ -91,7 +91,7 @@ public class Environment extends JFrame {
 					}
 				}
 			}
-		} else if (event.isRemove) {
+		} else if (event.isRemove()) {
 			if (this.moduleEditorsMap.containsKey(module)) {
 				this.tabbedPane.remove(this.moduleEditorsMap.get(module));
 			}

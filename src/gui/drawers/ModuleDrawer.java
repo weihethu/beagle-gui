@@ -30,6 +30,8 @@ public class ModuleDrawer extends ObjectDrawer {
 	public static final Color STATE_COLOR = new Color(255, 255, 150);
 	public static int STATE_RADIUS = 30;
 	private boolean ignoreSelected = false;
+	private Note initActionNote;
+	private Note varNote;
 
 	public ModuleDrawer(Module module) {
 		super(module);
@@ -39,6 +41,11 @@ public class ModuleDrawer extends ObjectDrawer {
 		DrawerListener listener = new DrawerListener();
 		module.addStateListener(listener);
 		module.addTransitionListener(listener);
+
+		this.varNote = new Note(module, Note.VAR, module.getVarDeclaration());
+		this.initActionNote = new Note(module, Note.INIT_ACTION,
+				module.getInitialAction());
+		this.initActionNote.setVisible(module.getInitialState() != null);
 	}
 
 	@Override
@@ -66,6 +73,18 @@ public class ModuleDrawer extends ObjectDrawer {
 		ignoreSelected = false;
 	}
 
+	public Note[] getNotes() {
+		return new Note[] { this.varNote, this.initActionNote };
+	}
+
+	public Note getInitActionNote() {
+		return this.initActionNote;
+	}
+
+	public Note getVarNote() {
+		return this.varNote;
+	}
+
 	public Rectangle getUntransformedBounds(boolean ignoreNotes) {
 		if (this.validBounds)
 			return this.cachedBounds;
@@ -82,7 +101,7 @@ public class ModuleDrawer extends ObjectDrawer {
 			resultRect.add(getBounds(states[i]));
 		}
 		if (!ignoreNotes) {
-			Note[] notes = getModule().getNotes();
+			Note[] notes = getNotes();
 			for (Note note : notes) {
 				if (note.isVisible()) {
 					Rectangle rect = new Rectangle(note.getAutoPoint(),
@@ -237,10 +256,13 @@ public class ModuleDrawer extends ObjectDrawer {
 	}
 
 	private void stateEditHandler(StateEditEvent event) {
-		if (event.isAdd || event.isIntialChange)
-			invalidateBounds();
-		else if (event.isMove)
+		if (event.isMove())
 			invalidate();
+		else
+			invalidateBounds();
+		if (event.isRemove() || event.isInitialChange())
+			this.initActionNote
+					.setVisible(getModule().getInitialState() != null);
 		if (getView() != null) {
 			getView().requestTransform();
 		}

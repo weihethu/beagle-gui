@@ -3,13 +3,14 @@ package events;
 import gui.drawers.DrawableObject;
 
 public class TransitionEditEvent extends ObjectEditEvent {
-	boolean isAdd;
-	boolean isDescriptionChange;
+	public enum EventType {
+		ADD, REMOVE, DESC
+	};
 
-	public TransitionEditEvent(DrawableObject target, boolean add,
-			boolean descriptionChange) {
+	private EventType type;
+
+	public TransitionEditEvent(DrawableObject target, EventType type) {
 		super(target);
-		this.isAdd = add;
-		this.isDescriptionChange = descriptionChange;
+		this.type = type;
 	}
 }

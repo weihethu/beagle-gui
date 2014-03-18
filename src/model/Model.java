@@ -28,7 +28,7 @@ public class Model extends DrawableObject {
 			public void objectEdit(ObjectEditEvent event) {
 				if (event instanceof ModuleEditEvent) {
 					ModuleEditEvent moduleEvt = (ModuleEditEvent) event;
-					if (moduleEvt.isNameChange)
+					if (moduleEvt.isNameChange())
 						Model.this.cachedModules = null;
 				}
 			}
@@ -39,8 +39,8 @@ public class Model extends DrawableObject {
 	public Module createModule(Point pt) {
 		Module module = new Module(getDefaultModuleName(), pt, this);
 		addModule(module);
-		distributeModuleEditEvent(new ModuleEditEvent(module, true, false,
-				false, false));
+		distributeModuleEditEvent(new ModuleEditEvent(module,
+				ModuleEditEvent.EventType.ADD));
 		return module;
 	}
 
@@ -96,8 +96,8 @@ public class Model extends DrawableObject {
 	public void removeModule(Module module) {
 		this.modules.remove(module);
 		this.cachedModules = null;
-		this.distributeModuleEditEvent(new ModuleEditEvent(module, false, true,
-				false, false));
+		this.distributeModuleEditEvent(new ModuleEditEvent(module,
+				ModuleEditEvent.EventType.REMOVE));
 	}
 
 	private String getDefaultModuleName() {

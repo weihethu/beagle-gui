@@ -15,8 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 
-import model.Module;
-
 public class EditorPane extends JComponent {
 	private Canvas canvas;
 	private ToolBar toolbar;
@@ -46,8 +44,7 @@ public class EditorPane extends JComponent {
 		this.add(this.slider, BorderLayout.SOUTH);
 
 		if (drawer instanceof ModuleDrawer) {
-			Module module = (Module) drawer.getObject();
-			Note[] notes = module.getNotes();
+			Note[] notes = ((ModuleDrawer) drawer).getNotes();
 			for (int i = 0; i < notes.length; i++) {
 				notes[i].initializeForView(new Point(100 * i, 0), canvas);
 			}

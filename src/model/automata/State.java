@@ -28,8 +28,8 @@ public class State extends DrawableObject {
 
 	public void setPoint(Point point) {
 		this.point = point;
-		module.distributeStateEditEvent(new StateEditEvent(this, false, true,
-				false, false));
+		module.distributeStateEditEvent(new StateEditEvent(this,
+				StateEditEvent.EventType.MOVE));
 	}
 
 	public String getName() {
@@ -58,8 +58,8 @@ public class State extends DrawableObject {
 			}
 		}
 		this.name = name;
-		module.distributeStateEditEvent(new StateEditEvent(this, false, false,
-				true, false));
+		module.distributeStateEditEvent(new StateEditEvent(this,
+				StateEditEvent.EventType.NAME));
 	}
 
 	public Module getModule() {

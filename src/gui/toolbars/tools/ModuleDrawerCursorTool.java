@@ -109,8 +109,7 @@ public class ModuleDrawerCursorTool extends Tool {
 			}
 			getCanvas().repaint();
 		} else if (lastClickedTransition == null) {
-			Module module = getModule();
-			for (Note note : module.getNotes()) {
+			for (Note note : getDrawer().getNotes()) {
 				note.setEnabled(false);
 				note.setEditable(false);
 				note.setCaretColor(new Color(255, 255, 150));

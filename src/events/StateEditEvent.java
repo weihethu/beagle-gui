@@ -4,17 +4,34 @@ import gui.drawers.DrawableObject;
 
 public class StateEditEvent extends ObjectEditEvent {
 
-	public boolean isAdd;
-	public boolean isMove;
-	public boolean isNameChange;
-	public boolean isIntialChange;
+	public enum EventType {
+		ADD, REMOVE, MOVE, NAME, INITIAL
+	};
 
-	public StateEditEvent(DrawableObject target, boolean add, boolean move,
-			boolean nameChange, boolean initialChange) {
+	private EventType type;
+
+	public StateEditEvent(DrawableObject target, EventType type) {
 		super(target);
-		this.isAdd = add;
-		this.isMove = move;
-		this.isNameChange = nameChange;
-		this.isIntialChange = initialChange;
+		this.type = type;
+	}
+
+	public boolean isAdd() {
+		return this.type == EventType.ADD;
+	}
+
+	public boolean isRemove() {
+		return this.type == EventType.REMOVE;
+	}
+
+	public boolean isMove() {
+		return this.type == EventType.MOVE;
+	}
+
+	public boolean isNameChange() {
+		return this.type == EventType.NAME;
+	}
+
+	public boolean isInitialChange() {
+		return this.type == EventType.INITIAL;
 	}
 }
