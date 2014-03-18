@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import actions.AboutAction;
 import actions.CloseButton;
 import actions.VerifyAction;
 
@@ -54,7 +55,6 @@ public class MenuBarCreator {
 
 	private static JMenu getVerificationMenu() {
 		JMenu verificationMenu = new JMenu("Verification");
-		// verificationMenu.add(new JMenuItem("PlaceHolder"));
 		verificationMenu.add(new VerifyAction());
 
 		return verificationMenu;
@@ -62,7 +62,7 @@ public class MenuBarCreator {
 
 	private static JMenu getHelpMenu() {
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add(new JMenuItem("PlaceHolder"));
+		helpMenu.add(new AboutAction());
 		return helpMenu;
 	}
 }
