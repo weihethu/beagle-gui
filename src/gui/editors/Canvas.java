@@ -1,7 +1,6 @@
 package gui.editors;
 
 import gui.Note;
-import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 
@@ -65,10 +64,8 @@ public class Canvas extends JPanel implements Scrollable {
 
 		graphics2D.dispose();
 
-		if (this.drawer instanceof ModuleDrawer) {
-			for (Note note : ((ModuleDrawer) drawer).getNotes()) {
-				note.updateView();
-			}
+		for (Note note : drawer.getNotes()) {
+			note.updateView();
 		}
 	}
 

@@ -127,7 +127,7 @@ public class Environment extends JFrame {
 		for (int i = 0; i < this.tabbedPane.getTabCount(); i++) {
 			if (this.tabbedPane.getComponentAt(i) instanceof VerifierPane) {
 				((VerifierPane) this.tabbedPane.getComponentAt(i)).init();
-				this.tabbedPane.setSelectedIndex(i);				
+				this.tabbedPane.setSelectedIndex(i);
 				return;
 			}
 		}

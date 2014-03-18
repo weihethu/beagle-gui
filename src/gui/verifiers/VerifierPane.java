@@ -26,7 +26,7 @@ public class VerifierPane extends JPanel {
 
 	JSplitPane innerPane, outerPane;
 	LineNumberingTextPanel modelText = null;
-	
+
 	public VerifierPane() {
 		JPanel modelPanel = new JPanel();
 		modelPanel.setLayout(new BorderLayout());
@@ -95,8 +95,9 @@ public class VerifierPane extends JPanel {
 	}
 
 	public void init() {
-		modelText.getTextArea().setText(ELTSGenerator.getModelText(Environment.getInstance()
-				.getModel()));
+		modelText.getTextArea().setText(
+				ELTSGenerator
+						.getModelText(Environment.getInstance().getModel()));
 	}
 
 	private Vector<Vector<String>> set2Vector(Set<String> set) {

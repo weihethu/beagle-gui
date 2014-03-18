@@ -192,8 +192,6 @@ public class ModuleDrawerCursorTool extends Tool {
 	}
 
 	private void editTransition(Transition transition, Point pt) {
-		// Environment.getInstance().addTab(new TransitionEditor(transition),
-		// "transition editor");
 		creator.editTransition(transition, pt);
 	}
 

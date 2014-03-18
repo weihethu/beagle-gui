@@ -1,7 +1,6 @@
 package gui.editors;
 
 import gui.Note;
-import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 
 import java.awt.Font;
@@ -40,11 +39,8 @@ public class GraphSizeSlider extends JSlider {
 			GraphSizeSlider.this.view.setScale(scale);
 			GraphSizeSlider.this.view.requestTransform();
 			ObjectDrawer drawer = GraphSizeSlider.this.view.getDrawer();
-			if (drawer instanceof ModuleDrawer) {
-				for (Note note : ((ModuleDrawer) drawer).getNotes())
-					note.setFont(new Font(null, Font.PLAIN,
-							slider.getValue() / 20));
-			}
+			for (Note note : drawer.getNotes())
+				note.setFont(new Font(null, Font.PLAIN, slider.getValue() / 20));
 		}
 	}
 }

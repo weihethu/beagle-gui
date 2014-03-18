@@ -1,5 +1,6 @@
 package gui.drawers;
 
+import gui.Note;
 import gui.editors.Canvas;
 
 import java.awt.Graphics2D;
@@ -59,5 +60,9 @@ public abstract class ObjectDrawer {
 
 	public void setTransform(AffineTransform transform) {
 		this.currentTransform = transform;
+	}
+
+	public Note[] getNotes() {
+		return new Note[] {};
 	}
 }

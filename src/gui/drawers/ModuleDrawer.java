@@ -73,6 +73,7 @@ public class ModuleDrawer extends ObjectDrawer {
 		ignoreSelected = false;
 	}
 
+	@Override
 	public Note[] getNotes() {
 		return new Note[] { this.varNote, this.initActionNote };
 	}

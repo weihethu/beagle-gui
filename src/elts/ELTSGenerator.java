@@ -5,12 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import utils.Pair;
-
 import model.Model;
 import model.Module;
 import model.automata.State;
 import model.automata.Transition;
+import utils.Pair;
 
 public class ELTSGenerator {
 	private static String EMPTY_LINE = "";
@@ -129,7 +128,8 @@ public class ELTSGenerator {
 			for (String line : transitionLines) {
 				lines.add(insertTab(line));
 			}
-			lines.add(EMPTY_LINE);
+			if (transitionLines.size() > 0)
+				lines.add(EMPTY_LINE);
 		}
 		lines.add("end");
 		return lines;

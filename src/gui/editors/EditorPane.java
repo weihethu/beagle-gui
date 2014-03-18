@@ -1,7 +1,6 @@
 package gui.editors;
 
 import gui.Note;
-import gui.drawers.ModuleDrawer;
 import gui.drawers.ObjectDrawer;
 import gui.toolbars.ToolBar;
 import gui.toolbars.toolboxes.ToolBox;
@@ -43,11 +42,9 @@ public class EditorPane extends JComponent {
 		this.add(this.toolbar, BorderLayout.NORTH);
 		this.add(this.slider, BorderLayout.SOUTH);
 
-		if (drawer instanceof ModuleDrawer) {
-			Note[] notes = ((ModuleDrawer) drawer).getNotes();
-			for (int i = 0; i < notes.length; i++) {
-				notes[i].initializeForView(new Point(100 * i, 0), canvas);
-			}
+		Note[] notes = drawer.getNotes();
+		for (int i = 0; i < notes.length; i++) {
+			notes[i].initializeForView(new Point(100 * i, 0), canvas);
 		}
 	}
 
