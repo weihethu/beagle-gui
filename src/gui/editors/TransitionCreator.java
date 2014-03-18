@@ -118,7 +118,9 @@ public class TransitionCreator {
 				if (ks.getKeyCode() == KeyEvent.VK_DELETE
 						&& ks.isOnKeyRelease()) {
 					try {
-						editingTable.getCellEditor().stopCellEditing();
+						TableCellEditor editor = editingTable.getCellEditor();
+						if (editor != null)
+							editor.stopCellEditing();
 					} catch (Exception ex) {
 					}
 					int selectedRows[] = editingTable.getSelectedRows();
@@ -198,7 +200,9 @@ public class TransitionCreator {
 		if (this.editingTable == null || transition == null)
 			return;
 		try {
-			this.editingTable.getCellEditor().stopCellEditing();
+			TableCellEditor editor = this.editingTable.getCellEditor();
+			if (editor != null)
+				editor.stopCellEditing();
 		} catch (Exception ex) {
 		}
 		if (save()) {

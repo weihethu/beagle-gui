@@ -1,5 +1,6 @@
 package gui.verifiers;
 
+import elts.ELTSGenerator;
 import gui.Environment;
 
 import java.awt.BorderLayout;
@@ -24,12 +25,14 @@ import javax.swing.table.TableModel;
 public class VerifierPane extends JPanel {
 
 	JSplitPane innerPane, outerPane;
+	JTextArea modelTa = null;
 
 	public VerifierPane() {
 		JPanel modelPanel = new JPanel();
 		modelPanel.setLayout(new BorderLayout());
 		modelPanel.add(new JLabel("model:"), BorderLayout.NORTH);
-		JTextArea modelTa = new JTextArea();
+		modelTa = new JTextArea();
+		modelTa.setEditable(false);
 		modelPanel.add(new JScrollPane(modelTa), BorderLayout.CENTER);
 
 		JPanel propertiesPanel = new JPanel();
@@ -84,14 +87,16 @@ public class VerifierPane extends JPanel {
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent evt) {
-				innerPane.setDividerLocation(0.4);
-				outerPane.setDividerLocation(0.6);
+				innerPane.setDividerLocation(0.7);
+				outerPane.setDividerLocation(0.7);
 			}
 
 		});
 	}
 
 	public void init() {
+		modelTa.setText(ELTSGenerator.getModelText(Environment.getInstance()
+				.getModel()));
 	}
 
 	private Vector<Vector<String>> set2Vector(Set<String> set) {

@@ -85,7 +85,7 @@ public class Module extends DrawableObject {
 	}
 
 	public String getInitialAction() {
-		return this.initAction;
+		return this.initAction.trim();
 	}
 
 	public void setVarDeclaration(String value) {
@@ -93,7 +93,7 @@ public class Module extends DrawableObject {
 	}
 
 	public String getVarDeclaration() {
-		return this.varDecl;
+		return this.varDecl.trim();
 	}
 
 	public void setName(String name) {
