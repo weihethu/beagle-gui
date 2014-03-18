@@ -5,6 +5,7 @@ import events.ObjectEditEvent;
 import events.StateEditEvent;
 import events.TransitionEditEvent;
 import events.listeners.ObjectEditListener;
+import gui.Environment;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
@@ -68,6 +69,9 @@ public class Module extends DrawableObject {
 			}
 
 		});
+
+		this.addStateListener(Environment.getInstance().getVerifierPane());
+		this.addTransitionListener(Environment.getInstance().getVerifierPane());
 	}
 
 	public Point getPoint() {

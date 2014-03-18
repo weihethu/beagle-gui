@@ -1,5 +1,7 @@
 package gui;
 
+import events.NoteEditEvent;
+import events.listeners.ObjectEditListener;
 import gui.editors.Canvas;
 import gui.editors.EditorPane;
 import gui.toolbars.tools.ModuleDrawerCursorTool;
@@ -12,6 +14,9 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -30,10 +35,13 @@ public class Note extends JTextArea {
 	private Module module;
 	public static String VAR = "variables:";
 	public static String INIT_ACTION = "init actions:";
+	private Set<ObjectEditListener> noteListeners = null;
 
 	public Note(Module module, String title, String content) {
 		this.module = module;
 		this.title = title;
+		this.noteListeners = new HashSet<ObjectEditListener>();
+
 		if (content != null && !content.isEmpty())
 			setText(content);
 		else
@@ -76,6 +84,8 @@ public class Note extends JTextArea {
 			}
 
 		});
+
+		this.addNoteListener(Environment.getInstance().getVerifierPane());
 	}
 
 	public void onTextEdited() {
@@ -86,6 +96,9 @@ public class Note extends JTextArea {
 			module.setVarDeclaration(value);
 		else if (this.title.equals(INIT_ACTION))
 			module.setInitialAction(value);
+
+		this.distributeNoteEditEvent(new NoteEditEvent(this,
+				NoteEditEvent.EventType.TEXT));
 	}
 
 	public void initializeForView(Point pt, Canvas view) {
@@ -175,5 +188,17 @@ public class Note extends JTextArea {
 
 	public void updateView() {
 		setLocationManually(this.myAutoPoint);
+	}
+
+	public void addNoteListener(ObjectEditListener listener) {
+		this.noteListeners.add(listener);
+	}
+
+	public void distributeNoteEditEvent(NoteEditEvent event) {
+		Iterator<ObjectEditListener> iter = noteListeners.iterator();
+		while (iter.hasNext()) {
+			ObjectEditListener currentListener = iter.next();
+			currentListener.objectEdit(event);
+		}
 	}
 }

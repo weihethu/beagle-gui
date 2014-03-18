@@ -250,7 +250,7 @@ public class TransitionCreator {
 					.get(i).getSecond().getFirst(), dataInEdit.get(i)
 					.getSecond().getSecond());
 		}
-		this.transition.descriptionChange();
+		this.transition.dataChange();
 		return true;
 	}
 

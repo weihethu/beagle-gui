@@ -1,8 +1,5 @@
 package gui.verifiers;
 
-import elts.ELTSGenerator;
-import gui.Environment;
-
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -22,7 +19,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class VerifierPane extends JPanel {
+import elts.ELTSGenerator;
+import events.ModuleEditEvent;
+import events.NoteEditEvent;
+import events.ObjectEditEvent;
+import events.StateEditEvent;
+import events.TransitionEditEvent;
+import events.listeners.ObjectEditListener;
+import gui.Environment;
+
+public class VerifierPane extends JPanel implements ObjectEditListener {
 
 	JSplitPane innerPane, outerPane;
 	LineNumberingTextPanel modelText = null;
@@ -82,7 +88,6 @@ public class VerifierPane extends JPanel {
 
 		this.add(toolbar, BorderLayout.NORTH);
 		this.add(outerPane, BorderLayout.CENTER);
-		init();
 
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -94,7 +99,7 @@ public class VerifierPane extends JPanel {
 		});
 	}
 
-	public void init() {
+	private void refresh() {
 		modelText.getTextArea().setText(
 				ELTSGenerator
 						.getModelText(Environment.getInstance().getModel()));
@@ -109,5 +114,20 @@ public class VerifierPane extends JPanel {
 			rows.addElement(row);
 		}
 		return rows;
+	}
+
+	@Override
+	public void objectEdit(ObjectEditEvent event) {
+		if (event instanceof ModuleEditEvent) {
+			if (!((ModuleEditEvent) event).isMove())
+				refresh();
+		} else if (event instanceof StateEditEvent) {
+			if (!((StateEditEvent) event).isMove())
+				refresh();
+		} else if (event instanceof TransitionEditEvent) {
+			refresh();
+		} else if (event instanceof NoteEditEvent) {
+			refresh();
+		}
 	}
 }

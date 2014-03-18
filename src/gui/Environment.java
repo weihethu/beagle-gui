@@ -35,12 +35,10 @@ public class Environment extends JFrame {
 	private Set<ChangeListener> changeListeners = null;
 	private Model model = null;
 	private Map<Module, EditorPane> moduleEditorsMap = null;
+	private VerifierPane verifierPane = null;
 
 	private Environment() {
-		model = new Model();
-		moduleEditorsMap = new HashMap<Module, EditorPane>();
 		changeListeners = new HashSet<ChangeListener>();
-		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
 
 		tabbedPane = new JTabbedPane();
 		this.setJMenuBar(MenuBarCreator.getMenuBar(this));
@@ -59,11 +57,14 @@ public class Environment extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				distributeChangeEvent();
 			}
-
 		});
-		ModelDrawer modelDrawer = (ModelDrawer) this.getDrawer(this.getModel());
-		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
-				"Model's Editor");
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
+		moduleEditorsMap = new HashMap<Module, EditorPane>();
+		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
+		this.tabbedPane.removeAll();
 
 		model.addModuleListener(new ObjectEditListener() {
 
@@ -75,6 +76,10 @@ public class Environment extends JFrame {
 			}
 
 		});
+
+		ModelDrawer modelDrawer = (ModelDrawer) this.getDrawer(this.getModel());
+		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
+				"Model's Editor");
 	}
 
 	private void onModuleEdit(ModuleEditEvent event) {
@@ -101,6 +106,13 @@ public class Environment extends JFrame {
 		return model;
 	}
 
+	public VerifierPane getVerifierPane() {
+		if (this.verifierPane == null)
+			this.verifierPane = new VerifierPane();
+		return this.verifierPane;
+
+	}
+
 	public void addChangeListeners(ChangeListener listener) {
 		this.changeListeners.add(listener);
 	}
@@ -124,17 +136,15 @@ public class Environment extends JFrame {
 	}
 
 	public void openVerifyTab() {
+		this.getVerifierPane();
 		for (int i = 0; i < this.tabbedPane.getTabCount(); i++) {
-			if (this.tabbedPane.getComponentAt(i) instanceof VerifierPane) {
-				((VerifierPane) this.tabbedPane.getComponentAt(i)).init();
+			if (this.tabbedPane.getComponentAt(i) == verifierPane) {
 				this.tabbedPane.setSelectedIndex(i);
 				return;
 			}
 		}
-		VerifierPane verifier = new VerifierPane();
-		this.addTab(verifier, "Verifier");
 
-		verifier.init();
+		this.addTab(verifierPane, "Verifier");
 	}
 
 	public void addTab(Component tab, String title) {

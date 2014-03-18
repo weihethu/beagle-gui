@@ -1,19 +1,17 @@
 package events;
 
-import gui.drawers.DrawableObject;
-
 import java.util.EventObject;
 
 public class ObjectEditEvent extends EventObject {
-	private DrawableObject target;
+	private Object target;
 
-	public ObjectEditEvent(DrawableObject target) {
+	public ObjectEditEvent(Object target) {
 		super(target);
 
 		this.target = target;
 	}
 
-	public DrawableObject getTarget() {
+	public Object getTarget() {
 		return target;
 	}
 }

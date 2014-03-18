@@ -4,7 +4,7 @@ import gui.drawers.DrawableObject;
 
 public class TransitionEditEvent extends ObjectEditEvent {
 	public enum EventType {
-		ADD, REMOVE, DESC
+		ADD, REMOVE, DATA
 	};
 
 	private EventType type;

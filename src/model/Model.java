@@ -3,6 +3,7 @@ package model;
 import events.ModuleEditEvent;
 import events.ObjectEditEvent;
 import events.listeners.ObjectEditListener;
+import gui.Environment;
 import gui.drawers.DrawableObject;
 
 import java.awt.Point;
@@ -34,6 +35,8 @@ public class Model extends DrawableObject {
 			}
 
 		});
+
+		this.addModuleListener(Environment.getInstance().getVerifierPane());
 	}
 
 	public Module createModule(Point pt) {

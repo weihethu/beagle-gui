@@ -8,7 +8,7 @@ import javax.swing.AbstractAction;
 
 public class AboutAction extends AbstractAction {
 	private static final AboutBox Box = new AboutBox();
-	
+
 	public AboutAction() {
 		super("About", null);
 	}

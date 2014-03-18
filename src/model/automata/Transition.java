@@ -23,10 +23,10 @@ public class Transition extends DrawableObject {
 		labelsMap = new HashMap<String, Pair<String, String>>();
 	}
 
-	public void descriptionChange() {
+	public void dataChange() {
 		fromState.getModule().distributeTransitionEditEvent(
 				new TransitionEditEvent(this,
-						TransitionEditEvent.EventType.DESC));
+						TransitionEditEvent.EventType.DATA));
 	}
 
 	public void clear() {
