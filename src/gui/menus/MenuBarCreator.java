@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 
 import actions.AboutAction;
 import actions.CloseButton;
+import actions.OpenAction;
 import actions.VerifyAction;
 
 public class MenuBarCreator {
@@ -43,7 +44,7 @@ public class MenuBarCreator {
 	private static JMenu getFileMenu() {
 		JMenu fileMenu = new JMenu("File");
 
-		fileMenu.add(new JMenuItem("PlaceHolder"));
+		fileMenu.add(new OpenAction());		
 		// addItem(fileMenu, new NewAction());
 		// addItem(fileMenu, new OpenAction());
 		// addItem(fileMenu, new SaveAction());

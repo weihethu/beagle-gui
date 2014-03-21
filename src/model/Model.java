@@ -47,11 +47,11 @@ public class Model extends DrawableObject {
 		return module;
 	}
 
-	private void addModule(Module module) {
+	public void addModule(Module module) {
 		this.modules.add(module);
 		this.cachedModules = null;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Module[] getModules() {
 		if (this.cachedModules == null) {

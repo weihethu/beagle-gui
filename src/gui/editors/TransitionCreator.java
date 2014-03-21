@@ -82,6 +82,8 @@ public class TransitionCreator {
 			public void setValueAt(Object aValue, int rowIndex, int colIndex) {
 				String strValue = aValue.toString().trim();
 				if (rowIndex < dataInEdit.size()) {
+					if (colIndex == 0)
+						strValue = Transition.regularizeLabelsStr(strValue);
 					switch (colIndex) {
 					case 0:
 						dataInEdit.get(rowIndex).setFirst(strValue);

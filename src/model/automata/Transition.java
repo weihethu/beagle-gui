@@ -44,12 +44,29 @@ public class Transition extends DrawableObject {
 		return desc;
 	}
 
+	public static String regularizeLabelsStr(String labelsStr) {
+		if (labelsStr == null)
+			return null;
+		String[] labels = labelsStr.split(",");
+		String resultStr = "";
+		for (int i = 0; i < labels.length; i++) {
+			if (i > 0)
+				resultStr += ", ";
+			resultStr += labels[i].trim();
+		}
+		return resultStr.trim();
+	}
+
 	public void addLabel(String label) {
-		this.labelsMap.put(label, new Pair<String, String>(null, null));
+		label = regularizeLabelsStr(label);
+		if (label != null && !label.isEmpty())
+			this.labelsMap.put(label, new Pair<String, String>(null, null));
 	}
 
 	public void addLabel(String label, String guard, String action) {
-		this.labelsMap.put(label, new Pair<String, String>(guard, action));
+		label = regularizeLabelsStr(label);
+		if (label != null && !label.isEmpty())
+			this.labelsMap.put(label, new Pair<String, String>(guard, action));
 	}
 
 	public Pair<String, String> getLabel(String label) {

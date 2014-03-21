@@ -85,6 +85,8 @@ public class Module extends DrawableObject {
 	}
 
 	public void setInitialAction(String value) {
+		if (value == null)
+			value = "";
 		this.initAction = value;
 	}
 
@@ -93,6 +95,8 @@ public class Module extends DrawableObject {
 	}
 
 	public void setVarDeclaration(String value) {
+		if (value == null)
+			value = "";
 		this.varDecl = value;
 	}
 
@@ -138,7 +142,7 @@ public class Module extends DrawableObject {
 		return state;
 	}
 
-	private void addState(State state) {
+	public void addState(State state) {
 		this.states.add(state);
 		this.transitionFromStateMap.put(state, new LinkedList<Transition>());
 		this.transitionToStateMap.put(state, new LinkedList<Transition>());
@@ -185,6 +189,16 @@ public class Module extends DrawableObject {
 			});
 		}
 		return this.cachedStates;
+	}
+
+	public State getStateByName(String name) {
+		if (name == null)
+			return null;
+		for (State s : states) {
+			if (s.getName().equals(name))
+				return s;
+		}
+		return null;
 	}
 
 	public void selectStatesWithinBounds(Rectangle rect) {
