@@ -13,7 +13,7 @@ import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 
 public class GraphXMLSaver {
-	public static void save(Model m, String path) {
+	public static boolean save(Model m, String path) {
 		Element rootEle = new Element("Graph");
 		Document doc = new Document(rootEle);
 
@@ -28,7 +28,9 @@ public class GraphXMLSaver {
 			XMLOut.output(doc, new FileOutputStream(path));
 		} catch (IOException ex) {
 			ex.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	private static Element getXML(Module module) {

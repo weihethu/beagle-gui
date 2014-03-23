@@ -53,12 +53,13 @@ public class OpenAction extends AbstractAction {
 			String xmlContent = getModelXML(selectedFile);
 
 			Model model = ELTSParser.parseModel(xmlContent);
-			this.adjustLocations(model, this.substitutePathExt(
-					selectedFile.getPath(), "xml"));
 			// adjust positions if additional graph file provided
+			this.adjustLocations(model,
+					this.substitutePathExt(selectedFile.getPath(), "xml"));
 			if (model != null) {
 				Environment.getInstance().setModel(model);
 			}
+			Environment.getInstance().setCurrentPath(selectedFile.getPath());
 		}
 	}
 

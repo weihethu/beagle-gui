@@ -1,15 +1,22 @@
 package actions;
 
+import elts.ELTSGenerator;
+import elts.graph.GraphXMLSaver;
+import gui.Environment;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import elts.graph.GraphXMLSaver;
-import gui.Environment;
+import model.Model;
 
 public class SaveAsAction extends AbstractAction {
 
@@ -21,6 +28,7 @@ public class SaveAsAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
+		Model model = Environment.getInstance().getModel();
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
@@ -57,8 +65,31 @@ public class SaveAsAction extends AbstractAction {
 			FileFilter filter = fileChooser.getFileFilter();
 			if (filter.getDescription().contains("graph")) {
 				String path = substitutePathExt(selectedFile.getPath(), "xml");
-				GraphXMLSaver.save(Environment.getInstance().getModel(), path);
+				if (!GraphXMLSaver.save(model, path))
+					JOptionPane.showMessageDialog(null, "Error in saving "
+							+ path + "!");
 			}
+			String path = substitutePathExt(selectedFile.getPath(), ELTS_EXT);
+			String modelText = ELTSGenerator.getModelText(model);
+			BufferedWriter bw = null;
+			try {
+				bw = new BufferedWriter(new FileWriter(new File(path)));
+				bw.write(modelText);
+				bw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error in saving " + path
+						+ "!");
+			} finally {
+				if (bw != null) {
+					try {
+						bw.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			Environment.getInstance().setCurrentPath(path);
 		}
 	}
 

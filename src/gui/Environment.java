@@ -36,6 +36,7 @@ public class Environment extends JFrame {
 	private Model model = null;
 	private Map<Module, EditorPane> moduleEditorsMap = null;
 	private VerifierPane verifierPane = null;
+	private String currentPath = null;
 
 	private Environment() {
 		changeListeners = new HashSet<ChangeListener>();
@@ -44,7 +45,7 @@ public class Environment extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.add(tabbedPane, BorderLayout.CENTER);
 
-		this.setTitle("beagle-gui");
+		this.setTitle(getTitleWithPath());
 		this.setSize(600, 600);
 		this.setLocation(50, 50);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,6 +58,24 @@ public class Environment extends JFrame {
 				distributeChangeEvent();
 			}
 		});
+	}
+
+	public void setCurrentPath(String path) {
+		this.currentPath = path;
+		this.setTitle(getTitleWithPath());
+	}
+
+	public String getCurrentPath() {
+		return this.currentPath;
+	}
+
+	public String getTitleWithPath() {
+		String title = "beagle-gui:";
+		if (this.currentPath == null)
+			title += "<untitled>";
+		else
+			title += "<" + this.currentPath + ">";
+		return title;
 	}
 
 	public void setModel(Model model) {
@@ -116,7 +135,6 @@ public class Environment extends JFrame {
 	public VerifierPane getVerifierPane() {
 		if (this.verifierPane == null) {
 			this.verifierPane = new VerifierPane();
-//			this.verifierPane.refresh();
 		}
 		return this.verifierPane;
 
