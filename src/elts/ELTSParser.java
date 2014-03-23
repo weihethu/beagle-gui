@@ -13,6 +13,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
+import elts.graph.GraphObjectPlacer;
+
 public class ELTSParser {
 
 	private static String parseActions(Element actionsElement) {
@@ -56,8 +58,7 @@ public class ELTSParser {
 		return labelsStr;
 	}
 
-	private static void parseTransitions(Element transitionsElement,
-			Module module) {
+	private static void parseTransitions(Element transitionsElement, Module module) {
 		if (transitionsElement == null)
 			return;
 		List<Element> transitionEles = transitionsElement

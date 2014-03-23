@@ -11,7 +11,10 @@ import javax.swing.KeyStroke;
 
 import actions.AboutAction;
 import actions.CloseButton;
+import actions.NewAction;
 import actions.OpenAction;
+import actions.SaveAction;
+import actions.SaveAsAction;
 import actions.VerifyAction;
 
 public class MenuBarCreator {
@@ -37,33 +40,32 @@ public class MenuBarCreator {
 
 	private static void addItem(JMenu menu, Action action) {
 		JMenuItem item = new JMenuItem(action);
-		item.setAccelerator((KeyStroke) action.getValue("AccelleratorKey"));
+		// item.setAccelerator((KeyStroke) action.getValue("AccelleratorKey"));
 		menu.add(item);
 	}
 
 	private static JMenu getFileMenu() {
 		JMenu fileMenu = new JMenu("File");
 
-		fileMenu.add(new OpenAction());		
-		// addItem(fileMenu, new NewAction());
-		// addItem(fileMenu, new OpenAction());
-		// addItem(fileMenu, new SaveAction());
-		// addItem(fileMenu, new SaveAsAction());
-		// addItem(fileMenu, new CloseAction());
-		// addItem(fileMenu, new CloseWindowAction());
+		addItem(fileMenu, new NewAction());
+		addItem(fileMenu, new OpenAction());
+		fileMenu.addSeparator();
+
+		addItem(fileMenu, new SaveAction());
+		addItem(fileMenu, new SaveAsAction());
 		return fileMenu;
 	}
 
 	private static JMenu getVerificationMenu() {
 		JMenu verificationMenu = new JMenu("Verification");
-		verificationMenu.add(new VerifyAction());
+		addItem(verificationMenu, new VerifyAction());
 
 		return verificationMenu;
 	}
 
 	private static JMenu getHelpMenu() {
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add(new AboutAction());
+		addItem(helpMenu, new AboutAction());
 		return helpMenu;
 	}
 }

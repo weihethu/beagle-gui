@@ -97,9 +97,10 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			}
 
 		});
+		refresh();
 	}
 
-	private void refresh() {
+	public void refresh() {
 		modelText.getTextArea().setText(
 				ELTSGenerator
 						.getModelText(Environment.getInstance().getModel()));

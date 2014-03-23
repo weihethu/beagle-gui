@@ -39,7 +39,6 @@ public class Environment extends JFrame {
 
 	private Environment() {
 		changeListeners = new HashSet<ChangeListener>();
-
 		tabbedPane = new JTabbedPane();
 		this.setJMenuBar(MenuBarCreator.getMenuBar(this));
 		this.setLayout(new BorderLayout());
@@ -62,8 +61,14 @@ public class Environment extends JFrame {
 
 	public void setModel(Model model) {
 		this.model = model;
-		moduleEditorsMap = new HashMap<Module, EditorPane>();
-		mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
+		if (moduleEditorsMap != null)
+			moduleEditorsMap.clear();
+		else
+			moduleEditorsMap = new HashMap<Module, EditorPane>();
+		if (mapObjectsDrawers != null)
+			mapObjectsDrawers.clear();
+		else
+			mapObjectsDrawers = new HashMap<DrawableObject, ObjectDrawer>();
 		this.tabbedPane.removeAll();
 
 		model.addModuleListener(new ObjectEditListener() {
@@ -80,6 +85,8 @@ public class Environment extends JFrame {
 		ModelDrawer modelDrawer = (ModelDrawer) this.getDrawer(this.getModel());
 		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
 				"Model's Editor");
+		if (this.verifierPane != null)
+			this.verifierPane.refresh();
 	}
 
 	private void onModuleEdit(ModuleEditEvent event) {
@@ -107,8 +114,10 @@ public class Environment extends JFrame {
 	}
 
 	public VerifierPane getVerifierPane() {
-		if (this.verifierPane == null)
+		if (this.verifierPane == null) {
 			this.verifierPane = new VerifierPane();
+//			this.verifierPane.refresh();
+		}
 		return this.verifierPane;
 
 	}

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import elts.graph.GraphObjectPlacer;
 import model.Model;
 import model.Module;
 import model.automata.State;
@@ -16,7 +17,7 @@ public class ELTSGenerator {
 	private static String TAB = "    ";
 	private static String NEW_LINE = "\n";
 
-	private static String insertTab(String line) {
+	public static String insertTab(String line) {
 		if (line.trim().equals(EMPTY_LINE))
 			return line;
 		else
@@ -24,6 +25,8 @@ public class ELTSGenerator {
 	}
 
 	public static String getModelText(Model model) {
+		if (model == null)
+			return "";
 		List<String> lines = generate(model);
 		String text = "";
 		for (int i = 0; i < lines.size(); i++) {
@@ -123,6 +126,7 @@ public class ELTSGenerator {
 			lines.add(EMPTY_LINE);
 		}
 
+		// transitions
 		for (Transition transition : transitions) {
 			List<String> transitionLines = generate(transition);
 			for (String line : transitionLines) {
