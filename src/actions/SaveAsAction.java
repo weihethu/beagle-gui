@@ -22,13 +22,16 @@ public class SaveAsAction extends AbstractAction {
 
 	private static String ELTS_EXT = "elt";
 
+	public enum SAVE_TYPE {
+		TEXT, TEXT_AND_GRAPH
+	};
+
 	public SaveAsAction() {
 		super("Save as", null);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Model model = Environment.getInstance().getModel();
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
@@ -64,33 +67,41 @@ public class SaveAsAction extends AbstractAction {
 			File selectedFile = fileChooser.getSelectedFile();
 			FileFilter filter = fileChooser.getFileFilter();
 			if (filter.getDescription().contains("graph")) {
-				String path = substitutePathExt(selectedFile.getPath(), "xml");
-				if (!GraphXMLSaver.save(model, path))
-					JOptionPane.showMessageDialog(null, "Error in saving "
-							+ path + "!");
-			}
-			String path = substitutePathExt(selectedFile.getPath(), ELTS_EXT);
-			String modelText = ELTSGenerator.getModelText(model);
-			BufferedWriter bw = null;
-			try {
-				bw = new BufferedWriter(new FileWriter(new File(path)));
-				bw.write(modelText);
-				bw.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
+				save(selectedFile.getPath(), SAVE_TYPE.TEXT_AND_GRAPH);
+			} else
+				save(selectedFile.getPath(), SAVE_TYPE.TEXT);
+		}
+	}
+
+	public void save(String filePath, SAVE_TYPE type) {
+		Model model = Environment.getInstance().getModel();
+		if (type == SAVE_TYPE.TEXT_AND_GRAPH) {
+			String path = substitutePathExt(filePath, "xml");
+			if (!GraphXMLSaver.save(model, path))
 				JOptionPane.showMessageDialog(null, "Error in saving " + path
 						+ "!");
-			} finally {
-				if (bw != null) {
-					try {
-						bw.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+		}
+		String path = substitutePathExt(filePath, ELTS_EXT);
+		String modelText = ELTSGenerator.getModelText(model);
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new FileWriter(new File(path)));
+			bw.write(modelText);
+			bw.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			JOptionPane
+					.showMessageDialog(null, "Error in saving " + path + "!");
+		} finally {
+			if (bw != null) {
+				try {
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-			Environment.getInstance().setCurrentPath(path);
 		}
+		Environment.getInstance().setCurrentPath(path);
 	}
 
 	private String substitutePathExt(String path, String ext) {
