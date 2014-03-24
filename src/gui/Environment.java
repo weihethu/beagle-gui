@@ -15,6 +15,8 @@ import gui.verifiers.VerifierPane;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -106,6 +108,16 @@ public class Environment extends JFrame {
 				"Model's Editor");
 		if (this.verifierPane != null)
 			this.verifierPane.refresh();
+	}
+
+	public Dimension getGraphDimension() {
+		if (this.tabbedPane.getTabCount() > 0
+				&& this.tabbedPane.getComponent(0) instanceof EditorPane) {
+			Rectangle rect = ((EditorPane) this.tabbedPane.getComponent(0))
+					.getBounds();
+			return new Dimension(rect.width, rect.height);
+		} else
+			return null;
 	}
 
 	private void onModuleEdit(ModuleEditEvent event) {

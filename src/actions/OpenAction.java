@@ -84,9 +84,13 @@ public class OpenAction extends AbstractAction {
 		File graphFile = new File(graphFilePath);
 		if (graphFile.exists() && graphFile.isFile()) {
 			objPlacer = new GraphObjectPlacer(graphFilePath);
-			// TODO: add knowledge
 		} else
 			objPlacer = new GraphObjectPlacer();
+
+		// add prior knowledge
+		objPlacer.setModuleNum(model.getModules().length);
+		for (Module module : model.getModules())
+			objPlacer.setStateNum(module.getName(), module.getStates().length);
 
 		for (Module module : model.getModules()) {
 			module.setPoint(objPlacer.getModulePt(module));
