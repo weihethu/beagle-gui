@@ -1,0 +1,42 @@
+Build BDD Time: 0s
+
+===================== DEADLOCK CHECK =====================
+-- The model is deadlock free
+-- The diameter is 15
+-- Verification Time: 0s
+
+===================== INVARSPEC 0 =====================
+-- INVARSPEC (!(elts.four_bit_counter.place == s0)) is false
+-- The diameter is 0
+-- Verification Time: 0s
+-- The counterexample is demonstrated as below:
+
+-> step 0 <-
+   elts.four_bit_counter.bit0: 0
+   elts.four_bit_counter.bit1: 0
+   elts.four_bit_counter.bit2: 0
+   elts.four_bit_counter.bit3: 0
+   elts.four_bit_counter.place: s0; 0000
+
+
+===================== INVARSPEC 1 =====================
+-- INVARSPEC (!(elts.four_bit_counter.place == s15)) is false
+-- The diameter is 1
+-- Verification Time: 0s
+-- The counterexample is demonstrated as below:
+
+-> step 0 <-
+   elts.four_bit_counter.bit0: 0
+   elts.four_bit_counter.bit1: 0
+   elts.four_bit_counter.bit2: 0
+   elts.four_bit_counter.bit3: 0
+   elts.four_bit_counter.place: s0; 0000
+
+-> step 1 <-
+   elts.four_bit_counter.bit0: 1
+   elts.four_bit_counter.bit1: 1
+   elts.four_bit_counter.bit2: 1
+   elts.four_bit_counter.bit3: 1
+   elts.four_bit_counter.place: s15; 1111
+
+

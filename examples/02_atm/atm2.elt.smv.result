@@ -1,0 +1,588 @@
+MODULE main
+VAR
+	elts_Veto_place: {l0, l1};
+
+	elts_Valid_place: {l0, l1};
+
+	elts_User_0_place: {l0, l1, l2, l3, l4, l5, l6, l7};
+
+	elts_Atm_0_place: {l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14};
+
+	elts_User_1_place: {l0, l1, l2, l3, l4, l5, l6, l7};
+
+	elts_Atm_1_place: {l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14};
+
+
+
+-- Variables Num   : 20
+INIT 	(
+	((((((TRUE & 
+(elts_Veto_place=l0)) & 
+(elts_Valid_place=l0)) & 
+(elts_User_0_place=l0)) & 
+(elts_Atm_0_place=l0)) & 
+(elts_User_1_place=l0)) & 
+(elts_Atm_1_place=l0))
+	)
+
+TRANS 	(
+	((((((((((((((((((((((((((((((((((((((((((FALSE | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(FALSE & 
+((((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+((TRUE & 
+(FALSE | 
+(((elts_Atm_0_place=l8) & 
+(next(elts_Atm_0_place)=l8)) & 
+TRUE))) & 
+(((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+((TRUE & 
+((FALSE | 
+(((elts_Atm_1_place=l2) & 
+(next(elts_Atm_1_place)=l2)) & 
+TRUE)) | 
+(((elts_Atm_1_place=l8) & 
+(next(elts_Atm_1_place)=l8)) & 
+TRUE))) & 
+(((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l1) & 
+(next(elts_Valid_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l3) & 
+(next(elts_Atm_0_place)=l4)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l1) & 
+(next(elts_Valid_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l3) & 
+(next(elts_Atm_0_place)=l5)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l0) & 
+(next(elts_Valid_place)=l1)) & 
+TRUE))) & 
+((FALSE | 
+(((elts_Atm_0_place=l2) & 
+(next(elts_Atm_0_place)=l3)) & 
+TRUE)) | 
+(((elts_Atm_0_place=l2) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l1) & 
+(next(elts_Valid_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l3) & 
+(next(elts_Atm_1_place)=l4)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l1) & 
+(next(elts_Valid_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l3) & 
+(next(elts_Atm_1_place)=l5)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Valid_place=l0) & 
+(next(elts_Valid_place)=l1)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l2) & 
+(next(elts_Atm_1_place)=l3)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l4) & 
+(next(elts_User_0_place)=l6)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l8) & 
+(next(elts_Atm_0_place)=l9)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l3) & 
+(next(elts_User_0_place)=l4)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l7) & 
+(next(elts_Atm_0_place)=l8)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l4) & 
+(next(elts_User_0_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l8) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l5) & 
+(next(elts_User_0_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l6) & 
+(next(elts_Atm_0_place)=l0)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l1) & 
+(next(elts_User_0_place)=l2)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l1) & 
+(next(elts_Atm_0_place)=l2)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l6) & 
+(next(elts_User_0_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l13) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l2) & 
+(next(elts_User_0_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l5) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l6) & 
+(next(elts_User_0_place)=l7)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l11) & 
+(next(elts_Atm_0_place)=l12)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l2) & 
+(next(elts_User_0_place)=l3)) & 
+TRUE))) & 
+((FALSE | 
+(((elts_Atm_0_place=l2) & 
+(next(elts_Atm_0_place)=l3)) & 
+TRUE)) | 
+(((elts_Atm_0_place=l2) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l7) & 
+(next(elts_User_0_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l12) & 
+(next(elts_Atm_0_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l4) & 
+(next(elts_User_1_place)=l6)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l8) & 
+(next(elts_Atm_1_place)=l9)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l3) & 
+(next(elts_User_1_place)=l4)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l7) & 
+(next(elts_Atm_1_place)=l8)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l4) & 
+(next(elts_User_1_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l8) & 
+(next(elts_Atm_1_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l5) & 
+(next(elts_User_1_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l6) & 
+(next(elts_Atm_1_place)=l0)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l1) & 
+(next(elts_User_1_place)=l2)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l1) & 
+(next(elts_Atm_1_place)=l2)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l6) & 
+(next(elts_User_1_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l13) & 
+(next(elts_Atm_1_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l2) & 
+(next(elts_User_1_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l5) & 
+(next(elts_Atm_1_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l6) & 
+(next(elts_User_1_place)=l7)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l11) & 
+(next(elts_Atm_1_place)=l12)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l2) & 
+(next(elts_User_1_place)=l3)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l2) & 
+(next(elts_Atm_1_place)=l3)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l7) & 
+(next(elts_User_1_place)=l5)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l12) & 
+(next(elts_Atm_1_place)=l6)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_0_place=l0) & 
+(next(elts_User_0_place)=l1)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l0) & 
+(next(elts_Atm_0_place)=l1)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_User_1_place=l0) & 
+(next(elts_User_1_place)=l1)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l0) & 
+(next(elts_Atm_1_place)=l1)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Veto_place) = elts_Veto_place)) & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l1) & 
+(next(elts_Veto_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l10) & 
+(next(elts_Atm_0_place)=l11)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l0) & 
+(next(elts_Veto_place)=l1)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l9) & 
+(next(elts_Atm_0_place)=l10)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l1) & 
+(next(elts_Veto_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_0_place=l10) & 
+(next(elts_Atm_0_place)=l13)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)) & 
+(next(elts_Atm_1_place) = elts_Atm_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l1) & 
+(next(elts_Veto_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l10) & 
+(next(elts_Atm_1_place)=l11)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l0) & 
+(next(elts_Veto_place)=l1)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l9) & 
+(next(elts_Atm_1_place)=l10)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Veto_place=l1) & 
+(next(elts_Veto_place)=l0)) & 
+TRUE))) & 
+(FALSE | 
+(((elts_Atm_1_place=l10) & 
+(next(elts_Atm_1_place)=l13)) & 
+TRUE))) & 
+((((TRUE & 
+(next(elts_Valid_place) = elts_Valid_place)) & 
+(next(elts_User_0_place) = elts_User_0_place)) & 
+(next(elts_Atm_0_place) = elts_Atm_0_place)) & 
+(next(elts_User_1_place) = elts_User_1_place))))
+	)
+
+INVARSPEC ELTS(!((((((elts_Veto_place=l0) & (elts_Valid_place=l1)) & (elts_User_0_place=l2)) & (elts_Atm_0_place=l6)) & (elts_User_1_place=l2)) & (elts_Atm_1_place=l2)))
+

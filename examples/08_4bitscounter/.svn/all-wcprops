@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter
+END
+4bitscounter.elt.bdd.result
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter/4bitscounter.elt.bdd.result
+END
+4bitscounter.elt.bmc.result
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter/4bitscounter.elt.bmc.result
+END
+4bitscounter.elt
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter/4bitscounter.elt
+END
+4bitscounter.elt.smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter/4bitscounter.elt.smv.result
+END
+4bitscounter.elt.macro_smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/08_4bitscounter/4bitscounter.elt.macro_smv.result
+END

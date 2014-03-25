@@ -1,0 +1,239 @@
+MODULE main
+VAR
+	elts_Monitor_m1: boolean;
+	elts_Monitor_m2: boolean;
+	elts_Monitor_m3: boolean;
+	elts_Monitor_m4: boolean;
+	elts_Monitor_place: {work, err};
+
+	elts_C1C2_c1: boolean;
+	elts_C1C2_c2: boolean;
+	elts_C1C2_c3: boolean;
+	elts_C1C2_c4: boolean;
+	elts_C1C2_place: {S1S3, S2S3, S1S4, S2S4};
+
+
+
+-- Variables Num   : 13
+INIT 	(
+	((TRUE & 
+(((((elts_Monitor_place=work) & 
+(elts_Monitor_m1 = TRUE)) & 
+(elts_Monitor_m2 = FALSE)) & 
+(elts_Monitor_m3 = TRUE)) & 
+(elts_Monitor_m4 = FALSE))) & 
+(((((elts_C1C2_place=S1S3) & 
+(elts_C1C2_c1 = TRUE)) & 
+(elts_C1C2_c2 = FALSE)) & 
+(elts_C1C2_c3 = TRUE)) & 
+(elts_C1C2_c4 = FALSE)))
+	)
+
+TRANS 	(
+	((((((((FALSE | 
+(FALSE & 
+((((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_Monitor_place) = elts_Monitor_place)) & 
+(next(elts_C1C2_place) = elts_C1C2_place)))) | 
+(FALSE & 
+((((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_Monitor_place) = elts_Monitor_place)) & 
+(next(elts_C1C2_place) = elts_C1C2_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((((elts_Monitor_place=work) & 
+(next(elts_Monitor_place)=work)) & 
+((((!elts_Monitor_m1) & 
+(!elts_Monitor_m2)) & 
+(!elts_Monitor_m3)) & 
+(!elts_Monitor_m4))) & 
+((((TRUE & 
+(next(elts_Monitor_m1) = TRUE)) & 
+(next(elts_Monitor_m2) = FALSE)) & 
+(next(elts_Monitor_m3) = TRUE)) & 
+(next(elts_Monitor_m4) = FALSE))) & 
+TRUE))) & 
+((FALSE | 
+(((((elts_C1C2_place=S2S3) & 
+(next(elts_C1C2_place)=S2S3)) & 
+((((!elts_C1C2_c1) & 
+(!elts_C1C2_c2)) & 
+(!elts_C1C2_c3)) & 
+(!elts_C1C2_c4))) & 
+((((TRUE & 
+(next(elts_C1C2_c1) = TRUE)) & 
+(next(elts_C1C2_c2) = FALSE)) & 
+(next(elts_C1C2_c3) = TRUE)) & 
+(next(elts_C1C2_c4) = FALSE))) & 
+TRUE)) | 
+(((((elts_C1C2_place=S2S4) & 
+(next(elts_C1C2_place)=S2S4)) & 
+((((!elts_C1C2_c1) & 
+(!elts_C1C2_c2)) & 
+(!elts_C1C2_c3)) & 
+(!elts_C1C2_c4))) & 
+((((TRUE & 
+(next(elts_C1C2_c1) = TRUE)) & 
+(next(elts_C1C2_c2) = FALSE)) & 
+(next(elts_C1C2_c3) = TRUE)) & 
+(next(elts_C1C2_c4) = FALSE))) & 
+TRUE))) & 
+TRUE)) | 
+(((TRUE & 
+(FALSE | 
+((((elts_Monitor_place=work) & 
+(next(elts_Monitor_place)=work)) & 
+((((TRUE & 
+(next(elts_Monitor_m1) = ((elts_Monitor_m1 & 
+((elts_Monitor_m2 | 
+elts_Monitor_m3) | 
+elts_Monitor_m4)) | 
+((((!elts_Monitor_m1) & 
+(!elts_Monitor_m2)) & 
+(!elts_Monitor_m3)) & 
+(!elts_Monitor_m4))))) & 
+(next(elts_Monitor_m2) = ((elts_Monitor_m2 & 
+(elts_Monitor_m3 | 
+elts_Monitor_m4)) | 
+(((!elts_Monitor_m2) & 
+(!elts_Monitor_m3)) & 
+(!elts_Monitor_m4))))) & 
+(next(elts_Monitor_m3) = ((elts_Monitor_m3 & 
+elts_Monitor_m4) | 
+((!elts_Monitor_m3) & 
+(!elts_Monitor_m4))))) & 
+(next(elts_Monitor_m4) = (!elts_Monitor_m4)))) & 
+TRUE))) & 
+(FALSE | 
+((((elts_C1C2_place=S1S3) & 
+(next(elts_C1C2_place)=S2S4)) & 
+((((TRUE & 
+(next(elts_C1C2_c1) = ((elts_C1C2_c1 & 
+((elts_C1C2_c2 | 
+elts_C1C2_c3) | 
+elts_C1C2_c4)) | 
+((((!elts_C1C2_c1) & 
+(!elts_C1C2_c2)) & 
+(!elts_C1C2_c3)) & 
+(!elts_C1C2_c4))))) & 
+(next(elts_C1C2_c2) = ((elts_C1C2_c2 & 
+(elts_C1C2_c3 | 
+elts_C1C2_c4)) | 
+(((!elts_C1C2_c2) & 
+(!elts_C1C2_c3)) & 
+(!elts_C1C2_c4))))) & 
+(next(elts_C1C2_c3) = ((elts_C1C2_c3 & 
+elts_C1C2_c4) | 
+((!elts_C1C2_c3) & 
+(!elts_C1C2_c4))))) & 
+(next(elts_C1C2_c4) = (!elts_C1C2_c4)))) & 
+TRUE))) & 
+TRUE)) | 
+((TRUE & 
+((FALSE | 
+(((((elts_C1C2_place=S2S3) & 
+(next(elts_C1C2_place)=S1S3)) & 
+(((elts_C1C2_c1 | 
+elts_C1C2_c2) | 
+elts_C1C2_c3) | 
+elts_C1C2_c4)) & 
+TRUE) & 
+TRUE)) | 
+(((((elts_C1C2_place=S2S4) & 
+(next(elts_C1C2_place)=S1S4)) & 
+(((elts_C1C2_c1 | 
+elts_C1C2_c2) | 
+elts_C1C2_c3) | 
+elts_C1C2_c4)) & 
+TRUE) & 
+TRUE))) & 
+(((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_Monitor_place) = elts_Monitor_place)))) | 
+((TRUE & 
+(FALSE | 
+(((((elts_C1C2_place=S2S4) & 
+(next(elts_C1C2_place)=S1S3)) & 
+(((elts_C1C2_c1 | 
+elts_C1C2_c2) | 
+elts_C1C2_c3) | 
+elts_C1C2_c4)) & 
+TRUE) & 
+TRUE))) & 
+(((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_Monitor_place) = elts_Monitor_place)))) | 
+((TRUE & 
+((FALSE | 
+((((elts_C1C2_place=S1S4) & 
+(next(elts_C1C2_place)=S1S3)) & 
+TRUE) & 
+TRUE)) | 
+((((elts_C1C2_place=S2S4) & 
+(next(elts_C1C2_place)=S2S3)) & 
+TRUE) & 
+TRUE))) & 
+(((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_Monitor_place) = elts_Monitor_place)))) | 
+((TRUE & 
+(FALSE | 
+(((((elts_Monitor_place=work) & 
+(next(elts_Monitor_place)=err)) & 
+(((elts_Monitor_m1 & 
+elts_Monitor_m2) & 
+elts_Monitor_m3) & 
+elts_Monitor_m4)) & 
+TRUE) & 
+TRUE))) & 
+(((((((((TRUE & 
+(next(elts_Monitor_m1) = elts_Monitor_m1)) & 
+(next(elts_Monitor_m2) = elts_Monitor_m2)) & 
+(next(elts_Monitor_m3) = elts_Monitor_m3)) & 
+(next(elts_Monitor_m4) = elts_Monitor_m4)) & 
+(next(elts_C1C2_c1) = elts_C1C2_c1)) & 
+(next(elts_C1C2_c2) = elts_C1C2_c2)) & 
+(next(elts_C1C2_c3) = elts_C1C2_c3)) & 
+(next(elts_C1C2_c4) = elts_C1C2_c4)) & 
+(next(elts_C1C2_place) = elts_C1C2_place))))
+	)
+
+INVARSPEC ELTS(!(elts_Monitor_place=err))
+

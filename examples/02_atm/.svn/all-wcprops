@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm
+END
+atm2.elt.bmc.result
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm/atm2.elt.bmc.result
+END
+atm2.elt
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm/atm2.elt
+END
+atm2.elt.smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm/atm2.elt.smv.result
+END
+atm2.elt.macro_smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm/atm2.elt.macro_smv.result
+END
+atm2.elt.bdd.result
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/02_atm/atm2.elt.bdd.result
+END

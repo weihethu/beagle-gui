@@ -1,0 +1,138 @@
+-- Transition Num  : 0
+-- Original PA Num : 0
+-- Real PA Num     : 0
+-- Variables Num   : 50
+MODULE main
+VAR
+	v1: boolean;
+	v2: boolean;
+	v3: boolean;
+	v4: boolean;
+	v5: boolean;
+	v6: boolean;
+	v7: boolean;
+	v8: boolean;
+	v9: boolean;
+	v10: boolean;
+	v11: boolean;
+	v23: boolean;
+	v24: boolean;
+	v25: boolean;
+	v26: boolean;
+	v27: boolean;
+	v28: boolean;
+	v29: boolean;
+	v30: boolean;
+	v31: boolean;
+	v32: boolean;
+	v33: boolean;
+	v34: boolean;
+	v35: boolean;
+	v36: boolean;
+	v37: boolean;
+	v38: boolean;
+	v39: boolean;
+	v40: boolean;
+	v41: boolean;
+	v42: boolean;
+	v43: boolean;
+	v44: boolean;
+	v45: boolean;
+	v46: boolean;
+	v47: boolean;
+	v48: boolean;
+	v49: boolean;
+	v50: boolean;
+	v51: boolean;
+	v52: boolean;
+	v53: boolean;
+	v54: boolean;
+	v55: boolean;
+	v56: boolean;
+	v57: boolean;
+	v58: boolean;
+	v59: boolean;
+	v60: boolean;
+	v61: boolean;
+
+
+INIT 	(
+	((((((!v9) & 
+	v1) & 
+	(!v2)) & 
+	v3) & 
+	(!v4)) & 
+	((((((!v10) & 
+	(!v11)) & 
+	v5) & 
+	(!v6)) & 
+	v7) & 
+	(!v8)))
+	)
+
+TRANS 	(
+	(((((((((((v9 | 
+	(((((next(v36) = v1) & 
+	(next(v37) = v2)) & 
+	(next(v38) = v3)) & 
+	(next(v39) = v4)) & 
+	next(v24))) & 
+	((!v9) | 
+	(((((next(v36) = v1) & 
+	(next(v37) = v2)) & 
+	(next(v38) = v3)) & 
+	(next(v39) = v4)) & 
+	next(v26)))) & 
+	(!next(v24))) & 
+	(!next(v26))) & 
+	(((((((((!((!v10) & 
+	(!v11))) | 
+	(((((next(v40) = v5) & 
+	(next(v41) = v6)) & 
+	(next(v42) = v7)) & 
+	(next(v43) = v8)) & 
+	next(v28))) & 
+	((!(v10 & 
+	(!v11))) | 
+	(((((next(v40) = v5) & 
+	(next(v41) = v6)) & 
+	(next(v42) = v7)) & 
+	(next(v43) = v8)) & 
+	next(v30)))) & 
+	((!((!v10) & 
+	v11)) | 
+	(((((next(v40) = v5) & 
+	(next(v41) = v6)) & 
+	(next(v42) = v7)) & 
+	(next(v43) = v8)) & 
+	next(v32)))) & 
+	((!(v10 & 
+	v11)) | 
+	(((((next(v40) = v5) & 
+	(next(v41) = v6)) & 
+	(next(v42) = v7)) & 
+	(next(v43) = v8)) & 
+	next(v34)))) & 
+	(!next(v28))) & 
+	(!next(v30))) & 
+	(!next(v32))) & 
+	(!next(v34)))) & 
+	((!next(v24)) | 
+	(!v9))) & 
+	((!next(v26)) | 
+	v9)) & 
+	((!next(v28)) | 
+	((!v10) & 
+	(!v11)))) & 
+	((!next(v30)) | 
+	(v10 & 
+	(!v11)))) & 
+	((!next(v32)) | 
+	((!v10) & 
+	v11))) & 
+	((!next(v34)) | 
+	(v10 & 
+	v11)))
+	)
+
+INVARSPEC (!v9)

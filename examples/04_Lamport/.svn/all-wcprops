@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport
+END
+Lamport4.elt.bmc.result
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport/Lamport4.elt.bmc.result
+END
+Lamport4.elt
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport/Lamport4.elt
+END
+Lamport4.elt.smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport/Lamport4.elt.smv.result
+END
+Lamport4.elt.macro_smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport/Lamport4.elt.macro_smv.result
+END
+Lamport4.elt.bdd.result
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/04_Lamport/Lamport4.elt.bdd.result
+END

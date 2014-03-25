@@ -20,9 +20,40 @@ public class BeagleInvoker {
 	private static BeagleInvoker invoker_instance = null;
 
 	private BeagleInvoker() {
-		// set beagle_executable_path according to os type & bit version
-		// if no executable, or not supported, pop warning box
-		beagle_executable_path = "beagle/linux_x86/beagle";
+		String os_name = System.getProperty("os.name").toLowerCase();
+		if (os_name.contains("windows")) {
+			String arch = System.getenv("PROCESSOR_ARCHITECTURE");
+			String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
+
+			String realArch = arch.endsWith("64") || wow64Arch != null
+					&& wow64Arch.endsWith("64") ? "64" : "32";
+			if (realArch.equals("64")) {
+				beagle_executable_path = "beagle/windows_x64/beagle";
+			} else {
+				beagle_executable_path = "beagle/windows_x86/beagle";
+			}
+		} else if (os_name.contains("linux")) {
+			String os_arch = System.getProperty("os.arch");
+			String arch = os_arch.contains("64") ? "64" : "32";
+			if (arch.equals("64"))
+				beagle_executable_path = "beagle/linux_x64/beagle";
+			else
+				beagle_executable_path = "beagle/linux_x86/beagle";
+		} else {
+			JOptionPane.showMessageDialog(Environment.getInstance(),
+					"Unsupported os version!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			beagle_executable_path = null;
+		}
+
+		File beagle_executable = new File(beagle_executable_path);
+		if (!beagle_executable.exists() || !beagle_executable.isFile()) {
+			JOptionPane
+					.showMessageDialog(Environment.getInstance(),
+							"No beagle executable!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+			beagle_executable_path = null;
+		}
 		tmpPath = "tmp";
 	}
 
@@ -56,9 +87,8 @@ public class BeagleInvoker {
 
 		if (beagle_executable_path == null) {
 			JOptionPane
-					.showMessageDialog(verifierPane,
-							"No beagle executable!", "Error",
-							JOptionPane.ERROR_MESSAGE);
+					.showMessageDialog(verifierPane, "No beagle executable!",
+							"Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -110,9 +140,9 @@ public class BeagleInvoker {
 		try {
 			final Process process = new ProcessBuilder(args).start();
 			verifierPane.setProcessOutputStream(process.getOutputStream());
-			
+
 			Thread outputThread = new Thread(new Runnable() {
-			
+
 				@Override
 				public void run() {
 					try {
@@ -136,11 +166,10 @@ public class BeagleInvoker {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void onVerifyEnd(VerifierPane pane, int exitValue) {
 		pane.setProcessOutputStream(null);
-		JOptionPane.showMessageDialog(pane,
-				"Beagle process exited with value " + exitValue + "!", "Info",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(pane, "Beagle process exited with value "
+				+ exitValue + "!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

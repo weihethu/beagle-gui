@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson
+END
+peterson.elt.bmc.result
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson/peterson.elt.bmc.result
+END
+peterson.elt
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson/peterson.elt
+END
+peterson.elt.smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson/peterson.elt.smv.result
+END
+peterson.elt.macro_smv.result
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson/peterson.elt.macro_smv.result
+END
+peterson.elt.bdd.result
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bip-bool-verifier/!svn/ver/581/trunk/beagle/examples/05_peterson/peterson.elt.bdd.result
+END

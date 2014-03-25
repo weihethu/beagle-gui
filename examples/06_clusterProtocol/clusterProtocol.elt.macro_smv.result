@@ -1,0 +1,771 @@
+-- Transition Num  : 0
+-- Original PA Num : 0
+-- Real PA Num     : 0
+-- Variables Num   : 298
+MODULE main
+VAR
+	v1: boolean;
+	v2: boolean;
+	v3: boolean;
+	v4: boolean;
+	v5: boolean;
+	v6: boolean;
+	v7: boolean;
+	v8: boolean;
+	v9: boolean;
+	v10: boolean;
+	v11: boolean;
+	v12: boolean;
+	v13: boolean;
+	v14: boolean;
+	v15: boolean;
+	v16: boolean;
+	v17: boolean;
+	v18: boolean;
+	v19: boolean;
+	v20: boolean;
+	v21: boolean;
+	v22: boolean;
+	v23: boolean;
+	v24: boolean;
+	v25: boolean;
+	v26: boolean;
+	v27: boolean;
+	v28: boolean;
+	v29: boolean;
+	v30: boolean;
+	v31: boolean;
+	v32: boolean;
+	v33: boolean;
+	v34: boolean;
+	v35: boolean;
+	v36: boolean;
+	v37: boolean;
+	v38: boolean;
+	v39: boolean;
+	v40: boolean;
+	v41: boolean;
+	v42: boolean;
+	v43: boolean;
+	v44: boolean;
+	v45: boolean;
+	v46: boolean;
+	v47: boolean;
+	v48: boolean;
+	v49: boolean;
+	v50: boolean;
+	v51: boolean;
+	v52: boolean;
+	v53: boolean;
+	v54: boolean;
+	v55: boolean;
+	v56: boolean;
+	v57: boolean;
+	v58: boolean;
+	v59: boolean;
+	v60: boolean;
+	v61: boolean;
+	v62: boolean;
+	v63: boolean;
+	v64: boolean;
+	v65: boolean;
+	v66: boolean;
+	v67: boolean;
+	v68: boolean;
+	v69: boolean;
+	v70: boolean;
+	v71: boolean;
+	v72: boolean;
+	v73: boolean;
+	v74: boolean;
+	v75: boolean;
+	v76: boolean;
+	v77: boolean;
+	v78: boolean;
+	v79: boolean;
+	v80: boolean;
+	v81: boolean;
+	v82: boolean;
+	v83: boolean;
+	v84: boolean;
+	v85: boolean;
+	v86: boolean;
+	v87: boolean;
+	v88: boolean;
+	v89: boolean;
+	v170: boolean;
+	v171: boolean;
+	v172: boolean;
+	v173: boolean;
+	v174: boolean;
+	v175: boolean;
+	v176: boolean;
+	v177: boolean;
+	v178: boolean;
+	v179: boolean;
+	v180: boolean;
+	v181: boolean;
+	v182: boolean;
+	v183: boolean;
+	v184: boolean;
+	v185: boolean;
+	v186: boolean;
+	v187: boolean;
+	v188: boolean;
+	v189: boolean;
+	v190: boolean;
+	v191: boolean;
+	v192: boolean;
+	v193: boolean;
+	v194: boolean;
+	v195: boolean;
+	v196: boolean;
+	v197: boolean;
+	v198: boolean;
+	v199: boolean;
+	v200: boolean;
+	v201: boolean;
+	v202: boolean;
+	v203: boolean;
+	v204: boolean;
+	v205: boolean;
+	v206: boolean;
+	v207: boolean;
+	v208: boolean;
+	v209: boolean;
+	v210: boolean;
+	v211: boolean;
+	v212: boolean;
+	v213: boolean;
+	v214: boolean;
+	v215: boolean;
+	v216: boolean;
+	v217: boolean;
+	v218: boolean;
+	v219: boolean;
+	v220: boolean;
+	v221: boolean;
+	v222: boolean;
+	v223: boolean;
+	v224: boolean;
+	v225: boolean;
+	v226: boolean;
+	v227: boolean;
+	v228: boolean;
+	v229: boolean;
+	v230: boolean;
+	v231: boolean;
+	v232: boolean;
+	v233: boolean;
+	v234: boolean;
+	v235: boolean;
+	v236: boolean;
+	v237: boolean;
+	v238: boolean;
+	v239: boolean;
+	v240: boolean;
+	v241: boolean;
+	v242: boolean;
+	v243: boolean;
+	v244: boolean;
+	v245: boolean;
+	v246: boolean;
+	v247: boolean;
+	v248: boolean;
+	v249: boolean;
+	v250: boolean;
+	v251: boolean;
+	v252: boolean;
+	v253: boolean;
+	v254: boolean;
+	v255: boolean;
+	v256: boolean;
+	v257: boolean;
+	v258: boolean;
+	v259: boolean;
+	v260: boolean;
+	v261: boolean;
+	v262: boolean;
+	v263: boolean;
+	v264: boolean;
+	v265: boolean;
+	v266: boolean;
+	v267: boolean;
+	v268: boolean;
+	v269: boolean;
+	v270: boolean;
+	v271: boolean;
+	v272: boolean;
+	v273: boolean;
+	v274: boolean;
+	v275: boolean;
+	v276: boolean;
+	v277: boolean;
+	v278: boolean;
+	v279: boolean;
+	v280: boolean;
+	v281: boolean;
+	v282: boolean;
+	v283: boolean;
+	v284: boolean;
+	v285: boolean;
+	v286: boolean;
+	v287: boolean;
+	v288: boolean;
+	v289: boolean;
+	v290: boolean;
+	v291: boolean;
+	v292: boolean;
+	v293: boolean;
+	v294: boolean;
+	v295: boolean;
+	v296: boolean;
+	v297: boolean;
+	v298: boolean;
+	v299: boolean;
+	v300: boolean;
+	v301: boolean;
+	v302: boolean;
+	v303: boolean;
+	v304: boolean;
+	v305: boolean;
+	v306: boolean;
+	v307: boolean;
+	v308: boolean;
+	v309: boolean;
+	v310: boolean;
+	v311: boolean;
+	v312: boolean;
+	v313: boolean;
+	v314: boolean;
+	v315: boolean;
+	v316: boolean;
+	v317: boolean;
+	v318: boolean;
+	v319: boolean;
+	v320: boolean;
+	v321: boolean;
+	v322: boolean;
+	v323: boolean;
+	v324: boolean;
+	v325: boolean;
+	v326: boolean;
+	v327: boolean;
+	v328: boolean;
+	v329: boolean;
+	v330: boolean;
+	v331: boolean;
+	v332: boolean;
+	v333: boolean;
+	v334: boolean;
+	v335: boolean;
+	v336: boolean;
+	v337: boolean;
+	v338: boolean;
+	v339: boolean;
+	v340: boolean;
+	v341: boolean;
+	v342: boolean;
+	v343: boolean;
+	v344: boolean;
+	v345: boolean;
+	v346: boolean;
+	v347: boolean;
+	v348: boolean;
+	v349: boolean;
+	v350: boolean;
+	v351: boolean;
+	v352: boolean;
+	v353: boolean;
+	v354: boolean;
+	v355: boolean;
+	v356: boolean;
+	v357: boolean;
+	v358: boolean;
+	v359: boolean;
+	v360: boolean;
+	v361: boolean;
+	v362: boolean;
+	v363: boolean;
+	v364: boolean;
+	v365: boolean;
+	v366: boolean;
+	v367: boolean;
+	v368: boolean;
+	v369: boolean;
+	v370: boolean;
+	v371: boolean;
+	v372: boolean;
+	v373: boolean;
+	v374: boolean;
+	v375: boolean;
+	v376: boolean;
+	v377: boolean;
+	v378: boolean;
+
+
+INIT 	(
+	(((((((((((((((((!v71) & 
+	(!v72)) & 
+	(!v1)) & 
+	(!v2)) & 
+	v3) & 
+	(!v4)) & 
+	(!v5)) & 
+	v6) & 
+	v7) & 
+	(!v8)) & 
+	(!v9)) & 
+	(!v10)) & 
+	v14) & 
+	((((((((((((!v73) & 
+	(!v74)) & 
+	(!v15)) & 
+	v16) & 
+	(!v17)) & 
+	(!v18)) & 
+	v19) & 
+	(!v20)) & 
+	v21) & 
+	(!v22)) & 
+	(!v23)) & 
+	(!v24))) & 
+	((((((((((((!v75) & 
+	(!v76)) & 
+	(!v29)) & 
+	v30) & 
+	v31) & 
+	(!v32)) & 
+	v33) & 
+	v34) & 
+	v35) & 
+	(!v36)) & 
+	(!v37)) & 
+	(!v38))) & 
+	((((((((((((!v77) & 
+	(!v78)) & 
+	v43) & 
+	(!v44)) & 
+	(!v45)) & 
+	v46) & 
+	(!v47)) & 
+	(!v48)) & 
+	(!v49)) & 
+	v50) & 
+	(!v51)) & 
+	(!v52))) & 
+	((((((((((((!v79) & 
+	(!v80)) & 
+	v57) & 
+	(!v58)) & 
+	v59) & 
+	v60) & 
+	(!v61)) & 
+	v62) & 
+	(!v63)) & 
+	v64) & 
+	(!v65)) & 
+	(!v66)))
+	)
+
+TRANS 	(
+	((((((((((((((((((((((((((((((!((!v71) & 
+	(!v72))) | 
+	(((((((((((((((next(v209) = v1) & 
+	(next(v210) = v2)) & 
+	(next(v211) = v3)) & 
+	(next(v212) = v4)) & 
+	(next(v213) = v5)) & 
+	(next(v214) = v6)) & 
+	(next(v215) = v7)) & 
+	(next(v216) = v8)) & 
+	(next(v217) = v9)) & 
+	(next(v218) = v10)) & 
+	(next(v219) = v11)) & 
+	(next(v220) = v12)) & 
+	(next(v221) = v13)) & 
+	(next(v222) = v14)) & 
+	next(v171))) & 
+	((!v71) | 
+	(((((((((((((((next(v209) = v1) & 
+	(next(v210) = v2)) & 
+	(next(v211) = v3)) & 
+	(next(v212) = v4)) & 
+	(next(v213) = v5)) & 
+	(next(v214) = v6)) & 
+	(next(v215) = v7)) & 
+	(next(v216) = v8)) & 
+	(next(v217) = v9)) & 
+	(next(v218) = v10)) & 
+	(next(v219) = v11)) & 
+	(next(v220) = v12)) & 
+	(next(v221) = v13)) & 
+	(next(v222) = v14)) & 
+	next(v173)))) & 
+	((!((!v71) & 
+	v72)) | 
+	(((((((((((((((next(v209) = v1) & 
+	(next(v210) = v2)) & 
+	(next(v211) = v3)) & 
+	(next(v212) = v4)) & 
+	(next(v213) = v5)) & 
+	(next(v214) = v6)) & 
+	(next(v215) = v7)) & 
+	(next(v216) = v8)) & 
+	(next(v217) = v9)) & 
+	(next(v218) = v10)) & 
+	(next(v219) = v11)) & 
+	(next(v220) = v12)) & 
+	(next(v221) = v13)) & 
+	(next(v222) = v14)) & 
+	next(v175)))) & 
+	(!next(v171))) & 
+	(!next(v173))) & 
+	(!next(v175))) & 
+	(((((((((!((!v73) & 
+	(!v74))) | 
+	(((((((((((((((next(v223) = v15) & 
+	(next(v224) = v16)) & 
+	(next(v225) = v17)) & 
+	(next(v226) = v18)) & 
+	(next(v227) = v19)) & 
+	(next(v228) = v20)) & 
+	(next(v229) = v21)) & 
+	(next(v230) = v22)) & 
+	(next(v231) = v23)) & 
+	(next(v232) = v24)) & 
+	(next(v233) = v25)) & 
+	(next(v234) = v26)) & 
+	(next(v235) = v27)) & 
+	(next(v236) = v28)) & 
+	next(v177))) & 
+	((!(v73 & 
+	(!v74))) | 
+	(((((((((((((((next(v223) = v15) & 
+	(next(v224) = v16)) & 
+	(next(v225) = v17)) & 
+	(next(v226) = v18)) & 
+	(next(v227) = v19)) & 
+	(next(v228) = v20)) & 
+	(next(v229) = v21)) & 
+	(next(v230) = v22)) & 
+	(next(v231) = v23)) & 
+	(next(v232) = v24)) & 
+	(next(v233) = v25)) & 
+	(next(v234) = v26)) & 
+	(next(v235) = v27)) & 
+	(next(v236) = v28)) & 
+	next(v179)))) & 
+	((!((!v73) & 
+	v74)) | 
+	(((((((((((((((next(v223) = v15) & 
+	(next(v224) = v16)) & 
+	(next(v225) = v17)) & 
+	(next(v226) = v18)) & 
+	(next(v227) = v19)) & 
+	(next(v228) = v20)) & 
+	(next(v229) = v21)) & 
+	(next(v230) = v22)) & 
+	(next(v231) = v23)) & 
+	(next(v232) = v24)) & 
+	(next(v233) = v25)) & 
+	(next(v234) = v26)) & 
+	(next(v235) = v27)) & 
+	(next(v236) = v28)) & 
+	next(v181)))) & 
+	((!(v73 & 
+	v74)) | 
+	(((((((((((((((next(v223) = v15) & 
+	(next(v224) = v16)) & 
+	(next(v225) = v17)) & 
+	(next(v226) = v18)) & 
+	(next(v227) = v19)) & 
+	(next(v228) = v20)) & 
+	(next(v229) = v21)) & 
+	(next(v230) = v22)) & 
+	(next(v231) = v23)) & 
+	(next(v232) = v24)) & 
+	(next(v233) = v25)) & 
+	(next(v234) = v26)) & 
+	(next(v235) = v27)) & 
+	(next(v236) = v28)) & 
+	next(v183)))) & 
+	(!next(v177))) & 
+	(!next(v179))) & 
+	(!next(v181))) & 
+	(!next(v183)))) & 
+	(((((((((!((!v75) & 
+	(!v76))) | 
+	(((((((((((((((next(v237) = v29) & 
+	(next(v238) = v30)) & 
+	(next(v239) = v31)) & 
+	(next(v240) = v32)) & 
+	(next(v241) = v33)) & 
+	(next(v242) = v34)) & 
+	(next(v243) = v35)) & 
+	(next(v244) = v36)) & 
+	(next(v245) = v37)) & 
+	(next(v246) = v38)) & 
+	(next(v247) = v39)) & 
+	(next(v248) = v40)) & 
+	(next(v249) = v41)) & 
+	(next(v250) = v42)) & 
+	next(v185))) & 
+	((!(v75 & 
+	(!v76))) | 
+	(((((((((((((((next(v237) = v29) & 
+	(next(v238) = v30)) & 
+	(next(v239) = v31)) & 
+	(next(v240) = v32)) & 
+	(next(v241) = v33)) & 
+	(next(v242) = v34)) & 
+	(next(v243) = v35)) & 
+	(next(v244) = v36)) & 
+	(next(v245) = v37)) & 
+	(next(v246) = v38)) & 
+	(next(v247) = v39)) & 
+	(next(v248) = v40)) & 
+	(next(v249) = v41)) & 
+	(next(v250) = v42)) & 
+	next(v187)))) & 
+	((!((!v75) & 
+	v76)) | 
+	(((((((((((((((next(v237) = v29) & 
+	(next(v238) = v30)) & 
+	(next(v239) = v31)) & 
+	(next(v240) = v32)) & 
+	(next(v241) = v33)) & 
+	(next(v242) = v34)) & 
+	(next(v243) = v35)) & 
+	(next(v244) = v36)) & 
+	(next(v245) = v37)) & 
+	(next(v246) = v38)) & 
+	(next(v247) = v39)) & 
+	(next(v248) = v40)) & 
+	(next(v249) = v41)) & 
+	(next(v250) = v42)) & 
+	next(v189)))) & 
+	((!(v75 & 
+	v76)) | 
+	(((((((((((((((next(v237) = v29) & 
+	(next(v238) = v30)) & 
+	(next(v239) = v31)) & 
+	(next(v240) = v32)) & 
+	(next(v241) = v33)) & 
+	(next(v242) = v34)) & 
+	(next(v243) = v35)) & 
+	(next(v244) = v36)) & 
+	(next(v245) = v37)) & 
+	(next(v246) = v38)) & 
+	(next(v247) = v39)) & 
+	(next(v248) = v40)) & 
+	(next(v249) = v41)) & 
+	(next(v250) = v42)) & 
+	next(v191)))) & 
+	(!next(v185))) & 
+	(!next(v187))) & 
+	(!next(v189))) & 
+	(!next(v191)))) & 
+	(((((((((!((!v77) & 
+	(!v78))) | 
+	(((((((((((((((next(v251) = v43) & 
+	(next(v252) = v44)) & 
+	(next(v253) = v45)) & 
+	(next(v254) = v46)) & 
+	(next(v255) = v47)) & 
+	(next(v256) = v48)) & 
+	(next(v257) = v49)) & 
+	(next(v258) = v50)) & 
+	(next(v259) = v51)) & 
+	(next(v260) = v52)) & 
+	(next(v261) = v53)) & 
+	(next(v262) = v54)) & 
+	(next(v263) = v55)) & 
+	(next(v264) = v56)) & 
+	next(v193))) & 
+	((!(v77 & 
+	(!v78))) | 
+	(((((((((((((((next(v251) = v43) & 
+	(next(v252) = v44)) & 
+	(next(v253) = v45)) & 
+	(next(v254) = v46)) & 
+	(next(v255) = v47)) & 
+	(next(v256) = v48)) & 
+	(next(v257) = v49)) & 
+	(next(v258) = v50)) & 
+	(next(v259) = v51)) & 
+	(next(v260) = v52)) & 
+	(next(v261) = v53)) & 
+	(next(v262) = v54)) & 
+	(next(v263) = v55)) & 
+	(next(v264) = v56)) & 
+	next(v195)))) & 
+	((!((!v77) & 
+	v78)) | 
+	(((((((((((((((next(v251) = v43) & 
+	(next(v252) = v44)) & 
+	(next(v253) = v45)) & 
+	(next(v254) = v46)) & 
+	(next(v255) = v47)) & 
+	(next(v256) = v48)) & 
+	(next(v257) = v49)) & 
+	(next(v258) = v50)) & 
+	(next(v259) = v51)) & 
+	(next(v260) = v52)) & 
+	(next(v261) = v53)) & 
+	(next(v262) = v54)) & 
+	(next(v263) = v55)) & 
+	(next(v264) = v56)) & 
+	next(v197)))) & 
+	((!(v77 & 
+	v78)) | 
+	(((((((((((((((next(v251) = v43) & 
+	(next(v252) = v44)) & 
+	(next(v253) = v45)) & 
+	(next(v254) = v46)) & 
+	(next(v255) = v47)) & 
+	(next(v256) = v48)) & 
+	(next(v257) = v49)) & 
+	(next(v258) = v50)) & 
+	(next(v259) = v51)) & 
+	(next(v260) = v52)) & 
+	(next(v261) = v53)) & 
+	(next(v262) = v54)) & 
+	(next(v263) = v55)) & 
+	(next(v264) = v56)) & 
+	next(v199)))) & 
+	(!next(v193))) & 
+	(!next(v195))) & 
+	(!next(v197))) & 
+	(!next(v199)))) & 
+	(((((((((!((!v79) & 
+	(!v80))) | 
+	(((((((((((((((next(v265) = v57) & 
+	(next(v266) = v58)) & 
+	(next(v267) = v59)) & 
+	(next(v268) = v60)) & 
+	(next(v269) = v61)) & 
+	(next(v270) = v62)) & 
+	(next(v271) = v63)) & 
+	(next(v272) = v64)) & 
+	(next(v273) = v65)) & 
+	(next(v274) = v66)) & 
+	(next(v275) = v67)) & 
+	(next(v276) = v68)) & 
+	(next(v277) = v69)) & 
+	(next(v278) = v70)) & 
+	next(v201))) & 
+	((!(v79 & 
+	(!v80))) | 
+	(((((((((((((((next(v265) = v57) & 
+	(next(v266) = v58)) & 
+	(next(v267) = v59)) & 
+	(next(v268) = v60)) & 
+	(next(v269) = v61)) & 
+	(next(v270) = v62)) & 
+	(next(v271) = v63)) & 
+	(next(v272) = v64)) & 
+	(next(v273) = v65)) & 
+	(next(v274) = v66)) & 
+	(next(v275) = v67)) & 
+	(next(v276) = v68)) & 
+	(next(v277) = v69)) & 
+	(next(v278) = v70)) & 
+	next(v203)))) & 
+	((!((!v79) & 
+	v80)) | 
+	(((((((((((((((next(v265) = v57) & 
+	(next(v266) = v58)) & 
+	(next(v267) = v59)) & 
+	(next(v268) = v60)) & 
+	(next(v269) = v61)) & 
+	(next(v270) = v62)) & 
+	(next(v271) = v63)) & 
+	(next(v272) = v64)) & 
+	(next(v273) = v65)) & 
+	(next(v274) = v66)) & 
+	(next(v275) = v67)) & 
+	(next(v276) = v68)) & 
+	(next(v277) = v69)) & 
+	(next(v278) = v70)) & 
+	next(v205)))) & 
+	((!(v79 & 
+	v80)) | 
+	(((((((((((((((next(v265) = v57) & 
+	(next(v266) = v58)) & 
+	(next(v267) = v59)) & 
+	(next(v268) = v60)) & 
+	(next(v269) = v61)) & 
+	(next(v270) = v62)) & 
+	(next(v271) = v63)) & 
+	(next(v272) = v64)) & 
+	(next(v273) = v65)) & 
+	(next(v274) = v66)) & 
+	(next(v275) = v67)) & 
+	(next(v276) = v68)) & 
+	(next(v277) = v69)) & 
+	(next(v278) = v70)) & 
+	next(v207)))) & 
+	(!next(v201))) & 
+	(!next(v203))) & 
+	(!next(v205))) & 
+	(!next(v207)))) & 
+	((!next(v171)) | 
+	((!v71) & 
+	(!v72)))) & 
+	((!next(v173)) | 
+	v71)) & 
+	((!next(v175)) | 
+	((!v71) & 
+	v72))) & 
+	((!next(v177)) | 
+	((!v73) & 
+	(!v74)))) & 
+	((!next(v179)) | 
+	(v73 & 
+	(!v74)))) & 
+	((!next(v181)) | 
+	((!v73) & 
+	v74))) & 
+	((!next(v183)) | 
+	(v73 & 
+	v74))) & 
+	((!next(v185)) | 
+	((!v75) & 
+	(!v76)))) & 
+	((!next(v187)) | 
+	(v75 & 
+	(!v76)))) & 
+	((!next(v189)) | 
+	((!v75) & 
+	v76))) & 
+	((!next(v191)) | 
+	(v75 & 
+	v76))) & 
+	((!next(v193)) | 
+	((!v77) & 
+	(!v78)))) & 
+	((!next(v195)) | 
+	(v77 & 
+	(!v78)))) & 
+	((!next(v197)) | 
+	((!v77) & 
+	v78))) & 
+	((!next(v199)) | 
+	(v77 & 
+	v78))) & 
+	((!next(v201)) | 
+	((!v79) & 
+	(!v80)))) & 
+	((!next(v203)) | 
+	(v79 & 
+	(!v80)))) & 
+	((!next(v205)) | 
+	((!v79) & 
+	v80))) & 
+	((!next(v207)) | 
+	(v79 & 
+	v80)))
+	)
+
+INVARSPEC ((((((!v71) | (v73 | v74)) | (v75 | v76)) | (v77 | v78)) | (v79 | v80)) | ((v4 & (!v5)) & v6))

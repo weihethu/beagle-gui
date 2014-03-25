@@ -1,0 +1,12 @@
+Build BDD Time: 0s
+
+===================== DEADLOCK CHECK =====================
+-- The model is deadlock free
+-- The diameter is 22
+-- Verification Time: 0s
+
+===================== INVARSPEC 0 =====================
+-- INVARSPEC (!(elts.Monitor.place == err)) is true
+-- The diameter is 22
+-- Verification Time: 0s
+

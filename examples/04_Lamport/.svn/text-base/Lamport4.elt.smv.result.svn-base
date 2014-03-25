@@ -1,0 +1,421 @@
+MODULE main
+VAR
+	elts_Process1_place: {IDLE, REQUEST, CRITICAL, REALSE};
+
+	elts_Process2_place: {IDLE, REQUEST, CRITICAL, REALSE};
+
+	elts_GlobalEngine_x1: boolean;
+	elts_GlobalEngine_x2: boolean;
+	elts_GlobalEngine_x3: boolean;
+	elts_GlobalEngine_x4: boolean;
+	elts_GlobalEngine_y1: boolean;
+	elts_GlobalEngine_y2: boolean;
+	elts_GlobalEngine_y3: boolean;
+	elts_GlobalEngine_y4: boolean;
+	elts_GlobalEngine_xGTy: boolean;
+	elts_GlobalEngine_place: {MYPLACE};
+
+
+
+-- Variables Num   : 16
+INIT 	(
+	(((TRUE & 
+(elts_Process1_place=IDLE)) & 
+(elts_Process2_place=IDLE)) & 
+(((((((((elts_GlobalEngine_place=MYPLACE) & 
+(elts_GlobalEngine_x1 = FALSE)) & 
+(elts_GlobalEngine_x2 = FALSE)) & 
+(elts_GlobalEngine_x3 = FALSE)) & 
+(elts_GlobalEngine_x4 = FALSE)) & 
+(elts_GlobalEngine_y1 = FALSE)) & 
+(elts_GlobalEngine_y2 = FALSE)) & 
+(elts_GlobalEngine_y3 = FALSE)) & 
+(elts_GlobalEngine_y4 = FALSE)))
+	)
+
+TRANS 	(
+	(((((((((((FALSE | 
+(FALSE & 
+((((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place)) & 
+(next(elts_Process2_place) = elts_Process2_place)) & 
+(next(elts_GlobalEngine_place) = elts_GlobalEngine_place)))) | 
+(FALSE & 
+((((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place)) & 
+(next(elts_Process2_place) = elts_Process2_place)) & 
+(next(elts_GlobalEngine_place) = elts_GlobalEngine_place)))) | 
+(FALSE & 
+((((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place)) & 
+(next(elts_Process2_place) = elts_Process2_place)) & 
+(next(elts_GlobalEngine_place) = elts_GlobalEngine_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process1_place=IDLE) & 
+(next(elts_Process1_place)=REQUEST)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+(((((TRUE & 
+(next(elts_GlobalEngine_xGTy) = ((((elts_GlobalEngine_x1 & 
+(!elts_GlobalEngine_y1)) | 
+((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 & 
+(!elts_GlobalEngine_y2)))) | 
+(((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 & 
+(!elts_GlobalEngine_y3)))) | 
+((((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 | 
+(!elts_GlobalEngine_y3))) & 
+(elts_GlobalEngine_x4 & 
+(!elts_GlobalEngine_y4)))))) & 
+(next(elts_GlobalEngine_x1) = (((next(elts_GlobalEngine_xGTy) & 
+((((!elts_GlobalEngine_x1) & 
+elts_GlobalEngine_x2) & 
+elts_GlobalEngine_x3) & 
+elts_GlobalEngine_x4)) | 
+(elts_GlobalEngine_x1 & 
+(((!elts_GlobalEngine_x2) | 
+(!elts_GlobalEngine_x3)) | 
+(!elts_GlobalEngine_x4)))) | 
+(((!next(elts_GlobalEngine_xGTy)) & 
+((((!elts_GlobalEngine_y1) & 
+elts_GlobalEngine_y2) & 
+elts_GlobalEngine_y3) & 
+elts_GlobalEngine_y4)) | 
+(elts_GlobalEngine_y1 & 
+(((!elts_GlobalEngine_y2) | 
+(!elts_GlobalEngine_y3)) | 
+(!elts_GlobalEngine_y4))))))) & 
+(next(elts_GlobalEngine_x2) = ((next(elts_GlobalEngine_xGTy) & 
+((((!elts_GlobalEngine_x2) & 
+elts_GlobalEngine_x3) & 
+elts_GlobalEngine_x4) | 
+(elts_GlobalEngine_x2 & 
+((!elts_GlobalEngine_x3) | 
+(!elts_GlobalEngine_x4))))) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+((((!elts_GlobalEngine_y2) & 
+elts_GlobalEngine_y3) & 
+elts_GlobalEngine_y4) | 
+(elts_GlobalEngine_y2 & 
+((!elts_GlobalEngine_y3) | 
+(!elts_GlobalEngine_y4)))))))) & 
+(next(elts_GlobalEngine_x3) = ((next(elts_GlobalEngine_xGTy) & 
+((elts_GlobalEngine_x3 | 
+elts_GlobalEngine_x4) & 
+((!elts_GlobalEngine_x3) | 
+(!elts_GlobalEngine_x4)))) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+((elts_GlobalEngine_y3 | 
+elts_GlobalEngine_y4) & 
+((!elts_GlobalEngine_y3) | 
+(!elts_GlobalEngine_y4))))))) & 
+(next(elts_GlobalEngine_x4) = ((next(elts_GlobalEngine_xGTy) & 
+(!elts_GlobalEngine_x4)) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+(!elts_GlobalEngine_y4)))))) & 
+TRUE))) & 
+(((((TRUE & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_Process2_place) = elts_Process2_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process1_place=REQUEST) & 
+(next(elts_Process1_place)=CRITICAL)) & 
+TRUE))) & 
+(FALSE | 
+(((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+(((((!elts_GlobalEngine_y1) & 
+(!elts_GlobalEngine_y2)) & 
+(!elts_GlobalEngine_y3)) & 
+(!elts_GlobalEngine_y4)) | 
+(!((((elts_GlobalEngine_x1 & 
+(!elts_GlobalEngine_y1)) | 
+((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 & 
+(!elts_GlobalEngine_y2)))) | 
+(((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 & 
+(!elts_GlobalEngine_y3)))) | 
+((((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 | 
+(!elts_GlobalEngine_y3))) & 
+(elts_GlobalEngine_x4 & 
+(!elts_GlobalEngine_y4))))))) & 
+TRUE) & 
+TRUE))) & 
+((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process2_place) = elts_Process2_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process1_place=CRITICAL) & 
+(next(elts_Process1_place)=REALSE)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+((((TRUE & 
+(next(elts_GlobalEngine_x1) = FALSE)) & 
+(next(elts_GlobalEngine_x2) = FALSE)) & 
+(next(elts_GlobalEngine_x3) = FALSE)) & 
+(next(elts_GlobalEngine_x4) = FALSE))) & 
+TRUE))) & 
+((((((TRUE & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process2_place) = elts_Process2_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process1_place=REALSE) & 
+(next(elts_Process1_place)=IDLE)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+TRUE) & 
+TRUE))) & 
+((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process2_place) = elts_Process2_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process2_place=IDLE) & 
+(next(elts_Process2_place)=REQUEST)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+(((((TRUE & 
+(next(elts_GlobalEngine_xGTy) = ((((elts_GlobalEngine_x1 & 
+(!elts_GlobalEngine_y1)) | 
+((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 & 
+(!elts_GlobalEngine_y2)))) | 
+(((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 & 
+(!elts_GlobalEngine_y3)))) | 
+((((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 | 
+(!elts_GlobalEngine_y3))) & 
+(elts_GlobalEngine_x4 & 
+(!elts_GlobalEngine_y4)))))) & 
+(next(elts_GlobalEngine_y1) = (((next(elts_GlobalEngine_xGTy) & 
+((((!elts_GlobalEngine_x1) & 
+elts_GlobalEngine_x2) & 
+elts_GlobalEngine_x3) & 
+elts_GlobalEngine_x4)) | 
+(elts_GlobalEngine_x1 & 
+(((!elts_GlobalEngine_x2) | 
+(!elts_GlobalEngine_x3)) | 
+(!elts_GlobalEngine_x4)))) | 
+(((!next(elts_GlobalEngine_xGTy)) & 
+((((!elts_GlobalEngine_y1) & 
+elts_GlobalEngine_y2) & 
+elts_GlobalEngine_y3) & 
+elts_GlobalEngine_y4)) | 
+(elts_GlobalEngine_y1 & 
+(((!elts_GlobalEngine_y2) | 
+(!elts_GlobalEngine_y3)) | 
+(!elts_GlobalEngine_y4))))))) & 
+(next(elts_GlobalEngine_y2) = ((next(elts_GlobalEngine_xGTy) & 
+((((!elts_GlobalEngine_x2) & 
+elts_GlobalEngine_x3) & 
+elts_GlobalEngine_x4) | 
+(elts_GlobalEngine_x2 & 
+((!elts_GlobalEngine_x3) | 
+(!elts_GlobalEngine_x4))))) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+((((!elts_GlobalEngine_y2) & 
+elts_GlobalEngine_y3) & 
+elts_GlobalEngine_y4) | 
+(elts_GlobalEngine_y2 & 
+((!elts_GlobalEngine_y3) | 
+(!elts_GlobalEngine_y4)))))))) & 
+(next(elts_GlobalEngine_y3) = ((next(elts_GlobalEngine_xGTy) & 
+((elts_GlobalEngine_x3 | 
+elts_GlobalEngine_x4) & 
+((!elts_GlobalEngine_x3) | 
+(!elts_GlobalEngine_x4)))) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+((elts_GlobalEngine_y3 | 
+elts_GlobalEngine_y4) & 
+((!elts_GlobalEngine_y3) | 
+(!elts_GlobalEngine_y4))))))) & 
+(next(elts_GlobalEngine_y4) = ((next(elts_GlobalEngine_xGTy) & 
+(!elts_GlobalEngine_x4)) | 
+((!next(elts_GlobalEngine_xGTy)) & 
+(!elts_GlobalEngine_y4)))))) & 
+TRUE))) & 
+(((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_Process1_place) = elts_Process1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process2_place=REQUEST) & 
+(next(elts_Process2_place)=CRITICAL)) & 
+TRUE))) & 
+(FALSE | 
+(((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+(((((!elts_GlobalEngine_x1) & 
+(!elts_GlobalEngine_x2)) & 
+(!elts_GlobalEngine_x3)) & 
+(!elts_GlobalEngine_x4)) | 
+((((elts_GlobalEngine_x1 & 
+(!elts_GlobalEngine_y1)) | 
+((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 & 
+(!elts_GlobalEngine_y2)))) | 
+(((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 & 
+(!elts_GlobalEngine_y3)))) | 
+((((elts_GlobalEngine_x1 | 
+(!elts_GlobalEngine_y1)) & 
+(elts_GlobalEngine_x2 | 
+(!elts_GlobalEngine_y2))) & 
+(elts_GlobalEngine_x3 | 
+(!elts_GlobalEngine_y3))) & 
+(elts_GlobalEngine_x4 & 
+(!elts_GlobalEngine_y4)))))) & 
+TRUE) & 
+TRUE))) & 
+((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process2_place=CRITICAL) & 
+(next(elts_Process2_place)=REALSE)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+(((TRUE & 
+(next(elts_GlobalEngine_y1) = FALSE)) & 
+(next(elts_GlobalEngine_y2) = FALSE)) & 
+(next(elts_GlobalEngine_y3) = FALSE))) & 
+TRUE))) & 
+(((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place)))) | 
+(((TRUE & 
+(FALSE | 
+(((elts_Process2_place=REALSE) & 
+(next(elts_Process2_place)=IDLE)) & 
+TRUE))) & 
+(FALSE | 
+((((elts_GlobalEngine_place=MYPLACE) & 
+(next(elts_GlobalEngine_place)=MYPLACE)) & 
+TRUE) & 
+TRUE))) & 
+((((((((((TRUE & 
+(next(elts_GlobalEngine_x1) = elts_GlobalEngine_x1)) & 
+(next(elts_GlobalEngine_x2) = elts_GlobalEngine_x2)) & 
+(next(elts_GlobalEngine_x3) = elts_GlobalEngine_x3)) & 
+(next(elts_GlobalEngine_x4) = elts_GlobalEngine_x4)) & 
+(next(elts_GlobalEngine_y1) = elts_GlobalEngine_y1)) & 
+(next(elts_GlobalEngine_y2) = elts_GlobalEngine_y2)) & 
+(next(elts_GlobalEngine_y3) = elts_GlobalEngine_y3)) & 
+(next(elts_GlobalEngine_y4) = elts_GlobalEngine_y4)) & 
+(next(elts_GlobalEngine_xGTy) = elts_GlobalEngine_xGTy)) & 
+(next(elts_Process1_place) = elts_Process1_place))))
+	)
+
+INVARSPEC ELTS(!((elts_Process1_place=CRITICAL) & (elts_Process2_place=CRITICAL)))
+

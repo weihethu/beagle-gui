@@ -1,0 +1,47 @@
+system
+	module Process1
+		location IDLE, REQUEST, READY, CRITICAL;
+		label c1,c2,c3,c4;
+		init IDLE;
+
+		//label c1,c2,c3,c4;
+		from IDLE to REQUEST on c1;
+		from REQUEST to READY on c2;
+		from READY to CRITICAL on c3;
+		from CRITICAL to IDLE on c4;
+	end
+
+	module Process2
+		location IDLE, REQUEST, READY, CRITICAL;
+		label c5,c6,c7,c8;
+		init IDLE;
+
+		//label c5,c6,c7,c8;
+		from IDLE to REQUEST on c5;
+		from REQUEST to READY on c6;
+		from READY to CRITICAL on c7;
+		from CRITICAL to IDLE on c8;
+	end
+
+	module GlobalEngine
+		bool flag0,flag1,turn;
+		location MYPLACE;
+		label c1,c2,c3,c4,c5,c6,c7,c8;
+		init MYPLACE do {
+			flag0 = false;
+			flag1 = false;
+			turn = false;
+		};
+		//label c1,c2,c3,c4,c5,c6,c7,c8;
+		from MYPLACE to MYPLACE on c1 do { flag0 = true; };
+		from MYPLACE to MYPLACE on c2 do { turn = true; };
+		from MYPLACE to MYPLACE on c3 provided !(flag1 & turn);
+		from MYPLACE to MYPLACE on c4 do { flag0 = false; };
+		from MYPLACE to MYPLACE on c5 do {flag1 = true;};
+		from MYPLACE to MYPLACE on c6 do {turn = false;};
+		from MYPLACE to MYPLACE on c7 provided !(flag0 & !turn);
+		from MYPLACE to MYPLACE on c8 do{flag1 = false;};
+	end
+
+	INVARSPEC !((Process1.location == CRITICAL) & (Process2.location == CRITICAL))
+end

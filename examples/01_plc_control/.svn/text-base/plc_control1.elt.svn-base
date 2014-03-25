@@ -1,0 +1,410 @@
+system
+	module Scenario
+		bool Flag, Step1, Step2, Step3;
+		location INIT, FINISH0, START1, FINISH1, STOP1, START2, FINISH2, STOP2, START3, FINISH3, STOP3, START4, FINISH4, STOP4, START5, FINISH5, STOP5, START6, FINISH6, STOP6, START7, FINISH7, STOP7;
+		//inner label
+		label Scenario_next, Scenario_pre, Scenario_finish;
+		//sync label
+		label startGate, finishGate, startLp, finishLp, startLatch, finishLatch, startPPU, finishPPU;
+		label stopAll;
+
+		init INIT;
+
+		//label Scenario_next, Scenario_pre, Scenario_finish;
+		from INIT to FINISH0 on Scenario_next do {
+			Flag = true;
+			Step1 = false;
+			Step2 = false;
+			Step3 = false;
+		};
+		from STOP1 to FINISH0 on Scenario_next do {
+			Step1 = false;
+			Step2 = false;
+			Step3 = false;
+			Flag = true;
+		};
+		from STOP2 to FINISH1 on Scenario_next do {
+			Step1 = false;
+			Step2 = false;
+			Step3 = true;
+			Flag = true;
+		};
+		from STOP3 to FINISH2 on Scenario_next do {
+			Step1 = false;
+			Step2 = true;
+			Step3 = false;
+			Flag = true;
+		};
+		from STOP4 to FINISH3 on Scenario_next do {
+			Step1 = false;
+			Step2 = true;
+			Step3 = true;
+			Flag = true;
+		};
+		from STOP5 to FINISH4 on Scenario_next do {
+			Step1 = true;
+			Step2 = false;
+			Step3 = false;
+			Flag = true;
+		};
+		from STOP6 to FINISH5 on Scenario_next do {
+			Step1 = true;
+			Step2 = false;
+			Step3 = true;
+			Flag = true;
+		};
+		from STOP7 to FINISH6 on Scenario_next do {
+			Step1 = true;
+			Step2 = true;
+			Step3 = false;
+			Flag = true;
+		};
+		from INIT to FINISH7 on Scenario_pre do {
+			Flag = false;
+			Step1 = true;
+			Step2 = true;
+			Step3 = true;
+		};
+		from STOP1 to FINISH1 on Scenario_pre do {
+			Step1 = false;
+			Step2 = false;
+			Step3 = true;
+			Flag = false;
+		};
+		from STOP2 to FINISH2 on Scenario_pre do {
+			Step1 = false;
+			Step2 = true;
+			Step3 = false;
+			Flag = false;
+		};
+		from STOP3 to FINISH3 on Scenario_pre do { Step1 = false; Step2 = true; Step3 = true; Flag = false; };
+		from STOP4 to FINISH4 on Scenario_pre do { Step1 = true; Step2 = false; Step3 = false; Flag = false; };
+		from STOP5 to FINISH5 on Scenario_pre do { Step1 = true; Step2 = false; Step3 = true; Flag = false; };
+		from STOP6 to FINISH6 on Scenario_pre do { Step1 = true; Step2 = true; Step3 = false; Flag = false; };
+		from STOP7 to FINISH7 on Scenario_pre do { Step1 = true; Step2 = true; Step3 = true; Flag = false; };
+		from FINISH0 to INIT on Scenario_finish provided Flag == false;
+		from FINISH7 to INIT on Scenario_finish provided Flag == true;
+
+		//label startGate, finishGate, startLp, finishLp, startLatch, finishLatch, startPPU, finishPPU;
+		//label stopAll;
+		from FINISH0 to START1 on startGate provided Flag == true;
+		from FINISH1 to START1 on startGate provided Flag == false;
+		from START1  to FINISH1 on finishGate provided Flag == true do { Step1 = false; Step2 = false; Step3 = true; };
+		from START1  to FINISH0 on finishGate provided Flag == false do { Step1 = false; Step2 = false; Step3 = false; };
+		from FINISH1 to START2 on startLp provided Flag == true;
+		from FINISH3 to START4 on startLp provided Flag == true;
+		from FINISH5 to START6 on startLp provided Flag == true;
+		from FINISH6 to START6 on startLp provided Flag == false;
+		from FINISH4 to START4 on startLp provided Flag == false;
+		from FINISH2 to START2 on startLp provided Flag == false;
+		from START2  to FINISH2 on finishLp  provided Flag == true do { Step1 = false; Step2 = true; Step3 = false; };
+		from START4  to FINISH4 on finishLp  provided Flag == true do { Step1 = true; Step2 = false; Step3 = false; };
+		from START6  to FINISH6 on finishLp  provided Flag == true do { Step1 = true; Step2 = true; Step3 = false; };
+		from START6  to FINISH5 on finishLp  provided Flag == false do { Step1 = true; Step2 = false; Step3 = true; };
+		from START4  to FINISH3 on finishLp  provided Flag == false do { Step1 = false; Step2 = true; Step3 = true; };
+		from START2  to FINISH1 on finishLp  provided Flag == false do { Step1 = false; Step2 = false; Step3 = true; };
+		from FINISH2 to START3  on startLatch provided Flag == true;
+		from FINISH4 to START5  on startLatch provided Flag == true;
+		from FINISH5 to START5  on startLatch provided Flag == false;
+		from FINISH3 to START3  on startLatch provided Flag == false;
+		from START3  to FINISH3 on finishLatch provided Flag == true do { Step1 = false; Step2 = true; Step3 = true; };
+		from START5  to FINISH5 on finishLatch provided Flag == true do { Step1 = true; Step2 = false; Step3 = true; };
+		from START5  to FINISH4 on finishLatch provided Flag == false do { Step1 = true; Step2 = false; Step3 = false; };
+		from START3  to FINISH2 on finishLatch provided Flag == false do { Step1 = false; Step2 = true; Step3 = false; };
+		from FINISH6 to START7  on startPPU  provided Flag == true;
+		from FINISH7 to START7  on startPPU  provided Flag == false;
+		from START7  to FINISH7 on finishPPU provided Flag == true do { Step1 = true; Step2 = true; Step3 = true; };
+		from START7  to FINISH6 on finishPPU provided Flag == false do { Step1 = true; Step2 = true; Step3 = false; };
+		from START1  to STOP1 on stopAll;
+		from START2  to STOP2 on stopAll;
+		from START3  to STOP3 on stopAll;
+		from START4  to STOP4 on stopAll;
+		from START5  to STOP5 on stopAll;
+		from START6  to STOP6 on stopAll;
+		from START7  to STOP7 on stopAll;
+	end
+
+	module Gate
+		location INIT, IMOVE, ITICK;
+		//inner label
+		label Gate_finishMove;
+		//sync label
+		label g2c_GetCurPos, g2c_ReachLmt, c2g_Move;
+		label tickc;
+
+		init INIT;
+		//label Gate_finishMove;
+		from ITICK 	to INIT on Gate_finishMove;
+		//label g2c_GetCurPos, g2c_ReachLmt, c2g_Move;
+		from INIT 	to INIT on g2c_GetCurPos;
+		from IMOVE 	to IMOVE on g2c_GetCurPos;
+		from ITICK 	to ITICK on g2c_GetCurPos;
+		from ITICK 	to INIT on g2c_ReachLmt;
+		from INIT  	to IMOVE on c2g_Move;
+		//label tickc;
+		from INIT to INIT on tickc;
+		from IMOVE to ITICK on tickc;
+	end
+
+	module GateControl
+		bool ImStopRch, errorFlag;
+		location INIT,ISTART,IGCP,INOTIFY,MNOTIFY,MREQUEST,MRESPONSE,MMOVE,MTICK,MGCP,FPARALLEL,FFINISH,RREACHLMT,RGCP,RNOTIFY;
+
+		//inner label
+		label GateControl_request, GateControl_response, GateControl_notify, GateControl_startMove, GateControl_constraintViolated, GateControl_alarm, GateControl_toFinish1, GateControl_toFinish2;
+		//sync label
+		label g2c_GetCurPos, g2c_ReachLmt, c2g_Move;
+		label startGate, finishGate;
+		label stopAll;
+		label tickc;
+
+		init INIT do {
+			ImStopRch = false;
+			errorFlag = false;
+		};
+
+		//label GateControl_request, GateControl_response, GateControl_notify, GateControl_startMove, GateControl_constraintViolated, GateControl_alarm, GateControl_toFinish1, GateControl_toFinish2;
+		from MNOTIFY   	to MREQUEST on GateControl_request;
+		from MREQUEST  	to MRESPONSE on GateControl_response;
+		from IGCP		to INOTIFY on GateControl_notify;
+		from FPARALLEL 	to INIT on GateControl_notify;
+		from MGCP		to MNOTIFY on GateControl_notify;
+		from RGCP		to RNOTIFY on GateControl_notify;
+		from INOTIFY   	to MNOTIFY on GateControl_startMove;
+		from MRESPONSE  to INIT on GateControl_constraintViolated;
+		from RNOTIFY	to INIT on GateControl_alarm;
+		from INOTIFY 	to FFINISH on GateControl_toFinish1;
+		from MNOTIFY	to FFINISH on GateControl_toFinish2;
+		//label g2c_GetCurPos, g2c_ReachLmt, c2g_Move;
+		from ISTART 	to IGCP on g2c_GetCurPos;
+		from MTICK		to MGCP on g2c_GetCurPos;
+		from RREACHLMT	to RGCP on g2c_GetCurPos;
+		from MTICK		to RREACHLMT on g2c_ReachLmt do { ImStopRch = true; };
+		from MRESPONSE 	to MMOVE on c2g_Move do { errorFlag = ImStopRch; };
+		//label startGate, finishGate;
+		from INIT		to ISTART on startGate do { ImStopRch = false; };
+		from FFINISH 	to FPARALLEL on finishGate;
+		//label stopAll;
+		from INIT		to INIT on stopAll	do { ImStopRch = true; };
+		from INOTIFY 	to INIT on stopAll	do { ImStopRch = true; };
+		from FFINISH 	to INIT on stopAll	do { ImStopRch = true; };
+		from MRESPONSE 	to INIT on stopAll	do { ImStopRch = true; };
+		//label tickc;
+		from INIT		to INIT on tickc;
+		from INOTIFY 	to INOTIFY on tickc;
+		from FFINISH 	to FFINISH on tickc;
+		from MMOVE	to MTICK on tickc;
+	end
+
+	module Lpf
+		location INIT, IMOVE, ITICK;
+		//inner label
+		label Lpf_finishMove;
+		//sync label
+		label lp2c_GetCurPos, lp2c_ReachLmt, c2lp_Move;
+		label tickc;
+
+		init INIT;
+
+		//label Lpf_finishMove;
+		from ITICK 	to INIT on Lpf_finishMove;
+		//label lp2c_GetCurPos, lp2c_ReachLmt, c2lp_Move;
+		from INIT	to INIT on lp2c_GetCurPos;
+		from IMOVE 	to IMOVE on lp2c_GetCurPos;
+		from ITICK 	to ITICK on lp2c_GetCurPos;
+		from ITICK 	to INIT on lp2c_ReachLmt;
+		from INIT  	to IMOVE on c2lp_Move;
+		//label tickc;
+		from INIT 	to INIT on tickc;
+		from IMOVE 	to ITICK on tickc;
+	end
+
+	module LpfControl
+		bool ImStopRch, errorFlag;
+		location INIT, ISTART, IGCP, INOTIFY, MNOTIFY, MREQUEST, MRESPONSE, MMOVE, MTICK, MGCP, FPARALLEL, FFINISH, RREACHLMT, RGCP, RNOTIFY;
+		//inner label
+		label LpfControl_request, LpfControl_response, LpfControl_notify, LpfControl_startMove, LpfControl_constraintViolated, LpfControl_alarm, LpfControl_toFinish1, LpfControl_toFinish2;
+		//sync label
+		label lp2c_GetCurPos, lp2c_ReachLmt, c2lp_Move;
+		label startLp, finishLp;
+		label stopAll;
+		label tickc;
+
+		init INIT do {
+			ImStopRch = false;
+			errorFlag = false;
+		};
+
+		//label LpfControl_request, LpfControl_response, LpfControl_notify, LpfControl_startMove, LpfControl_constraintViolated, LpfControl_alarm, LpfControl_toFinish1, LpfControl_toFinish2;
+		from MNOTIFY  	to MREQUEST on LpfControl_request;
+		from MREQUEST 	to MRESPONSE on LpfControl_response;
+		from IGCP		to INOTIFY on LpfControl_notify;
+		from FPARALLEL	to INIT on LpfControl_notify;
+		from MGCP		to MNOTIFY on LpfControl_notify;
+		from RGCP		to RNOTIFY on LpfControl_notify;
+		from INOTIFY   	to MNOTIFY on LpfControl_startMove;
+		from MRESPONSE  to INIT on LpfControl_constraintViolated;
+		from RNOTIFY  	to INIT on LpfControl_alarm;
+		from INOTIFY 	to FFINISH on LpfControl_toFinish1;
+		from MNOTIFY   	to FFINISH on LpfControl_toFinish2;
+		//label lp2c_GetCurPos, lp2c_ReachLmt, c2lp_Move;
+		from ISTART  	to IGCP on lp2c_GetCurPos;
+		from MTICK		to MGCP on lp2c_GetCurPos;
+		from RREACHLMT 	to RGCP on lp2c_GetCurPos;
+		from MTICK		to RREACHLMT on lp2c_ReachLmt do { ImStopRch = true; };
+		from MRESPONSE 	to MMOVE on c2lp_Move do { errorFlag = ImStopRch; };
+		//label startLp, finishLp;
+		from INIT		to ISTART on startLp do { ImStopRch = false; };
+		from FFINISH 	to FPARALLEL on finishLp;
+		//label stopAll;
+		from INIT		to INIT on stopAll do { ImStopRch = true; };
+		from INOTIFY 	to INIT on stopAll do { ImStopRch = true; };
+		from FFINISH 	to INIT on stopAll do { ImStopRch = true; };
+		from MRESPONSE 	to INIT on stopAll do { ImStopRch = true; };
+		//label tickc;
+		from INIT		to INIT on tickc;
+		from INOTIFY 	to INOTIFY on tickc;
+		from FFINISH 	to FFINISH on tickc;
+		from MMOVE		to MTICK on tickc;
+	end
+
+	module Latch
+		location INIT, IMOVE, ITICK;
+		//inner label
+		label Latch_finishMove;
+		label c2l_move, l2c_reachLmt;
+		label tickc;
+
+		init INIT;
+		//label Latch_finishMove;
+		from ITICK 	to INIT on Latch_finishMove;
+		//label c2l_move, l2c_reachLmt;
+		from INIT  	to IMOVE on c2l_move;
+		from ITICK 	to INIT on l2c_reachLmt;
+		//label tickc;
+		from INIT 	to INIT on tickc;
+		from IMOVE 	to ITICK on tickc;
+	end
+
+	module LatchControl
+		bool ImStopRch, errorFlag;
+		location INIT, ISTART, MNOTIFY, MREQUEST, MRESPONSE, MMOVE, MTICK, FRCHLMT, FNOTIFY;
+		//inner label
+		label LatchControl_request, LatchControl_response, LatchControl_notify, LatchControl_startMove, LatchControl_alarm, LatchControl_constraintViolated;
+		//sync label
+		label c2l_move, l2c_reachLmt;
+		label startLatch, finishLatch;
+		label stopAll;
+		label tickc;
+
+		init INIT do {
+			ImStopRch = false;
+			errorFlag = false;
+		};
+		//label LatchControl_request, LatchControl_response, LatchControl_notify, LatchControl_startMove, LatchControl_alarm, LatchControl_constraintViolated;
+		from MNOTIFY    to MREQUEST on LatchControl_request;
+		from MREQUEST   to MRESPONSE on LatchControl_response;
+		from MTICK		to MNOTIFY on LatchControl_notify;
+		from FRCHLMT   	to FNOTIFY on LatchControl_notify;
+		from ISTART		to MNOTIFY on LatchControl_startMove;
+		from MNOTIFY    to INIT on LatchControl_alarm;
+		from MRESPONSE  to INIT on LatchControl_constraintViolated;
+		//label c2l_move, l2c_reachLmt;
+		from MRESPONSE  to MMOVE on c2l_move do { errorFlag = ImStopRch; };
+		from MTICK		to FRCHLMT on l2c_reachLmt do { ImStopRch = true; };
+		//label startLatch, finishLatch;
+		from INIT		to ISTART on startLatch do { ImStopRch = false; };
+		from FNOTIFY   	to INIT on finishLatch;
+		//label stopAll;
+		from INIT		to INIT on stopAll do { ImStopRch = true; };
+		from ISTART		to INIT on stopAll do { ImStopRch = true; };
+		from MRESPONSE  to INIT on stopAll do { ImStopRch = true; };
+		from FNOTIFY   	to INIT on stopAll do { ImStopRch = true; };
+		//label tickc;
+		from INIT		to INIT on tickc;
+		from ISTART		to ISTART on tickc;
+		from MMOVE		to MTICK on tickc;
+		from FNOTIFY   	to FNOTIFY on tickc;
+	end
+
+	module PPU
+		location IDLE, RUNNING, FINISH, CHECK_LIMIT;
+		//inner label
+		label PPU_tau;
+		//sync label
+		label p2c_getCurPos, p2c_reachWorkPos, c2p_move;
+		label tickc;
+
+		init IDLE;
+		//label PPU_tau;
+		from FINISH		 to CHECK_LIMIT on PPU_tau;
+		from CHECK_LIMIT to IDLE on PPU_tau;
+		//label p2c_getCurPos, p2c_reachWorkPos, c2p_move;
+		from IDLE 		 to IDLE on p2c_getCurPos;
+		from RUNNING 	 to RUNNING on p2c_getCurPos;
+		from FINISH 	 to FINISH on p2c_getCurPos;
+		from CHECK_LIMIT to IDLE on p2c_reachWorkPos;
+		from IDLE 		 to RUNNING on c2p_move;
+		//label tickc;
+		from IDLE 		 to IDLE on tickc;
+		from RUNNING 	 to FINISH on tickc;
+	end
+
+	module PPUControl
+		bool ImStopRch, errorFlag;
+		location INIT, WAITING, READY;
+		location A1, A2, A3, A4, A5, A6;
+		location B1, B2, B3, B4, B5, B6;
+		location ARRIVED, NOTIFY, FINISH;
+		//inner label
+		label PPUControl_request, PPUControl_response, PPUControl_notify, PPUControl_constraintViolated, PPUControl_startLanding;
+		//sync label
+		label p2c_getCurPos, p2c_reachWorkPos, c2p_move;
+		label startPPU, finishPPU;
+		label stopAll;
+		label tickc;
+
+		init INIT do {
+			ImStopRch = false;
+			errorFlag = false;
+		};
+		//label PPUControl_request, PPUControl_response, PPUControl_notify, PPUControl_constraintViolated, PPUControl_startLanding;
+		from A1			to A2 on PPUControl_request;
+		from B1			to B2 on PPUControl_request;
+		from A2			to A3 on PPUControl_response;
+		from B2			to B3 on PPUControl_response;
+		from READY		to A1 on PPUControl_notify;
+		from A6			to A1 on PPUControl_notify;
+		from B6			to B1 on PPUControl_notify;
+		from NOTIFY		to FINISH on PPUControl_notify;
+		from A3			to INIT on PPUControl_constraintViolated;
+		from B3   		to INIT on PPUControl_constraintViolated;
+		from A1			to B1 on PPUControl_startLanding;
+		//label p2c_getCurPos, p2c_reachWorkPos, c2p_move;
+		from WAITING	to READY on p2c_getCurPos;
+		from A5			to A6 on p2c_getCurPos;
+		from B5			to B6 on p2c_getCurPos;
+		from ARRIVED	to NOTIFY on p2c_getCurPos;
+		from A5			to A5 on p2c_reachWorkPos do { ImStopRch = true; };
+		from B5			to ARRIVED on p2c_reachWorkPos do { ImStopRch = true; };
+		from A3			to A4 on c2p_move do { errorFlag = ImStopRch; };
+		from B3			to B4 on c2p_move do { errorFlag = ImStopRch; };
+		//label startPPU, finishPPU;
+		from INIT		to WAITING on startPPU do { ImStopRch = false; };
+		from FINISH		to INIT on finishPPU;
+		//label stopAll;
+		from INIT		to INIT on stopAll do { ImStopRch = true; };
+		from WAITING 	to INIT on stopAll do { ImStopRch = true; };
+		from A3			to INIT on stopAll do { ImStopRch = true; };
+		from B3			to INIT on stopAll do { ImStopRch = true; };
+		from FINISH 	to INIT on stopAll do { ImStopRch = true; };
+		//label tickc;
+		from INIT	   to INIT on tickc;
+		from WAITING	to WAITING on tickc;
+		from A4			to A5 on tickc;
+		from B4			to B5 on tickc;
+		from FINISH		to FINISH on tickc;
+	end
+	// 所有设备在 到达限位 或 收到stop命令 后都会立即停止
+	INVARSPEC (GateControl.errorFlag == false) & (LpfControl.errorFlag == false) & (LatchControl.errorFlag == false) & (PPUControl.errorFlag == false)
+end
