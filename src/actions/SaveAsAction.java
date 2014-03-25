@@ -35,6 +35,13 @@ public class SaveAsAction extends AbstractAction {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
+
+		if (Environment.getInstance().getCurrentPath() != null) {
+			File currentFilePath = new File(Environment.getInstance()
+					.getCurrentPath());
+			fileChooser.setCurrentDirectory(currentFilePath.getParentFile());
+		}
+
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
 			@Override
@@ -44,7 +51,7 @@ public class SaveAsAction extends AbstractAction {
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith("." + ELTS_EXT);
+				return f.isDirectory() || f.getName().endsWith("." + ELTS_EXT);
 			}
 
 		});
@@ -52,7 +59,7 @@ public class SaveAsAction extends AbstractAction {
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith("." + ELTS_EXT)
+				return f.isDirectory() || f.getName().endsWith("." + ELTS_EXT)
 						|| f.getName().endsWith(".xml");
 			}
 

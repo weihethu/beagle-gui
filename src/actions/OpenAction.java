@@ -2,19 +2,19 @@ package actions;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import model.Model;
 import model.Module;
 import model.automata.State;
 import model.automata.Transition;
+import utils.BeagleInvoker;
+import utils.Pair;
 import elts.ELTSParser;
 import elts.graph.GraphObjectPlacer;
 import gui.Environment;
@@ -29,10 +29,19 @@ public class OpenAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO: add warning to save current
+		if (JOptionPane.showConfirmDialog((Component) event.getSource(),
+				"All unsaved content will be lost! Do you want to continue?",
+				"Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.CANCEL_OPTION)
+			return;
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
+
+		if (Environment.getInstance().getCurrentPath() != null) {
+			File currentFilePath = new File(Environment.getInstance()
+					.getCurrentPath());
+			fileChooser.setCurrentDirectory(currentFilePath.getParentFile());
+		}
 
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
@@ -43,40 +52,39 @@ public class OpenAction extends AbstractAction {
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith("." + ELTS_EXT);
+				return f.isDirectory() || f.getName().endsWith("." + ELTS_EXT);
 			}
 
 		});
 		if (JFileChooser.APPROVE_OPTION == fileChooser
 				.showOpenDialog((Component) event.getSource())) {
 			File selectedFile = fileChooser.getSelectedFile();
-			String xmlContent = getModelXML(selectedFile);
+			Pair<Integer, String> result = BeagleInvoker.getIntance().elts2XML(
+					selectedFile.getPath());
 
-			Model model = ELTSParser.parseModel(xmlContent);
-			// adjust positions if additional graph file provided
-			this.adjustLocations(model,
-					this.substitutePathExt(selectedFile.getPath(), "xml"));
-			if (model != null) {
-				Environment.getInstance().setModel(model);
+			if (result.getFirst() == 0) {
+				String xmlContent = result.getSecond();
+				Model model = ELTSParser.parseModel(xmlContent);
+				if (model != null) {
+					this.adjustLocations(model, this.substitutePathExt(
+							selectedFile.getPath(), "xml"));
+					Environment.getInstance().setModel(model);
+					Environment.getInstance().setCurrentPath(
+							selectedFile.getPath());
+				} else {
+					JOptionPane.showMessageDialog(
+							(Component) event.getSource(),
+							"Beagle executable returns invalid XML format!",
+							"Parsing Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				String errorMsg = result.getSecond();
+				JOptionPane.showMessageDialog((Component) event.getSource(),
+						"Errors while parsing " + selectedFile.getName()
+								+ "!\n" + errorMsg, "Parsing Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			Environment.getInstance().setCurrentPath(selectedFile.getPath());
 		}
-	}
-
-	private String getModelXML(File file) {
-		String text = "";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("model.xml"));
-			String s;
-			while ((s = br.readLine()) != null) {
-				text += (s + "\n");
-			}
-			br.close();
-		} catch (IOException e) {
-			text = null;
-			e.printStackTrace();
-		}
-		return text;
 	}
 
 	private void adjustLocations(Model model, String graphFilePath) {
