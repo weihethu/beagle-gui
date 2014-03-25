@@ -6,11 +6,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -27,7 +33,13 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
+import model.Model;
+import utils.BeagleInvoker;
 import elts.ELTSGenerator;
 import events.ModuleEditEvent;
 import events.NoteEditEvent;
@@ -47,6 +59,8 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 	private JToolBar toolbar = null;
 	private JSpinner bmcStepSpinner = null;
 	private JLabel bmcStepLabel = null;
+	private final JTextArea consoleTa;
+	private BufferedWriter processWriter = null;
 
 	private JTable createPropertiesTable() {
 		TableModel tableModel = new AbstractTableModel() {
@@ -162,8 +176,74 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new BorderLayout());
 		resultPanel.add(new JLabel("Verify results:"), BorderLayout.NORTH);
-		JTextArea resultTa = new JTextArea();
-		resultPanel.add(new JScrollPane(resultTa), BorderLayout.CENTER);
+		consoleTa = new JTextArea();
+		consoleTa.setEditable(true);
+
+		((AbstractDocument) consoleTa.getDocument())
+				.setDocumentFilter(new DocumentFilter() {
+					@Override
+					public void insertString(final FilterBypass fb,
+							final int offset, final String string,
+							final AttributeSet attr)
+							throws BadLocationException {
+						int line = consoleTa.getLineOfOffset(offset);
+						if (line == consoleTa.getLineCount() - 1) {
+							super.insertString(fb, offset, string, attr);
+						}
+					}
+
+					@Override
+					public void remove(final FilterBypass fb, final int offset,
+							final int length) throws BadLocationException {
+						int line = consoleTa.getLineOfOffset(offset);
+						if (line == consoleTa.getLineCount() - 1) {
+							super.remove(fb, offset, length);
+						}
+					}
+
+					@Override
+					public void replace(final FilterBypass fb,
+							final int offset, final int length,
+							final String text, final AttributeSet attrs)
+							throws BadLocationException {
+						int line = consoleTa.getLineOfOffset(offset);
+						if (line == consoleTa.getLineCount() - 1) {
+							super.replace(fb, offset, length, text, attrs);
+						}
+					}
+				});
+
+		consoleTa.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					int lastLineIndex = consoleTa.getLineCount() - 1;
+					try {
+						int startOffset = consoleTa
+								.getLineStartOffset(lastLineIndex);
+						int endOffset = consoleTa
+								.getLineEndOffset(lastLineIndex);
+						String lastLineText = consoleTa.getDocument().getText(
+								startOffset, endOffset - startOffset);
+						writeToProcess(lastLineText);
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+
+		});
+		resultPanel.add(new JScrollPane(consoleTa), BorderLayout.CENTER);
 
 		outerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, innerPane,
 				resultPanel);
@@ -226,6 +306,14 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 
 		toolbar.add(new JSeparator());
 		JButton startBtn = new JButton("Start Verify");
+
+		startBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startVerify();
+			}
+		});
 		toolbar.add(startBtn);
 
 		this.add(toolbar, BorderLayout.NORTH);
@@ -287,5 +375,63 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			}
 		}
 		this.showBddOptions = bddRb.isSelected();
+	}
+
+	public String[] getArguments() {
+		if (bddRb.isSelected()) {
+			return new String[] { "-bdd",
+					"-" + bddMethodCombo.getSelectedItem().toString() };
+		} else
+			return new String[] { "-bmc",
+					"-" + bmcMethodCombo.getSelectedItem().toString(),
+					String.valueOf(bmcStepSpinner.getValue()) };
+	}
+
+	private void startVerify() {
+		// Check model is not empty
+		Model model = Environment.getInstance().getModel();
+		if (model.getModules().length == 0) {
+			JOptionPane.showMessageDialog(this, "The model is empty!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		// Check properties is not empty
+		if (model.getProperties().length == 0) {
+			JOptionPane.showMessageDialog(this, "There are no properties!",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		BeagleInvoker.getIntance().verify(this);
+	}
+
+	public void appendLine(String line) {
+		this.consoleTa.append(line + "\n");
+		consoleTa.setCaretPosition(consoleTa.getText().length());
+	}
+
+	private void writeToProcess(String str) {
+		if (this.processWriter != null) {
+			try {
+				this.processWriter.write(str);
+				this.processWriter.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void setProcessOutputStream(OutputStream stream) {
+		if (stream != null) {
+			this.processWriter = new BufferedWriter(new OutputStreamWriter(
+					stream));
+		} else {
+			if (this.processWriter != null)
+				try {
+					this.processWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			this.processWriter = null;
+		}
 	}
 }
