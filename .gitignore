@@ -5,3 +5,5 @@
 *.ear
 /bin
 tmp
+temp/
+time.txt

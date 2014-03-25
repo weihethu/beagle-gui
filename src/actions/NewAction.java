@@ -4,9 +4,11 @@ import gui.Environment;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import model.Model;
 
@@ -14,6 +16,8 @@ public class NewAction extends AbstractAction {
 
 	public NewAction() {
 		super("New", null);
+		putValue("AcceleratorKey",
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	@Override

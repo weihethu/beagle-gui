@@ -2,11 +2,13 @@ package actions;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import model.Model;
@@ -25,6 +27,8 @@ public class OpenAction extends AbstractAction {
 
 	public OpenAction() {
 		super("Open", null);
+		putValue("AcceleratorKey",
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	@Override

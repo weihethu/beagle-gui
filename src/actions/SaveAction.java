@@ -4,14 +4,18 @@ import gui.Environment;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 public class SaveAction extends AbstractAction {
 
 	public SaveAction() {
 		super("Save", null);
+		putValue("AcceleratorKey",
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 	}
 
 	@Override

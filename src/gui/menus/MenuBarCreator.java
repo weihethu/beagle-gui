@@ -11,6 +11,7 @@ import javax.swing.KeyStroke;
 
 import actions.AboutAction;
 import actions.CloseButton;
+import actions.QuitAction;
 import actions.NewAction;
 import actions.OpenAction;
 import actions.SaveAction;
@@ -40,7 +41,7 @@ public class MenuBarCreator {
 
 	private static void addItem(JMenu menu, Action action) {
 		JMenuItem item = new JMenuItem(action);
-		// item.setAccelerator((KeyStroke) action.getValue("AccelleratorKey"));
+		item.setAccelerator((KeyStroke) action.getValue("AcceleratorKey"));
 		menu.add(item);
 	}
 
@@ -53,6 +54,9 @@ public class MenuBarCreator {
 
 		addItem(fileMenu, new SaveAction());
 		addItem(fileMenu, new SaveAsAction());
+		fileMenu.addSeparator();
+
+		addItem(fileMenu, new QuitAction());
 		return fileMenu;
 	}
 

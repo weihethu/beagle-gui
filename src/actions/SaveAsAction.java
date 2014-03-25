@@ -6,6 +6,7 @@ import gui.Environment;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import model.Model;
@@ -28,6 +30,10 @@ public class SaveAsAction extends AbstractAction {
 
 	public SaveAsAction() {
 		super("Save as", null);
+		putValue(
+				"AcceleratorKey",
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK
+						| KeyEvent.SHIFT_DOWN_MASK));
 	}
 
 	@Override
