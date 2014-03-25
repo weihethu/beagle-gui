@@ -1,28 +1,32 @@
 package gui.verifiers;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Vector;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
-import javax.swing.table.AbstractTableModel;
 
 import elts.ELTSGenerator;
 import events.ModuleEditEvent;
@@ -37,6 +41,12 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 
 	JSplitPane innerPane, outerPane;
 	LineNumberingTextPanel modelText = null;
+	private boolean showBddOptions = true;
+	private JRadioButton bddRb = null, bmcRb = null;
+	private JComboBox<String> bddMethodCombo = null, bmcMethodCombo = null;
+	private JToolBar toolbar = null;
+	private JSpinner bmcStepSpinner = null;
+	private JLabel bmcStepLabel = null;
 
 	private JTable createPropertiesTable() {
 		TableModel tableModel = new AbstractTableModel() {
@@ -101,11 +111,12 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			@Override
 			public boolean processKeyBinding(KeyStroke ks, KeyEvent e,
 					int condition, boolean pressed) {
-				if (ks.getKeyCode() == KeyEvent.VK_DELETE && ks.isOnKeyRelease()) {
+				if (ks.getKeyCode() == KeyEvent.VK_DELETE
+						&& ks.isOnKeyRelease()) {
 					TableCellEditor editor = this.getCellEditor();
-					if(editor != null)
+					if (editor != null)
 						editor.stopCellEditing();
-					
+
 					int selectedRows[] = this.getSelectedRows();
 					if (selectedRows.length > 0) {
 						int startIndex = selectedRows[0];
@@ -158,8 +169,62 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 				resultPanel);
 		this.setLayout(new BorderLayout());
 
-		JToolBar toolbar = new JToolBar();
+		toolbar = new JToolBar();
 
+		toolbar.add(new JLabel("Type:"));
+
+		bddRb = new JRadioButton("bdd");
+		bmcRb = new JRadioButton("bmc");
+
+		ButtonGroup functionTypeRbGroup = new ButtonGroup();
+		functionTypeRbGroup.add(bddRb);
+		functionTypeRbGroup.add(bmcRb);
+
+		bddRb.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onFunctionTypeChange();
+			}
+		});
+
+		bmcRb.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onFunctionTypeChange();
+			}
+		});
+
+		bddRb.setSelected(true);
+		this.showBddOptions = bddRb.isSelected();
+		toolbar.add(bddRb);
+		toolbar.add(bmcRb);
+
+		toolbar.add(new JLabel("Method:"));
+
+		bddMethodCombo = new JComboBox<String>(new String[] { "whole",
+				"separate", "eqsSeparate" });
+		bddMethodCombo.setEditable(false);
+		bddMethodCombo.setSelectedIndex(0);
+
+		bmcMethodCombo = new JComboBox<String>(new String[] { "std", "inc",
+				"incDec", "macro", "macroInc", "macroIncDec" });
+		bmcMethodCombo.setEditable(false);
+		bmcMethodCombo.setSelectedIndex(0);
+
+		bmcStepLabel = new JLabel("step:");
+		bmcStepSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 1));
+
+		if (this.showBddOptions)
+			toolbar.add(bddMethodCombo);
+		else {
+			toolbar.add(bmcMethodCombo);
+			toolbar.add(bmcStepLabel);
+			toolbar.add(bmcStepSpinner);
+		}
+
+		toolbar.add(new JSeparator());
 		JButton startBtn = new JButton("Start Verify");
 		toolbar.add(startBtn);
 
@@ -196,5 +261,31 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		} else if (event instanceof NoteEditEvent) {
 			reloadModelText();
 		}
+	}
+
+	private void onFunctionTypeChange() {
+		if (this.showBddOptions != bddRb.isSelected()) {
+			// switch ui
+			if (bddRb.isSelected()) {
+				int index = toolbar.getComponentIndex(bmcMethodCombo);
+				if (index >= 0) {
+					toolbar.remove(bmcMethodCombo);
+					toolbar.remove(bmcStepLabel);
+					toolbar.remove(bmcStepSpinner);
+					toolbar.add(bddMethodCombo, index);
+					toolbar.updateUI();
+				}
+			} else {
+				int index = toolbar.getComponentIndex(bddMethodCombo);
+				if (index >= 0) {
+					toolbar.remove(bddMethodCombo);
+					toolbar.add(bmcMethodCombo, index);
+					toolbar.add(bmcStepLabel, index + 1);
+					toolbar.add(bmcStepSpinner, index + 2);
+					toolbar.updateUI();
+				}
+			}
+		}
+		this.showBddOptions = bddRb.isSelected();
 	}
 }
