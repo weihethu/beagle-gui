@@ -16,8 +16,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -243,6 +245,27 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			}
 
 		});
+
+		JPopupMenu popup = new JPopupMenu();
+		JMenuItem item = new JMenuItem("Clear");
+		item.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DocumentFilter tmp = ((AbstractDocument) consoleTa
+						.getDocument()).getDocumentFilter();
+				((AbstractDocument) consoleTa.getDocument())
+						.setDocumentFilter(new DocumentFilter());
+				consoleTa.setText("");
+				((AbstractDocument) consoleTa.getDocument())
+						.setDocumentFilter(tmp);
+			}
+
+		});
+
+		popup.add(item);
+		consoleTa.setComponentPopupMenu(popup);
+
 		resultPanel.add(new JScrollPane(consoleTa), BorderLayout.CENTER);
 
 		outerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, innerPane,
