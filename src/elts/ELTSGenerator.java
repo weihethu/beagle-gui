@@ -40,6 +40,7 @@ public class ELTSGenerator {
 	public static List<String> generate(Model model) {
 		List<String> lines = new ArrayList<String>();
 		lines.add("system");
+		// modules
 		for (Module module : model.getModules()) {
 			List<String> moduleLines = generate(module);
 			for (String moduleLine : moduleLines) {
@@ -47,6 +48,11 @@ public class ELTSGenerator {
 			}
 
 			lines.add(EMPTY_LINE);
+		}
+		// properties
+		for (String property : model.getProperties()) {
+			String propLine = "INVARSPEC " + property;
+			lines.add(insertTab(propLine));
 		}
 		lines.add("end");
 		return lines;

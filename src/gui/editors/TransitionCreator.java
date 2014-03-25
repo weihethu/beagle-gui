@@ -100,7 +100,7 @@ public class TransitionCreator {
 				if (rowIndex == this.getRowCount() - 1 && colIndex == 0
 						&& !strValue.isEmpty()) {
 					insertEmptyRow();
-					this.fireTableRowsInserted(this.getRowCount() - 2,
+					this.fireTableRowsInserted(this.getRowCount() - 1,
 							this.getRowCount() - 1);
 				}
 			}

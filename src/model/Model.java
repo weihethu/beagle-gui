@@ -8,20 +8,24 @@ import gui.drawers.DrawableObject;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class Model extends DrawableObject {
 	private Set<Module> modules;
 	private Module[] cachedModules = null;
 	private Set<ObjectEditListener> moduleListeners = null;
+	private List<String> properties;
 
 	public Model() {
 		modules = new HashSet<Module>();
 		moduleListeners = new HashSet<ObjectEditListener>();
+		properties = new ArrayList<String>();
 
 		this.addModuleListener(new ObjectEditListener() {
 
@@ -51,7 +55,7 @@ public class Model extends DrawableObject {
 		this.modules.add(module);
 		this.cachedModules = null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Module[] getModules() {
 		if (this.cachedModules == null) {
@@ -82,6 +86,24 @@ public class Model extends DrawableObject {
 		Module[] modules = getModules();
 		for (Module module : modules)
 			module.setSelect(false);
+	}
+
+	public void addProperty(String prop) {
+		this.properties.add(prop);
+	}
+
+	public void removeProperty(int index) {
+		if (index >= 0 && index < this.properties.size())
+			this.properties.remove(index);
+	}
+
+	public void setProperty(String property, int index) {
+		if (index >= 0 && index < this.properties.size())
+			this.properties.set(index, property);
+	}
+
+	public String[] getProperties() {
+		return this.properties.toArray(new String[] {});
 	}
 
 	public void addModuleListener(ObjectEditListener listener) {

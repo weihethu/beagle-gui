@@ -107,7 +107,7 @@ public class Environment extends JFrame {
 		this.addTab(new EditorPane(modelDrawer, new ModelDrawerToolBox()),
 				"Model's Editor");
 		if (this.verifierPane != null)
-			this.verifierPane.refresh();
+			this.verifierPane.reloadModelText();
 	}
 
 	public Dimension getGraphDimension() {
@@ -229,12 +229,5 @@ public class Environment extends JFrame {
 						(Model) object));
 		}
 		return this.mapObjectsDrawers.get(object);
-	}
-
-	public Set<String> getProperties() {
-		Set<String> properties = new HashSet<String>();
-		properties.add("google");
-		properties.add("microsoft");
-		return properties;
 	}
 }

@@ -58,7 +58,8 @@ public class ELTSParser {
 		return labelsStr;
 	}
 
-	private static void parseTransitions(Element transitionsElement, Module module) {
+	private static void parseTransitions(Element transitionsElement,
+			Module module) {
 		if (transitionsElement == null)
 			return;
 		List<Element> transitionEles = transitionsElement
@@ -148,11 +149,25 @@ public class ELTSParser {
 		Document doc;
 		try {
 			doc = builder.build(new StringReader(xml));
-			Element element = doc.getRootElement();
-			List<Element> moduleEles = element.getChildren("Module");
-			for (Element moduleEle : moduleEles) {
-				Module module = parseModule(moduleEle, model);
-				model.addModule(module);
+			Element root = doc.getRootElement();
+			Element modulesEle = root.getChild("Modules");
+			if (modulesEle != null) {
+				List<Element> moduleEles = modulesEle.getChildren("Module");
+				if (moduleEles != null && !moduleEles.isEmpty()) {
+					for (Element moduleEle : moduleEles) {
+						Module module = parseModule(moduleEle, model);
+						model.addModule(module);
+					}
+				}
+			}
+			Element propsEle = root.getChild("Properties");
+			if (propsEle != null) {
+				List<Element> propEles = propsEle.getChildren("Property");
+				if (propEles != null && !propEles.isEmpty()) {
+					for (Element propEle : propEles) {
+						model.addProperty(propEle.getText());
+					}
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
