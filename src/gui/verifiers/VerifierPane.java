@@ -42,6 +42,7 @@ import javax.swing.text.DocumentFilter;
 
 import model.Model;
 import utils.BeagleInvoker;
+import utils.Config;
 import elts.ELTSGenerator;
 import events.ModuleEditEvent;
 import events.NoteEditEvent;
@@ -306,18 +307,22 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 
 		toolbar.add(new JLabel("Method:"));
 
-		bddMethodCombo = new JComboBox<String>(new String[] { "whole",
-				"separate", "eqsSeparate" });
+		bddMethodCombo = new JComboBox<String>(Config.getInstance()
+				.get_bdd_methods());
 		bddMethodCombo.setEditable(false);
 		bddMethodCombo.setSelectedIndex(0);
 
-		bmcMethodCombo = new JComboBox<String>(new String[] { "std", "inc",
-				"incDec", "macro", "macroInc", "macroIncDec" });
+		bmcMethodCombo = new JComboBox<String>(Config.getInstance()
+				.get_bmc_methods());
 		bmcMethodCombo.setEditable(false);
 		bmcMethodCombo.setSelectedIndex(0);
 
 		bmcStepLabel = new JLabel("step:");
-		bmcStepSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 1));
+		bmcStepSpinner = new JSpinner(
+				new SpinnerNumberModel(Config.getInstance()
+						.get_bmc_default_step(), Config.getInstance()
+						.get_bmc_min_step(), Config.getInstance()
+						.get_bmc_max_step(), 1));
 
 		if (this.showBddOptions)
 			toolbar.add(bddMethodCombo);
@@ -403,10 +408,10 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 	public String[] getArguments() {
 		if (bddRb.isSelected()) {
 			return new String[] { "-bdd",
-					"-" + bddMethodCombo.getSelectedItem().toString() };
+					"-" + bddMethodCombo.getSelectedItem().toString().trim() };
 		} else
 			return new String[] { "-bmc",
-					"-" + bmcMethodCombo.getSelectedItem().toString(),
+					"-" + bmcMethodCombo.getSelectedItem().toString().trim(),
 					String.valueOf(bmcStepSpinner.getValue()) };
 	}
 

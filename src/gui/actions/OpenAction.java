@@ -16,6 +16,7 @@ import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 import utils.BeagleInvoker;
+import utils.Config;
 import utils.Pair;
 import elts.ELTSParser;
 import elts.graph.GraphObjectPlacer;
@@ -23,7 +24,8 @@ import gui.Environment;
 
 public class OpenAction extends AbstractAction {
 
-	private static String ELTS_EXT = "elt";
+	private static String ELTS_EXT = Config.getInstance().get_elts_ext();
+	private static String GRAPH_EXT = Config.getInstance().get_graph_ext();
 
 	public OpenAction() {
 		super("Open", null);
@@ -51,7 +53,7 @@ public class OpenAction extends AbstractAction {
 
 			@Override
 			public String getDescription() {
-				return "model file(*.elt)";
+				return "model file(*." + ELTS_EXT + ")";
 			}
 
 			@Override
@@ -71,7 +73,7 @@ public class OpenAction extends AbstractAction {
 				Model model = ELTSParser.parseModel(xmlContent);
 				if (model != null) {
 					this.adjustLocations(model, this.substitutePathExt(
-							selectedFile.getPath(), "xml"));
+							selectedFile.getPath(), GRAPH_EXT));
 					Environment.getInstance().setModel(model);
 					Environment.getInstance().setCurrentPath(
 							selectedFile.getPath());

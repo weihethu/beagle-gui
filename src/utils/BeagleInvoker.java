@@ -14,47 +14,74 @@ import java.io.InputStreamReader;
 
 import javax.swing.JOptionPane;
 
+import utils.Config.OS_BIT_VERSION;
+import utils.Config.OS_TYPE;
+
 public class BeagleInvoker {
 	private static String beagle_executable_path = null;
 	private static String tmpPath = null;
 	private static BeagleInvoker invoker_instance = null;
 
 	private BeagleInvoker() {
-		String os_name = System.getProperty("os.name").toLowerCase();
-		if (os_name.contains("windows")) {
-			String arch = System.getenv("PROCESSOR_ARCHITECTURE");
-			String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
+		boolean auto_detect = Config.getInstance().get_auto_detect_os();
+		OS_TYPE os_type = OS_TYPE.others;
+		OS_BIT_VERSION os_bit = OS_BIT_VERSION.bit_32;
 
-			String realArch = arch.endsWith("64") || wow64Arch != null
-					&& wow64Arch.endsWith("64") ? "64" : "32";
-			if (realArch.equals("64")) {
-				beagle_executable_path = "beagle/windows_x64/beagle";
+		if (auto_detect) {
+			String os_name = System.getProperty("os.name").toLowerCase();
+			if (os_name.contains("windows")) {
+				os_type = OS_TYPE.windows;
+				String arch = System.getenv("PROCESSOR_ARCHITECTURE");
+				String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
+
+				os_bit = arch.endsWith("64") || wow64Arch != null
+						&& wow64Arch.endsWith("64") ? OS_BIT_VERSION.bit_64
+						: OS_BIT_VERSION.bit_32;
+
+			} else if (os_name.contains("linux")) {
+				os_type = OS_TYPE.linux;
+
+				String os_arch = System.getProperty("os.arch");
+				os_bit = os_arch.contains("64") ? OS_BIT_VERSION.bit_64
+						: OS_BIT_VERSION.bit_32;
+
 			} else {
-				beagle_executable_path = "beagle/windows_x86/beagle";
+				os_type = OS_TYPE.others;
 			}
-		} else if (os_name.contains("linux")) {
-			String os_arch = System.getProperty("os.arch");
-			String arch = os_arch.contains("64") ? "64" : "32";
-			if (arch.equals("64"))
-				beagle_executable_path = "beagle/linux_x64/beagle";
-			else
-				beagle_executable_path = "beagle/linux_x86/beagle";
 		} else {
+			os_type = Config.getInstance().get_os_type();
+			os_bit = Config.getInstance().get_os_bit_version();
+		}
+
+		if (os_type == OS_TYPE.windows) {
+			if (os_bit == OS_BIT_VERSION.bit_64) {
+				beagle_executable_path = Config.getInstance()
+						.get_win64_beagle_executable_path();
+			} else {
+				beagle_executable_path = Config.getInstance()
+						.get_win32_beagle_executable_path();
+			}
+		} else if (os_type == OS_TYPE.linux) {
+			if (os_bit == OS_BIT_VERSION.bit_64)
+				beagle_executable_path = Config.getInstance()
+						.get_linux64_beagle_executable_path();
+			else
+				beagle_executable_path = Config.getInstance()
+						.get_linux32_beagle_executable_path();
+		} else {
+			os_type = OS_TYPE.others;
 			JOptionPane.showMessageDialog(Environment.getInstance(),
 					"Unsupported os version!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			beagle_executable_path = null;
 		}
-
-		File beagle_executable = new File(beagle_executable_path);
-		if (!beagle_executable.exists() || !beagle_executable.isFile()) {
-			JOptionPane
-					.showMessageDialog(Environment.getInstance(),
-							"No beagle executable!", "Error",
-							JOptionPane.ERROR_MESSAGE);
-			beagle_executable_path = null;
+		if (beagle_executable_path != null) {
+			File beagle_executable = new File(beagle_executable_path);
+			if (!beagle_executable.exists() || !beagle_executable.isFile()) {
+				beagle_executable_path = null;
+			}
 		}
-		tmpPath = "tmp";
+		tmpPath = Config.getInstance().get_tmp_dir();
 	}
 
 	public static BeagleInvoker getIntance() {
@@ -69,13 +96,13 @@ public class BeagleInvoker {
 		try {
 			Process process = new ProcessBuilder(beagle_executable_path,
 					"-2xml", filePath).start();
-			int exitValue = process.waitFor();
 			InputStream input = process.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(input));
 			String s = null, content = "";
 			while ((s = br.readLine()) != null) {
 				content += (s + "\n");
 			}
+			int exitValue = process.waitFor();
 			return new Pair<Integer, String>(exitValue, content);
 		} catch (Exception e) {
 			e.printStackTrace();

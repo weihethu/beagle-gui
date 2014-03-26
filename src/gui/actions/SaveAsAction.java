@@ -18,11 +18,13 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import utils.Config;
 import model.Model;
 
 public class SaveAsAction extends AbstractAction {
 
-	private static String ELTS_EXT = "elt";
+	private static String ELTS_EXT = Config.getInstance().get_elts_ext();
+	private static String GRAPH_EXT = Config.getInstance().get_graph_ext();
 
 	public enum SAVE_TYPE {
 		TEXT, TEXT_AND_GRAPH
@@ -66,7 +68,7 @@ public class SaveAsAction extends AbstractAction {
 			@Override
 			public boolean accept(File f) {
 				return f.isDirectory() || f.getName().endsWith("." + ELTS_EXT)
-						|| f.getName().endsWith(".xml");
+						|| f.getName().endsWith(GRAPH_EXT);
 			}
 
 			@Override
@@ -89,7 +91,7 @@ public class SaveAsAction extends AbstractAction {
 	public void save(String filePath, SAVE_TYPE type) {
 		Model model = Environment.getInstance().getModel();
 		if (type == SAVE_TYPE.TEXT_AND_GRAPH) {
-			String path = substitutePathExt(filePath, "xml");
+			String path = substitutePathExt(filePath, GRAPH_EXT);
 			if (!GraphXMLSaver.save(model, path))
 				JOptionPane.showMessageDialog(null, "Error in saving " + path
 						+ "!");

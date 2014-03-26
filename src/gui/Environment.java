@@ -27,6 +27,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import utils.Config;
 import model.Model;
 import model.Module;
 
