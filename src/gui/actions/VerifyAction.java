@@ -1,4 +1,4 @@
-package actions;
+package gui.actions;
 
 import gui.Environment;
 

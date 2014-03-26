@@ -1,6 +1,14 @@
 package gui.menus;
 
 import gui.Environment;
+import gui.actions.AboutAction;
+import gui.actions.CloseButton;
+import gui.actions.NewAction;
+import gui.actions.OpenAction;
+import gui.actions.QuitAction;
+import gui.actions.SaveAction;
+import gui.actions.SaveAsAction;
+import gui.actions.VerifyAction;
 
 import javax.swing.Action;
 import javax.swing.Box;
@@ -8,15 +16,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
-import actions.AboutAction;
-import actions.CloseButton;
-import actions.QuitAction;
-import actions.NewAction;
-import actions.OpenAction;
-import actions.SaveAction;
-import actions.SaveAsAction;
-import actions.VerifyAction;
 
 public class MenuBarCreator {
 
