@@ -139,7 +139,8 @@ public class BeagleInvoker {
 			return;
 		}
 
-		final File tmpFile = new File(tmpPath, "tmp.elt");
+		final File tmpFile = new File(tmpPath, "tmp"
+				+ Config.getInstance().get_elts_ext());
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
 			bw.write(ELTSGenerator.getModelText(Environment.getInstance()
@@ -180,15 +181,52 @@ public class BeagleInvoker {
 						while ((s = br.readLine()) != null) {
 							verifierPane.appendLine(s);
 						}
-						int exitValue = process.waitFor();
-						onVerifyEnd(verifierPane, exitValue);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
 				}
 
 			});
+
+			Thread errorThread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						InputStream error = process.getErrorStream();
+						BufferedReader br = new BufferedReader(
+								new InputStreamReader(error));
+						String s = null;
+						while ((s = br.readLine()) != null) {
+							verifierPane.appendLine(s);
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+
+			});
+
+			Thread waitThread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						int exitValue = process.waitFor();
+						onVerifyEnd(verifierPane, exitValue);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+						verifierPane.setProcessOutputStream(null);
+						JOptionPane.showMessageDialog(verifierPane,
+								"Beagle process didn't exit gracefully!",
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+
+			});
 			outputThread.start();
+			errorThread.start();
+			waitThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

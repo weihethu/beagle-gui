@@ -178,7 +178,7 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 
 		JPanel resultPanel = new JPanel();
 		resultPanel.setLayout(new BorderLayout());
-		resultPanel.add(new JLabel("Verify results:"), BorderLayout.NORTH);
+		resultPanel.add(new JLabel("Console:"), BorderLayout.NORTH);
 		consoleTa = new JTextArea();
 		consoleTa.setEditable(true);
 
