@@ -94,8 +94,11 @@ public class BeagleInvoker {
 		if (beagle_executable_path == null)
 			return new Pair<Integer, String>(1, "No beagle executable!");
 		try {
-			Process process = new ProcessBuilder(beagle_executable_path,
-					"-2xml", filePath).start();
+			ProcessBuilder pb = new ProcessBuilder(beagle_executable_path,
+					"-2xml", filePath);
+			pb.redirectErrorStream(false);
+
+			Process process = pb.start();
 			InputStream input = process.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(input));
 			String s = null, content = "";
@@ -166,7 +169,9 @@ public class BeagleInvoker {
 		args[args.length - 1] = tmpFile.getPath();
 
 		try {
-			final Process process = new ProcessBuilder(args).start();
+			ProcessBuilder pb = new ProcessBuilder(args);
+			pb.redirectErrorStream(true);
+			final Process process = pb.start();
 			verifierPane.setProcessOutputStream(process.getOutputStream());
 
 			Thread outputThread = new Thread(new Runnable() {
@@ -177,25 +182,6 @@ public class BeagleInvoker {
 						InputStream input = process.getInputStream();
 						BufferedReader br = new BufferedReader(
 								new InputStreamReader(input));
-						String s = null;
-						while ((s = br.readLine()) != null) {
-							verifierPane.appendLine(s);
-						}
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-
-			});
-
-			Thread errorThread = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						InputStream error = process.getErrorStream();
-						BufferedReader br = new BufferedReader(
-								new InputStreamReader(error));
 						String s = null;
 						while ((s = br.readLine()) != null) {
 							verifierPane.appendLine(s);
@@ -225,7 +211,6 @@ public class BeagleInvoker {
 
 			});
 			outputThread.start();
-			errorThread.start();
 			waitThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
