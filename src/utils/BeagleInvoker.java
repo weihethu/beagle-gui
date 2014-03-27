@@ -21,6 +21,7 @@ public class BeagleInvoker {
 	private static String beagle_executable_path = null;
 	private static String tmpPath = null;
 	private static BeagleInvoker invoker_instance = null;
+	private Process currentProcess = null;
 
 	private BeagleInvoker() {
 		boolean auto_detect = Config.getInstance().get_auto_detect_os();
@@ -171,15 +172,16 @@ public class BeagleInvoker {
 		try {
 			ProcessBuilder pb = new ProcessBuilder(args);
 			pb.redirectErrorStream(true);
-			final Process process = pb.start();
-			verifierPane.setProcessOutputStream(process.getOutputStream());
+			currentProcess = pb.start();
+			verifierPane.setProcessOutputStream(currentProcess
+					.getOutputStream());
 
 			Thread outputThread = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					try {
-						InputStream input = process.getInputStream();
+						InputStream input = currentProcess.getInputStream();
 						BufferedReader br = new BufferedReader(
 								new InputStreamReader(input));
 						String s = null;
@@ -198,10 +200,11 @@ public class BeagleInvoker {
 				@Override
 				public void run() {
 					try {
-						int exitValue = process.waitFor();
+						int exitValue = currentProcess.waitFor();
 						onVerifyEnd(verifierPane, exitValue);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+						currentProcess = null;
 						verifierPane.setProcessOutputStream(null);
 						JOptionPane.showMessageDialog(verifierPane,
 								"Beagle process didn't exit gracefully!",
@@ -217,7 +220,13 @@ public class BeagleInvoker {
 		}
 	}
 
+	public void terminateProcess() {
+		if (currentProcess != null)
+			currentProcess.destroy();
+	}
+
 	private void onVerifyEnd(VerifierPane pane, int exitValue) {
+		currentProcess = null;
 		pane.setProcessOutputStream(null);
 		JOptionPane.showMessageDialog(pane, "Beagle process exited with value "
 				+ exitValue + "!", "Info", JOptionPane.INFORMATION_MESSAGE);

@@ -333,7 +333,7 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		}
 
 		toolbar.add(new JSeparator());
-		JButton startBtn = new JButton("Start Verify");
+		JButton startBtn = new JButton("Start");
 
 		startBtn.addActionListener(new ActionListener() {
 
@@ -343,6 +343,18 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			}
 		});
 		toolbar.add(startBtn);
+
+		JButton terminateBtn = new JButton("Terminate");
+
+		terminateBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				BeagleInvoker.getIntance().terminateProcess();
+			}
+
+		});
+		toolbar.add(terminateBtn);
 
 		this.add(toolbar, BorderLayout.NORTH);
 		this.add(outerPane, BorderLayout.CENTER);
