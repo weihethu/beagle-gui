@@ -120,10 +120,14 @@ public class SaveAsAction extends AbstractAction {
 	}
 
 	private String substitutePathExt(String path, String ext) {
-		int position = path.lastIndexOf('.');
+		File pathFile = new File(path);
+		String fileName = pathFile.getName();
+		int position = fileName.lastIndexOf('.');
 		if (position >= 0)
-			return path.substring(0, position + 1) + ext;
+			fileName = fileName.substring(0, position + 1) + ext;
 		else
-			return path + "." + ext;
+			fileName = fileName + "." + ext;
+		File file = new File(pathFile.getParent(), fileName);
+		return file.getPath();
 	}
 }
