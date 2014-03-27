@@ -83,6 +83,7 @@ public class BeagleInvoker {
 			}
 		}
 		tmpPath = Config.getInstance().get_tmp_dir();
+		this.currentProcess = null;
 	}
 
 	public static BeagleInvoker getIntance() {
@@ -106,8 +107,21 @@ public class BeagleInvoker {
 			while ((s = br.readLine()) != null) {
 				content += (s + "\n");
 			}
+
+			br.close();
+
+			InputStream error = process.getErrorStream();
+			br = new BufferedReader(new InputStreamReader(error));
+			s = null;
+			String errorContent = "";
+			while ((s = br.readLine()) != null) {
+				errorContent += (s + "\n");
+			}
+			br.close();
+
 			int exitValue = process.waitFor();
-			return new Pair<Integer, String>(exitValue, content);
+			return new Pair<Integer, String>(exitValue,
+					exitValue == 0 ? content : errorContent);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,6 +134,13 @@ public class BeagleInvoker {
 			JOptionPane
 					.showMessageDialog(verifierPane, "No beagle executable!",
 							"Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (this.isProcessRunning()) {
+			JOptionPane.showMessageDialog(verifierPane,
+					"Beagle process is running! Please wait for it to exit",
+					"Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -230,5 +251,9 @@ public class BeagleInvoker {
 		pane.setProcessOutputStream(null);
 		JOptionPane.showMessageDialog(pane, "Beagle process exited with value "
 				+ exitValue + "!", "Info", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public boolean isProcessRunning() {
+		return this.currentProcess != null;
 	}
 }

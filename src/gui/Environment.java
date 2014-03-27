@@ -17,16 +17,20 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import utils.BeagleInvoker;
 import utils.Config;
 import model.Model;
 import model.Module;
@@ -59,6 +63,14 @@ public class Environment extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				distributeChangeEvent();
+			}
+		});
+
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				if (BeagleInvoker.getIntance().isProcessRunning())
+					BeagleInvoker.getIntance().terminateProcess();
 			}
 		});
 	}
@@ -201,7 +213,17 @@ public class Environment extends JFrame {
 				Module module = (Module) editor.getDrawer().getObject();
 				this.moduleEditorsMap.remove(module);
 			}
+		} else if (activeTab instanceof VerifierPane) {
+			if (BeagleInvoker.getIntance().isProcessRunning()) {
+				JOptionPane
+						.showMessageDialog(
+								activeTab,
+								"Please wait for beagle process to exit before closing this tab!",
+								"Info", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 		}
+
 		this.tabbedPane.remove(this.tabbedPane.getSelectedIndex());
 	}
 
