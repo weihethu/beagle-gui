@@ -95,6 +95,9 @@ public class BeagleInvoker {
 	public Pair<Integer, String> elts2XML(String filePath) {
 		if (beagle_executable_path == null)
 			return new Pair<Integer, String>(1, "No beagle executable!");
+		if (this.isProcessRunning())
+			return new Pair<Integer, String>(1,
+					"Beagle process is running! Please wait for it to exit!");
 		try {
 			ProcessBuilder pb = new ProcessBuilder(beagle_executable_path,
 					"-2xml", filePath);
@@ -125,8 +128,8 @@ public class BeagleInvoker {
 					exitValue == 0 ? content : errorContent);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new Pair<Integer, String>(1, e.getMessage());
 		}
-		return new Pair<Integer, String>(1, null);
 	}
 
 	public void verify(final VerifierPane verifierPane) {
