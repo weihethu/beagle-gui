@@ -2,6 +2,7 @@ package gui.actions;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
@@ -9,6 +10,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.ProgressMonitor;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
 import model.Model;
@@ -65,31 +69,37 @@ public class OpenAction extends AbstractAction {
 		if (JFileChooser.APPROVE_OPTION == fileChooser
 				.showOpenDialog((Component) event.getSource())) {
 			File selectedFile = fileChooser.getSelectedFile();
-			Pair<Integer, String> result = BeagleInvoker.getIntance().elts2XML(
-					selectedFile.getPath());
+			final ProgressMonitor monitor = new ProgressMonitor(
+					(Component) event.getSource(), "Waiting for "
+							+ selectedFile.getName() + " to open!", null,
+					OpenFileActivity.INIT_DONE, OpenFileActivity.ALL_DONE);
 
-			if (result.getFirst() == 0) {
-				String xmlContent = result.getSecond();
-				Model model = ELTSParser.parseModel(xmlContent);
-				if (model != null) {
-					this.adjustLocations(model, this.substitutePathExt(
-							selectedFile.getPath(), GRAPH_EXT));
-					Environment.getInstance().setModel(model);
-					Environment.getInstance().setCurrentPath(
-							selectedFile.getPath());
-				} else {
-					JOptionPane.showMessageDialog(
-							(Component) event.getSource(),
-							"Beagle executable returns invalid XML format!",
-							"Parsing Error", JOptionPane.ERROR_MESSAGE);
+			final OpenFileActivity openActivity = new OpenFileActivity(
+					selectedFile);
+			openActivity.execute();
+
+			Timer cancelMonitor = new Timer(500, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					if (monitor.isCanceled()) {
+						openActivity.cancel();
+					} else if (openActivity.isDone()) {
+						monitor.close();
+					} else {
+						int progress = openActivity.getProgress();
+						if (progress == OpenFileActivity.INIT_DONE)
+							monitor.setNote("tranlating elts to xml...");
+						else if (progress == OpenFileActivity.ELT2XML_DONE)
+							monitor.setNote("parsing xml...");
+						else if (progress == OpenFileActivity.PARSEXML_DONE)
+							monitor.setNote("adjusting positions...");
+						else
+							monitor.setNote("all done");
+						monitor.setProgress(progress);
+					}
 				}
-			} else {
-				String errorMsg = result.getSecond();
-				JOptionPane.showMessageDialog((Component) event.getSource(),
-						"Errors while parsing " + selectedFile.getName()
-								+ "!\n" + errorMsg, "Parsing Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			});
+			cancelMonitor.start();
 		}
 	}
 
@@ -124,5 +134,77 @@ public class OpenAction extends AbstractAction {
 			return path.substring(0, position + 1) + ext;
 		else
 			return path + "." + ext;
+	}
+
+	private class OpenFileActivity extends SwingWorker<Void, Integer> {
+
+		public static final int INIT_DONE = 0;
+		public static final int ELT2XML_DONE = 50;
+		public static final int PARSEXML_DONE = 70;
+		public static final int ALL_DONE = 100;
+
+		File selectedFile = null;
+		private Model model = null;
+		private Pair<Integer, String> elt2XMLRes = null;
+
+		public OpenFileActivity(File file) {
+			this.selectedFile = file;
+			model = null;
+			elt2XMLRes = null;
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			setProgress(INIT_DONE);
+			elt2XMLRes = BeagleInvoker.getIntance().elts2XML(
+					selectedFile.getPath());
+
+			setProgress(ELT2XML_DONE);
+			if (elt2XMLRes.getFirst() == 0) {
+				String xmlContent = elt2XMLRes.getSecond();
+				model = ELTSParser.parseModel(xmlContent);
+				setProgress(PARSEXML_DONE);
+				if (model != null) {
+					adjustLocations(
+							model,
+							OpenAction.this.substitutePathExt(
+									selectedFile.getPath(), GRAPH_EXT));
+
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void done() {
+
+			if (elt2XMLRes != null) {
+				if (elt2XMLRes.getFirst() == 0) {
+					if (model != null) {
+						Environment.getInstance().setModel(model);
+						Environment.getInstance().setCurrentPath(
+								selectedFile.getPath());
+					} else {
+						JOptionPane
+								.showMessageDialog(
+										Environment.getInstance(),
+										"Beagle executable returns invalid XML format!",
+										"Parsing Error",
+										JOptionPane.ERROR_MESSAGE);
+					}
+				} else {
+					String errorMsg = elt2XMLRes.getSecond();
+					JOptionPane.showMessageDialog(Environment.getInstance(),
+							"Errors while parsing " + selectedFile.getName()
+									+ "!\n" + errorMsg, "Parsing Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			setProgress(ALL_DONE);
+		}
+
+		public void cancel() {
+			BeagleInvoker.getIntance().terminateProcess();
+		}
 	}
 }

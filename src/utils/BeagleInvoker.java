@@ -100,8 +100,8 @@ public class BeagleInvoker {
 					"-2xml", filePath);
 			pb.redirectErrorStream(false);
 
-			Process process = pb.start();
-			InputStream input = process.getInputStream();
+			currentProcess = pb.start();
+			InputStream input = currentProcess.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(input));
 			String s = null, content = "";
 			while ((s = br.readLine()) != null) {
@@ -110,7 +110,7 @@ public class BeagleInvoker {
 
 			br.close();
 
-			InputStream error = process.getErrorStream();
+			InputStream error = currentProcess.getErrorStream();
 			br = new BufferedReader(new InputStreamReader(error));
 			s = null;
 			String errorContent = "";
@@ -119,7 +119,8 @@ public class BeagleInvoker {
 			}
 			br.close();
 
-			int exitValue = process.waitFor();
+			int exitValue = currentProcess.waitFor();
+			currentProcess = null;
 			return new Pair<Integer, String>(exitValue,
 					exitValue == 0 ? content : errorContent);
 		} catch (Exception e) {
