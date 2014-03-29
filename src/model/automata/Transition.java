@@ -47,7 +47,7 @@ public class Transition extends DrawableObject {
 	public static String regularizeLabelsStr(String labelsStr) {
 		if (labelsStr == null)
 			return null;
-		String[] labels = labelsStr.split(",");
+		String[] labels = labelsStr.split("(\\s)*,(\\s)*");
 		String resultStr = "";
 		for (int i = 0; i < labels.length; i++) {
 			if (i > 0)

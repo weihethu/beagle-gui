@@ -30,6 +30,7 @@ import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 import utils.Pair;
+import utils.StringUtil;
 
 public class TransitionCreator {
 	private JTable editingTable = null;
@@ -118,13 +119,9 @@ public class TransitionCreator {
 			public boolean processKeyBinding(KeyStroke ks, KeyEvent e,
 					int condition, boolean pressed) {
 				if (ks.getKeyCode() == KeyEvent.VK_DELETE
-						&& ks.isOnKeyRelease()) {
-					try {
-						TableCellEditor editor = editingTable.getCellEditor();
-						if (editor != null)
-							editor.stopCellEditing();
-					} catch (Exception ex) {
-					}
+						&& !ks.isOnKeyRelease()) {
+					if (editingTable.isEditing())
+						return false;
 					int selectedRows[] = editingTable.getSelectedRows();
 					if (selectedRows.length > 0) {
 						dataInEdit.removeAll(dataInEdit.subList(
@@ -237,6 +234,11 @@ public class TransitionCreator {
 			if (label == null || label.trim().isEmpty()) {
 				JOptionPane.showMessageDialog(canvas,
 						"Label must be set on row " + (i + 1) + "!");
+				return false;
+			}
+			if (!StringUtil.validMutipleIdenfitiersSeparatedByComma(label)) {
+				JOptionPane.showMessageDialog(canvas, "Label on row " + (i + 1)
+						+ " is not valid!");
 				return false;
 			}
 			if (labels.contains(label)) {

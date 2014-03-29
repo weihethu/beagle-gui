@@ -7,6 +7,8 @@ import java.awt.Point;
 
 import javax.swing.JOptionPane;
 
+import utils.StringUtil;
+
 import model.Module;
 
 public class State extends DrawableObject {
@@ -47,6 +49,11 @@ public class State extends DrawableObject {
 	public void setName(String name) {
 		if (this.name.equals(name))
 			return;
+		if (!StringUtil.validIdentifier(name)) {
+			JOptionPane.showMessageDialog(null,
+					"Invalid name! Please pick another one!");
+			return;
+		}
 		State states[] = module.getStates();
 		for (State state : states) {
 			if (state == this)

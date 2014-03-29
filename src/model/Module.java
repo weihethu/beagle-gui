@@ -19,8 +19,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
+
+import utils.StringUtil;
 
 import model.automata.State;
 import model.automata.Transition;
@@ -107,6 +111,11 @@ public class Module extends DrawableObject {
 	public void setName(String name) {
 		if (this.name.equals(name))
 			return;
+		if (!StringUtil.validIdentifier(name)) {
+			JOptionPane.showMessageDialog(null,
+					"Invalid name! Please pick another one!");
+			return;
+		}
 		Module modules[] = model.getModules();
 		for (Module module : modules) {
 			if (module == this)
