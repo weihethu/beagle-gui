@@ -125,7 +125,7 @@ public class BeagleInvoker {
 			int exitValue = currentProcess.waitFor();
 			currentProcess = null;
 			return new Pair<Integer, String>(exitValue,
-					exitValue == 0 ? content : errorContent);
+					exitValue == 0 ? content : errorContent + content);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Pair<Integer, String>(1, e.getMessage());
