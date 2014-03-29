@@ -23,7 +23,7 @@ The following is a snapshot of **beagle-gui** when verifing models:
 ##How to run it
 
 * clone this repository
-* place `deployment\beagle-gui.jar` & `beagle_gui.config` & `beagles` in the same directory
+* place `deployment\beagle-gui.jar` & `beagle_gui.config` & `beagle_bin` in the same directory
 * `java -jar beagle-gui.jar`
 
 ##How to compile it
