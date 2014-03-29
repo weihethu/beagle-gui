@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import model.Model;
 import model.Module;
@@ -39,5 +40,10 @@ public class CreateModuleTool extends Tool {
 	@Override
 	public String getToolTip() {
 		return "Module Creator";
+	}
+
+	@Override
+	public KeyStroke getKey() {
+		return KeyStroke.getKeyStroke('m');
 	}
 }

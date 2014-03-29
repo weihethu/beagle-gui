@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import model.Module;
 import model.automata.State;
@@ -40,5 +41,10 @@ public class CreateStateTool extends Tool {
 	@Override
 	public String getToolTip() {
 		return "State creator";
+	}
+	
+	@Override
+	public KeyStroke getKey() {
+		return KeyStroke.getKeyStroke('s');
 	}
 }

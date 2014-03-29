@@ -15,6 +15,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
 
 import model.Module;
 import model.automata.State;
@@ -90,5 +91,10 @@ public class TransitionTool extends Tool {
 				(int) this.firstState.getPoint().getY(),
 				(int) this.hoverPt.getX(), (int) this.hoverPt.getY());
 		graphics2D.setStroke(oldStroke);
+	}	
+
+	@Override
+	public KeyStroke getKey() {
+		return KeyStroke.getKeyStroke('t');
 	}
 }

@@ -20,9 +20,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 public class ToolBar extends JToolBar implements ActionListener {
 	private ToolAdapter adapter;
@@ -50,12 +55,24 @@ public class ToolBar extends JToolBar implements ActionListener {
 		while (localIterator.hasNext()) {
 			Tool tool = (Tool) localIterator.next();
 			JToggleButton btn = new JToggleButton(tool.getIcon());
-			btn.setToolTipText(tool.getToolTip());
+			btn.setToolTipText(tool.getShortcutToolTip());
 			this.buttonsToTools.put(btn, tool);
 			buttonGroup.add(btn);
 
 			add(btn);
 			btn.addActionListener(this);
+
+			KeyStroke ks = tool.getKey();
+			if (ks != null) {
+				InputMap inputMap = btn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+				inputMap.put(ks, tool.getToolTip());
+				btn.getActionMap().put(tool.getToolTip(), new ButtonClicker(btn));
+			}
+			
+			if(this.currentTool == null) {
+				this.currentTool = tool;
+				btn.doClick();
+			}
 		}
 	}
 
@@ -87,5 +104,20 @@ public class ToolBar extends JToolBar implements ActionListener {
 
 	public Tool getCurrentTool() {
 		return this.currentTool;
+	}
+
+	private class ButtonClicker extends AbstractAction {
+
+		AbstractButton btn;
+
+		public ButtonClicker(AbstractButton b) {
+			btn = b;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			this.btn.doClick();
+		}
+
 	}
 }

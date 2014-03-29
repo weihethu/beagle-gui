@@ -54,7 +54,9 @@ public class Note extends JTextArea {
 
 			@Override
 			public void focusGained(FocusEvent event) {
-
+				if (getText().trim().equals(EMPTY_STR)) {
+					setText("");
+				}
 			}
 
 			@Override

@@ -22,6 +22,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
 
 import model.Module;
 import model.automata.State;
@@ -206,6 +207,11 @@ public class ModuleDrawerCursorTool extends Tool {
 		this.lastClickedTransition = null;
 	}
 
+	@Override
+	public KeyStroke getKey() {
+		return KeyStroke.getKeyStroke('a');
+	}
+	
 	private class StateMenu extends JPopupMenu implements ActionListener {
 		private State state;
 		private JCheckBoxMenuItem makeInitial;
@@ -247,6 +253,6 @@ public class ModuleDrawerCursorTool extends Tool {
 					return;
 				this.state.setName(newName);
 			}
-		}
+		}		
 	}
 }
