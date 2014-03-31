@@ -8,8 +8,16 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
+/**
+ * action for verify menu item
+ * @author Wei He
+ *
+ */
 public class VerifyAction extends AbstractAction {
 
+	/**
+	 * constructor
+	 */
 	public VerifyAction() {
 		super("Verify", null);
 		putValue("AcceleratorKey",

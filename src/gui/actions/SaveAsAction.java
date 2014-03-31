@@ -18,18 +18,47 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import utils.Config;
 import model.Model;
+import utils.Config;
+import utils.StringUtil;
 
+/**
+ * the action for save as menu item
+ * 
+ * @author Wei He
+ * 
+ */
 public class SaveAsAction extends AbstractAction {
 
+	/**
+	 * the elts model file extension
+	 */
 	private static String ELTS_EXT = Config.getInstance().get_elts_ext();
+	/**
+	 * the graph file extension
+	 */
 	private static String GRAPH_EXT = Config.getInstance().get_graph_ext();
 
+	/**
+	 * the save type enumeration
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	public enum SAVE_TYPE {
-		TEXT, TEXT_AND_GRAPH
+		/**
+		 * only save model
+		 */
+		TEXT,
+		/**
+		 * save both model and graph
+		 */
+		TEXT_AND_GRAPH
 	};
 
+	/**
+	 * constructor
+	 */
 	public SaveAsAction() {
 		super("Save as", null);
 		putValue(
@@ -44,12 +73,14 @@ public class SaveAsAction extends AbstractAction {
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 
+		// set the default save path to the parent of current
 		if (Environment.getInstance().getCurrentPath() != null) {
 			File currentFilePath = new File(Environment.getInstance()
 					.getCurrentPath());
 			fileChooser.setCurrentDirectory(currentFilePath.getParentFile());
 		}
 
+		// add chooser for model files
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
 			@Override
@@ -63,6 +94,8 @@ public class SaveAsAction extends AbstractAction {
 			}
 
 		});
+
+		// add chooser for model & graph files
 		fileChooser.addChoosableFileFilter(new FileFilter() {
 
 			@Override
@@ -77,6 +110,7 @@ public class SaveAsAction extends AbstractAction {
 			}
 
 		});
+
 		if (JFileChooser.APPROVE_OPTION == fileChooser
 				.showSaveDialog((Component) event.getSource())) {
 			File selectedFile = fileChooser.getSelectedFile();
@@ -88,15 +122,25 @@ public class SaveAsAction extends AbstractAction {
 		}
 	}
 
+	/**
+	 * save files to disk
+	 * 
+	 * @param filePath
+	 *            the file path
+	 * @param type
+	 *            save type
+	 */
 	public void save(String filePath, SAVE_TYPE type) {
 		Model model = Environment.getInstance().getModel();
 		if (type == SAVE_TYPE.TEXT_AND_GRAPH) {
-			String path = substitutePathExt(filePath, GRAPH_EXT);
+			// save graph file
+			String path = StringUtil.substitutePathExt(filePath, GRAPH_EXT);
 			if (!GraphXMLSaver.save(model, path))
 				JOptionPane.showMessageDialog(null, "Error in saving " + path
 						+ "!");
 		}
-		String path = substitutePathExt(filePath, ELTS_EXT);
+		// save model file
+		String path = StringUtil.substitutePathExt(filePath, ELTS_EXT);
 		String modelText = ELTSGenerator.getModelText(model);
 		BufferedWriter bw = null;
 		try {
@@ -117,17 +161,5 @@ public class SaveAsAction extends AbstractAction {
 			}
 		}
 		Environment.getInstance().setCurrentPath(path);
-	}
-
-	private String substitutePathExt(String path, String ext) {
-		File pathFile = new File(path);
-		String fileName = pathFile.getName();
-		int position = fileName.lastIndexOf('.');
-		if (position >= 0)
-			fileName = fileName.substring(0, position + 1) + ext;
-		else
-			fileName = fileName + "." + ext;
-		File file = new File(pathFile.getParent(), fileName);
-		return file.getPath();
 	}
 }

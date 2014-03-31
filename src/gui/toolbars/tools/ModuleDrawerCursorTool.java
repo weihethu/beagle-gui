@@ -1,10 +1,10 @@
 package gui.toolbars.tools;
 
-import gui.Note;
 import gui.drawers.ModuleDrawer;
 import gui.editors.Canvas;
 import gui.editors.TransitionCreator;
 import gui.entities.CurvedArrow;
+import gui.entities.Note;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -11,9 +11,24 @@ import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * close button for tab
+ * 
+ * @author Wei He
+ * 
+ */
 public class CloseButton extends JButton {
+	/**
+	 * the environment frame
+	 */
 	private Environment env;
 
+	/**
+	 * constructor
+	 * 
+	 * @param environment
+	 *            enviroment instance
+	 */
 	public CloseButton(Environment environment) {
 		this.env = environment;
 		setDefaults();
@@ -27,6 +42,10 @@ public class CloseButton extends JButton {
 
 		});
 
+		/**
+		 * when the active tab changes, we must update whether the close button
+		 * is enabled
+		 */
 		env.addChangeListeners(new ChangeListener() {
 
 			@Override
@@ -38,13 +57,20 @@ public class CloseButton extends JButton {
 		checkEnabled();
 	}
 
-	public void setDefaults() {
+	/**
+	 * set default properties for the close button
+	 */
+	private void setDefaults() {
 		setIcon(new ImageIcon(getClass().getResource("/assets/icons/x.gif")));
 		setPreferredSize(new Dimension(22, 22));
 		setToolTipText("Dismiss Tab");
 	}
 
+	/**
+	 * check whether this button is enabled
+	 */
 	private void checkEnabled() {
+		// the first tab, i.e. the model's editor, is not closable
 		if (this.env.getActiveTabIndex() == 0)
 			setEnabled(false);
 		else

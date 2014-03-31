@@ -1,7 +1,8 @@
-package gui;
+package gui.entities;
 
 import events.NoteEditEvent;
 import events.listeners.ObjectEditListener;
+import gui.Environment;
 import gui.editors.Canvas;
 import gui.editors.EditorPane;
 import gui.toolbars.tools.ModuleDrawerCursorTool;

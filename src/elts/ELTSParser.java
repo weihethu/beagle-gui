@@ -13,10 +13,21 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
-import elts.graph.GraphObjectPlacer;
-
+/**
+ * class for parsing XML model representation
+ * 
+ * @author Wei He
+ * 
+ */
 public class ELTSParser {
 
+	/**
+	 * parse actions representation in XML format
+	 * 
+	 * @param actionsElement
+	 *            the XML element for actions
+	 * @return strings for actions, if multiple action, separate by new lines
+	 */
 	private static String parseActions(Element actionsElement) {
 		if (actionsElement == null)
 			return null;
@@ -35,6 +46,14 @@ public class ELTSParser {
 		}
 	}
 
+	/**
+	 * parse init representation in XML format, and add to module
+	 * 
+	 * @param initElement
+	 *            the XML element for init
+	 * @param module
+	 *            parent module
+	 */
 	private static void parseInit(Element initElement, Module module) {
 		if (initElement == null)
 			return;
@@ -43,6 +62,14 @@ public class ELTSParser {
 		module.setInitialAction(parseActions(initElement.getChild("Actions")));
 	}
 
+	/**
+	 * parse labels representation in XML format
+	 * 
+	 * @param labelsElement
+	 *            the XML element for labels
+	 * @return string for labels declaration, if multiple labels, separate by
+	 *         commas
+	 */
 	private static String parseLabels(Element labelsElement) {
 		if (labelsElement == null)
 			return null;
@@ -58,6 +85,14 @@ public class ELTSParser {
 		return labelsStr;
 	}
 
+	/**
+	 * parse transitions representation in XML format, and add them in module
+	 * 
+	 * @param transitionsElement
+	 *            the XML element for transitions
+	 * @param module
+	 *            parent module
+	 */
 	private static void parseTransitions(Element transitionsElement,
 			Module module) {
 		if (transitionsElement == null)
@@ -95,6 +130,14 @@ public class ELTSParser {
 		}
 	}
 
+	/**
+	 * parse locations representation in XML format, and add them in module
+	 * 
+	 * @param locationsElement
+	 *            the XML element for locations
+	 * @param module
+	 *            parent module module
+	 */
 	private static void parseLocations(Element locationsElement, Module module) {
 		if (locationsElement == null)
 			return;
@@ -108,6 +151,13 @@ public class ELTSParser {
 		}
 	}
 
+	/**
+	 * parse variables representation in XML format
+	 * 
+	 * @param variablesElement
+	 *            the XML element for variables
+	 * @return string for variables declaration
+	 */
 	private static String parseVariables(Element variablesElement) {
 		if (variablesElement != null) {
 			String varsDecl = "";
@@ -132,6 +182,15 @@ public class ELTSParser {
 			return null;
 	}
 
+	/**
+	 * parse module representation in XML format
+	 * 
+	 * @param moduleElement
+	 *            the XML element for module
+	 * @param parent
+	 *            the parent model
+	 * @return module
+	 */
 	private static Module parseModule(Element moduleElement, Model parent) {
 		Module module = new Module(moduleElement.getAttributeValue("Name"),
 				new Point(0, 0), parent);
@@ -143,6 +202,13 @@ public class ELTSParser {
 		return module;
 	}
 
+	/**
+	 * parse model representation in XML format
+	 * 
+	 * @param xml
+	 *            input
+	 * @return model
+	 */
 	public static Model parseModel(String xml) {
 		Model model = new Model();
 		SAXBuilder builder = new SAXBuilder();
@@ -151,6 +217,7 @@ public class ELTSParser {
 			doc = builder.build(new StringReader(xml));
 			Element root = doc.getRootElement();
 			Element modulesEle = root.getChild("Modules");
+			// parse modules
 			if (modulesEle != null) {
 				List<Element> moduleEles = modulesEle.getChildren("Module");
 				if (moduleEles != null && !moduleEles.isEmpty()) {
@@ -160,6 +227,7 @@ public class ELTSParser {
 					}
 				}
 			}
+			// parse properties
 			Element propsEle = root.getChild("Properties");
 			if (propsEle != null) {
 				List<Element> propEles = propsEle.getChildren("Property");

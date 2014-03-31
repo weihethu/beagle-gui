@@ -19,15 +19,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import utils.StringUtil;
-
 import model.automata.State;
 import model.automata.Transition;
+import utils.StringUtil;
 
 public class Module extends DrawableObject {
 	private Point point;

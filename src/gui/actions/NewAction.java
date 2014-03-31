@@ -12,8 +12,16 @@ import javax.swing.KeyStroke;
 
 import model.Model;
 
+/**
+ * the action for the new menu item
+ * @author Wei He
+ *
+ */
 public class NewAction extends AbstractAction {
-
+	
+	/**
+	 * constructor
+	 */
 	public NewAction() {
 		super("New", null);
 		putValue("AcceleratorKey",

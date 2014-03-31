@@ -1,7 +1,7 @@
 package gui.editors;
 
-import gui.Note;
 import gui.drawers.ObjectDrawer;
+import gui.entities.Note;
 
 import java.awt.Font;
 

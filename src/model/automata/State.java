@@ -7,9 +7,8 @@ import java.awt.Point;
 
 import javax.swing.JOptionPane;
 
-import utils.StringUtil;
-
 import model.Module;
+import utils.StringUtil;
 
 public class State extends DrawableObject {
 	private Point point;

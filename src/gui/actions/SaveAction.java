@@ -10,8 +10,17 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+/**
+ * the action for save menu item
+ * 
+ * @author Wei He
+ * 
+ */
 public class SaveAction extends AbstractAction {
 
+	/**
+	 * constructor
+	 */
 	public SaveAction() {
 		super("Save", null);
 		putValue("AcceleratorKey",

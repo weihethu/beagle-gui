@@ -6,8 +6,16 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
+/**
+ * the action for quit menu item
+ * @author Wei He
+ *
+ */
 public class QuitAction extends AbstractAction {
-
+	
+	/**
+	 * constructor
+	 */
 	public QuitAction() {
 		super("Quit", null);
 		putValue("AcceleratorKey",

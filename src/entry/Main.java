@@ -3,6 +3,12 @@ package entry;
 import gui.Environment;
 import model.Model;
 
+/**
+ * entry point for beagle-gui
+ * 
+ * @author Wei He
+ * 
+ */
 public class Main {
 
 	/**

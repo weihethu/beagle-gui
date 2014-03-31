@@ -1,7 +1,7 @@
 package gui.editors;
 
-import gui.Note;
 import gui.drawers.ObjectDrawer;
+import gui.entities.Note;
 import gui.toolbars.ToolBar;
 
 import java.awt.Color;
@@ -34,7 +34,7 @@ public class Canvas extends JPanel implements Scrollable {
 	public Canvas(ObjectDrawer drawer, EditorPane pane) {
 		this.drawer = drawer;
 		this.pane = pane;
-		drawer.setView(this);
+		drawer.setCanvas(this);
 
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent evt) {

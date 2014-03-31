@@ -5,18 +5,39 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import elts.graph.GraphObjectPlacer;
 import model.Model;
 import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 import utils.Pair;
 
+/**
+ * class for generating model files in ELTS language
+ * 
+ * @author Wei He
+ * 
+ */
 public class ELTSGenerator {
+	/**
+	 * string text for empty line
+	 */
 	private static String EMPTY_LINE = "";
+	/**
+	 * string text for line indentation
+	 */
 	private static String TAB = "    ";
+	/**
+	 * string text for line separator
+	 */
 	private static String NEW_LINE = "\n";
 
+	/**
+	 * insert indentation for a line
+	 * 
+	 * @param line
+	 *            line
+	 * @return indented line
+	 */
 	public static String insertTab(String line) {
 		if (line.trim().equals(EMPTY_LINE))
 			return line;
@@ -24,11 +45,19 @@ public class ELTSGenerator {
 			return TAB + line;
 	}
 
+	/**
+	 * generate model text
+	 * 
+	 * @param model
+	 *            the input model
+	 * @return model text in ELT language
+	 */
 	public static String getModelText(Model model) {
 		if (model == null)
 			return "";
 		List<String> lines = generate(model);
 		String text = "";
+		// concatenate lines
 		for (int i = 0; i < lines.size(); i++) {
 			text += lines.get(i);
 			if (i != lines.size() - 1)
@@ -37,6 +66,13 @@ public class ELTSGenerator {
 		return text;
 	}
 
+	/**
+	 * get lines for a model
+	 * 
+	 * @param model
+	 *            the input model
+	 * @return lines
+	 */
 	public static List<String> generate(Model model) {
 		List<String> lines = new ArrayList<String>();
 		lines.add("system");
@@ -58,6 +94,13 @@ public class ELTSGenerator {
 		return lines;
 	}
 
+	/**
+	 * get lines for a module
+	 * 
+	 * @param module
+	 *            the input module
+	 * @return lines
+	 */
 	public static List<String> generate(Module module) {
 		List<String> lines = new ArrayList<String>();
 		lines.add("module " + module.getName());
@@ -145,6 +188,13 @@ public class ELTSGenerator {
 		return lines;
 	}
 
+	/**
+	 * get lines for a transition
+	 * 
+	 * @param transition
+	 *            transition
+	 * @return lines
+	 */
 	public static List<String> generate(Transition transition) {
 		List<String> lines = new ArrayList<String>();
 		Set<String> labelStrs = transition.getLabels();

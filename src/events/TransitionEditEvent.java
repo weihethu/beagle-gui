@@ -1,15 +1,50 @@
 package events;
 
-import gui.drawers.DrawableObject;
+import model.automata.Transition;
 
+/**
+ * the class for editing events of a Transition
+ * 
+ * @author Wei He
+ * 
+ */
 public class TransitionEditEvent extends ObjectEditEvent {
+
+	/**
+	 * the event type enumeration for TransitionEditEvent
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	public enum EventType {
-		ADD, REMOVE, DATA
+		/**
+		 * transition added
+		 */
+		ADD,
+		/**
+		 * transition removed
+		 */
+		REMOVE,
+		/**
+		 * transition's internal data changed
+		 */
+		DATA
 	};
 
+	/**
+	 * event type
+	 */
 	private EventType type;
 
-	public TransitionEditEvent(DrawableObject target, EventType type) {
+	/**
+	 * constructor
+	 * 
+	 * @param target
+	 *            transition edited
+	 * @param type
+	 *            event type
+	 */
+	public TransitionEditEvent(Transition target, EventType type) {
 		super(target);
 		this.type = type;
 	}

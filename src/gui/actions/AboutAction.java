@@ -6,9 +6,17 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+/**
+ * Action for the about menu item
+ * @author Wei He
+ *
+ */
 public class AboutAction extends AbstractAction {
 	private static final AboutBox Box = new AboutBox();
-
+	
+	/**
+	 * constructor
+	 */
 	public AboutAction() {
 		super("About", null);
 	}
