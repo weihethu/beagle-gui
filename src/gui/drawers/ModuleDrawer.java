@@ -82,10 +82,42 @@ public class ModuleDrawer extends ObjectDrawer {
 		arrowToTransitionMap = new HashMap<CurvedArrow, Transition>();
 		transitionToArrowMap = new HashMap<Transition, CurvedArrow>();
 
-		DrawerListener listener = new DrawerListener();
-		module.addStateListener(listener);
-		module.addTransitionListener(listener);
+		module.addStateListener(new ObjectEditListener() {
 
+			@Override
+			public void objectEdit(ObjectEditEvent e) {
+				if (e instanceof StateEditEvent) {
+					StateEditEvent event = (StateEditEvent) e;
+					if (event.isMove()) {
+						invalidateArrowMaps();
+						invalidateBounds();
+					} else
+						invalidateBounds();
+					if (event.isRemove() || event.isInitialChange())
+						initActionNote
+								.setVisible(getModule().getInitialState() != null);
+					if (getCanvas() != null) {
+						// recompute transformation and repaint
+						getCanvas().requestTransform();
+					}
+				}
+			}
+
+		});
+
+		module.addTransitionListener(new ObjectEditListener() {
+
+			@Override
+			public void objectEdit(ObjectEditEvent event) {
+				if (event instanceof TransitionEditEvent) {
+					invalidateArrowMaps();
+					invalidateBounds();
+					if (getCanvas() != null)
+						getCanvas().repaint();
+				}
+			}
+
+		});
 		this.varNote = new Note(module, Note.VAR, module.getVarDeclaration());
 		this.initActionNote = new Note(module, Note.INIT_ACTION,
 				module.getInitialAction());
@@ -488,55 +520,5 @@ public class ModuleDrawer extends ObjectDrawer {
 	 */
 	public void invalidateArrowMaps() {
 		this.validArrowMaps = false;
-	}
-
-	/**
-	 * listeners of ObjectEditEvents on module canvas
-	 * 
-	 * @author Wei He
-	 * 
-	 */
-	private class DrawerListener implements ObjectEditListener {
-
-		/**
-		 * handler for StateEditEvents
-		 * 
-		 * @param event
-		 */
-		private void stateEditHandler(StateEditEvent event) {
-			if (event.isMove()) {
-				invalidateArrowMaps();
-				invalidateBounds();
-			} else
-				invalidateBounds();
-			if (event.isRemove() || event.isInitialChange())
-				initActionNote
-						.setVisible(getModule().getInitialState() != null);
-			if (getCanvas() != null) {
-				// recompute transformation and repaint
-				getCanvas().requestTransform();
-			}
-		}
-
-		/**
-		 * handler for TransitionEditEvents
-		 * 
-		 * @param event
-		 */
-		private void transitionEditHandler(TransitionEditEvent event) {
-			invalidateArrowMaps();
-			invalidateBounds();
-			if (getCanvas() != null)
-				getCanvas().repaint();
-		}
-
-		@Override
-		public void objectEdit(ObjectEditEvent event) {
-			if (event instanceof StateEditEvent) {
-				stateEditHandler((StateEditEvent) event);
-			} else if (event instanceof TransitionEditEvent) {
-				transitionEditHandler((TransitionEditEvent) event);
-			}
-		}
 	}
 }
