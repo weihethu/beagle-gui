@@ -21,16 +21,54 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 
+/**
+ * graph canvas
+ * 
+ * @author Wei He
+ * 
+ */
 public class Canvas extends JPanel implements Scrollable {
+	/**
+	 * drawer
+	 */
 	private ObjectDrawer drawer;
-	private ToolBar toolbar = null;;
+	/**
+	 * tool bar
+	 */
+	private ToolBar toolbar = null;
+	/**
+	 * transformation applied
+	 */
 	private AffineTransform transform = new AffineTransform();
+	/**
+	 * scale-by factor
+	 */
 	private double scaleBy = 1.0;
+	/**
+	 * whether needs to recompute transformation
+	 */
 	private boolean transformNeedsReform = true;
+	/**
+	 * scroll pane for tables when editing transitions
+	 */
 	private JScrollPane tableSp = null;
+	/**
+	 * location of scroll pane for tables when editing transitions
+	 */
 	private Point tableSpPoint = null;
+	/**
+	 * parent editor pane
+	 */
 	private EditorPane pane = null;
 
+	/**
+	 * constructor
+	 * 
+	 * @param drawer
+	 *            object drawer
+	 * @param pane
+	 *            editor pane
+	 */
 	public Canvas(ObjectDrawer drawer, EditorPane pane) {
 		this.drawer = drawer;
 		this.pane = pane;
@@ -43,36 +81,58 @@ public class Canvas extends JPanel implements Scrollable {
 		});
 	}
 
+	/**
+	 * get object drawer
+	 * 
+	 * @return object drawer
+	 */
 	public ObjectDrawer getDrawer() {
 		return drawer;
 	}
 
+	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		if (this.transformNeedsReform)
 			reformTransform();
 
+		// draw background
 		graphics.setColor(Color.white);
 		graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
 
+		// draw objects
 		Graphics2D graphics2D = (Graphics2D) graphics.create();
 		graphics2D.transform(this.transform);
 
 		this.drawer.drawInternal(graphics2D);
+
+		// draw for current tools
 		if (this.toolbar != null)
 			this.toolbar.drawTool(graphics2D);
 
 		graphics2D.dispose();
 
+		// draw notes on canvas
 		for (Note note : drawer.getNotes()) {
 			note.updateView();
 		}
 	}
 
+	/**
+	 * set tool bar
+	 * 
+	 * @param bar
+	 *            tool bar
+	 */
 	public void setToolbar(ToolBar bar) {
 		this.toolbar = bar;
 	}
 
+	/**
+	 * get object bounds
+	 * 
+	 * @return bounds
+	 */
 	private Rectangle getObjectBounds() {
 		Rectangle rect = this.drawer.getBounds();
 		if (rect == null)
@@ -80,6 +140,10 @@ public class Canvas extends JPanel implements Scrollable {
 		return rect;
 	}
 
+	/**
+	 * recompute transformation applied, this function comes from the decompiled
+	 * code of JFLAP, actually I don't quite understand it
+	 */
 	private void reformTransform() {
 		this.transformNeedsReform = false;
 
@@ -112,29 +176,51 @@ public class Canvas extends JPanel implements Scrollable {
 		scrollRectToVisible(visibleRect);
 	}
 
+	/**
+	 * set scale by factor
+	 * 
+	 * @param value
+	 *            scale-by value
+	 */
 	public void setScale(double value) {
 		this.scaleBy = value;
 	}
 
+	/**
+	 * get scale by factor
+	 * 
+	 * @return scale-by value
+	 */
 	public double getScale() {
 		return this.scaleBy;
 	}
 
+	/**
+	 * force to recompute transform & repaint
+	 */
 	public void requestTransform() {
 		this.transformNeedsReform = true;
 		repaint();
 	}
 
+	@Override
 	public void processMouseEvent(MouseEvent event) {
 		transformMouseEvent(event);
 		super.processMouseEvent(event);
 	}
 
+	@Override
 	public void processMouseMotionEvent(MouseEvent event) {
 		transformMouseEvent(event);
 		super.processMouseMotionEvent(event);
 	}
 
+	/**
+	 * get untransformed location for mouse event
+	 * 
+	 * @param event
+	 *            mouse event
+	 */
 	private void transformMouseEvent(MouseEvent event) {
 		if (this.transformNeedsReform)
 			reformTransform();
@@ -147,6 +233,13 @@ public class Canvas extends JPanel implements Scrollable {
 		event.translatePoint(destPt.x - srcPt.x, destPt.y - srcPt.y);
 	}
 
+	/**
+	 * apply transformation to point
+	 * 
+	 * @param pt
+	 *            point
+	 * @return transformed point
+	 */
 	public Point transfromFromCanvasToView(Point pt) {
 		Point dest = new Point();
 		this.transform.transform(pt, dest);
@@ -169,6 +262,12 @@ public class Canvas extends JPanel implements Scrollable {
 		super.remove(comp);
 	}
 
+	/**
+	 * set point for scroll pane for transition editing table
+	 * 
+	 * @param pt
+	 *            point
+	 */
 	public void setTableSpPoint(Point pt) {
 		this.tableSpPoint = pt;
 	}
@@ -210,6 +309,11 @@ public class Canvas extends JPanel implements Scrollable {
 		return 5;
 	}
 
+	/**
+	 * get parent editor pane
+	 * 
+	 * @return editor pane
+	 */
 	public EditorPane getCreator() {
 		return pane;
 	}

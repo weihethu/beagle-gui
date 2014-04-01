@@ -17,8 +17,21 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+/**
+ * menu bar creator
+ * 
+ * @author Wei He
+ * 
+ */
 public class MenuBarCreator {
 
+	/**
+	 * get menu bar
+	 * 
+	 * @param env
+	 *            environment instance
+	 * @return menu bar
+	 */
 	public static JMenuBar getMenuBar(Environment env) {
 		JMenuBar menubar = new JMenuBar();
 
@@ -38,12 +51,25 @@ public class MenuBarCreator {
 		return menubar;
 	}
 
+	/**
+	 * add menu item in menu
+	 * 
+	 * @param menu
+	 *            menu
+	 * @param action
+	 *            menu item action
+	 */
 	private static void addItem(JMenu menu, Action action) {
 		JMenuItem item = new JMenuItem(action);
 		item.setAccelerator((KeyStroke) action.getValue("AcceleratorKey"));
 		menu.add(item);
 	}
 
+	/**
+	 * get file menu
+	 * 
+	 * @return file menu
+	 */
 	private static JMenu getFileMenu() {
 		JMenu fileMenu = new JMenu("File");
 
@@ -59,6 +85,11 @@ public class MenuBarCreator {
 		return fileMenu;
 	}
 
+	/**
+	 * get verification menu
+	 * 
+	 * @return verification menu
+	 */
 	private static JMenu getVerificationMenu() {
 		JMenu verificationMenu = new JMenu("Verification");
 		addItem(verificationMenu, new VerifyAction());
@@ -66,6 +97,11 @@ public class MenuBarCreator {
 		return verificationMenu;
 	}
 
+	/**
+	 * get help menu
+	 * 
+	 * @return help menu
+	 */
 	private static JMenu getHelpMenu() {
 		JMenu helpMenu = new JMenu("Help");
 		addItem(helpMenu, new AboutAction());

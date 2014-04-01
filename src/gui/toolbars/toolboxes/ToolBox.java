@@ -8,8 +8,29 @@ import java.util.List;
 
 import javax.swing.JToolBar;
 
+/**
+ * the tool box interface
+ * 
+ * @author Wei He
+ * 
+ */
 public interface ToolBox {
-	public List<Tool> getTools(Canvas view, ObjectDrawer drawer);
+	/**
+	 * get tools
+	 * 
+	 * @param canvas
+	 *            canvas
+	 * @param drawer
+	 *            object drawer
+	 * @return list of tools
+	 */
+	public List<Tool> getTools(Canvas canvas, ObjectDrawer drawer);
 
+	/**
+	 * add extra components in tool bar
+	 * 
+	 * @param toolbar
+	 *            tool bar
+	 */
 	public void addExtras(JToolBar toolbar);
 }

@@ -26,18 +26,64 @@ import javax.swing.event.DocumentListener;
 
 import model.Module;
 
+/**
+ * Note for displaying & editing text on graph
+ * 
+ * @author Wei He
+ * 
+ */
 public class Note extends JTextArea {
-	private Point myAutoPoint = null;
-	private Point lastAutoPoint;
+	/**
+	 * the current point of note
+	 */
+	private Point point = null;
+	/**
+	 * last point of note when dragging
+	 */
+	private Point lastPoint;
+	/**
+	 * the initial point clicked when dragging started
+	 */
 	private Point initialPointClicked;
+	/**
+	 * canvas
+	 */
 	private Canvas canvas;
+	/**
+	 * note title
+	 */
 	private String title;
+	/**
+	 * text to display when note is empty
+	 */
 	private final String EMPTY_STR = "<insert text>";
+	/**
+	 * parent module
+	 */
 	private Module module;
+	/**
+	 * title for declaring variables
+	 */
 	public static String VAR = "variables:";
+	/**
+	 * title for declaring initial actions
+	 */
 	public static String INIT_ACTION = "init actions:";
+	/**
+	 * listeners for NoteEditEvents
+	 */
 	private Set<ObjectEditListener> noteListeners = null;
 
+	/**
+	 * constructor
+	 * 
+	 * @param module
+	 *            module
+	 * @param title
+	 *            title
+	 * @param content
+	 *            content
+	 */
 	public Note(Module module, String title, String content) {
 		this.module = module;
 		this.title = title;
@@ -91,6 +137,9 @@ public class Note extends JTextArea {
 		this.addNoteListener(Environment.getInstance().getVerifierPane());
 	}
 
+	/**
+	 * event handler when note text edited
+	 */
 	public void onTextEdited() {
 		String value = "";
 		if (!this.getText().trim().equals(EMPTY_STR))
@@ -104,10 +153,18 @@ public class Note extends JTextArea {
 				NoteEditEvent.EventType.TEXT));
 	}
 
-	public void initializeForView(Point pt, Canvas view) {
-		this.canvas = view;
-		this.myAutoPoint = pt;
-		setLocationManually(this.myAutoPoint);
+	/**
+	 * initialize for view on canvas
+	 * 
+	 * @param pt
+	 *            point
+	 * @param can
+	 *            canvas
+	 */
+	public void initializeForView(Point pt, Canvas can) {
+		this.canvas = can;
+		this.point = pt;
+		setLocationManually(this.point);
 		setDisabledTextColor(Color.black);
 		setBackground(new Color(255, 255, 150));
 
@@ -125,9 +182,9 @@ public class Note extends JTextArea {
 								- Note.this.initialPointClicked.x;
 						int dy = e.getPoint().y
 								- Note.this.initialPointClicked.y;
-						setLocationManually(new Point(lastAutoPoint.x + dx,
-								lastAutoPoint.y + dy));
-						lastAutoPoint = new Point(getAutoPoint());
+						setLocationManually(new Point(lastPoint.x + dx,
+								lastPoint.y + dy));
+						lastPoint = new Point(getPoint());
 					}
 					canvas.repaint();
 				}
@@ -161,7 +218,7 @@ public class Note extends JTextArea {
 
 			@Override
 			public void mousePressed(MouseEvent evt) {
-				lastAutoPoint = new Point(getAutoPoint());
+				lastPoint = new Point(getPoint());
 				initialPointClicked = new Point(evt.getX(), evt.getY());
 			}
 
@@ -179,24 +236,50 @@ public class Note extends JTextArea {
 		this.setSelectionEnd(this.getColumnWidth());
 	}
 
-	public Point getAutoPoint() {
-		return this.myAutoPoint;
+	/**
+	 * get current point of note
+	 * 
+	 * @return point
+	 */
+	public Point getPoint() {
+		return this.point;
 	}
 
-	public void setLocationManually(Point pt) {
-		this.myAutoPoint = pt;
+	/**
+	 * set location of note on canvas
+	 * 
+	 * @param pt
+	 *            location point
+	 */
+	private void setLocationManually(Point pt) {
+		this.point = pt;
 		if (this.canvas != null)
 			setLocation(this.canvas.transfromFromCanvasToView(pt));
 	}
 
+	/**
+	 * update view on canvas
+	 */
 	public void updateView() {
-		setLocationManually(this.myAutoPoint);
+		setLocationManually(this.point);
 	}
 
+	/**
+	 * add event listener for NoteEditEvents
+	 * 
+	 * @param listener
+	 *            event listener
+	 */
 	public void addNoteListener(ObjectEditListener listener) {
 		this.noteListeners.add(listener);
 	}
 
+	/**
+	 * distribute NoteEditEvents to all event listeners
+	 * 
+	 * @param event
+	 *            NoteEditEvent
+	 */
 	public void distributeNoteEditEvent(NoteEditEvent event) {
 		Iterator<ObjectEditListener> iter = noteListeners.iterator();
 		while (iter.hasNext()) {

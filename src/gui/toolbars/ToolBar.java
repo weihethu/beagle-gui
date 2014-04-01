@@ -29,13 +29,44 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-public class ToolBar extends JToolBar implements ActionListener {
+/**
+ * tool bar
+ * 
+ * @author Wei He
+ * 
+ */
+public class ToolBar extends JToolBar {
+	/**
+	 * the adapter which dispatches mouse events on graph to current tool
+	 */
 	private ToolAdapter adapter;
+	/**
+	 * a map which associates toggle buttons to tools
+	 */
 	private Map<JToggleButton, Tool> buttonsToTools = null;
+	/**
+	 * canvas
+	 */
 	private Component canvas;
+	/**
+	 * tools in tool bar
+	 */
 	private List<Tool> tools;
+	/**
+	 * the current tool
+	 */
 	private Tool currentTool = null;
 
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            canvas
+	 * @param drawer
+	 *            object drawer
+	 * @param box
+	 *            tool box
+	 */
 	public ToolBar(Canvas canvas, ObjectDrawer drawer, ToolBox box) {
 		this.adapter = new ToolAdapter();
 		this.canvas = canvas;
@@ -47,6 +78,9 @@ public class ToolBar extends JToolBar implements ActionListener {
 		currentTool = null;
 	}
 
+	/**
+	 * init tool bar
+	 */
 	private void initBar() {
 		Iterator<Tool> localIterator = this.tools.iterator();
 		buttonsToTools = new HashMap<JToggleButton, Tool>();
@@ -60,56 +94,91 @@ public class ToolBar extends JToolBar implements ActionListener {
 			buttonGroup.add(btn);
 
 			add(btn);
-			btn.addActionListener(this);
+			btn.addActionListener(new ActionListener() {
 
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					Tool tool = buttonsToTools.get(event.getSource());
+
+					if (tool != null) {
+						adapter.setCurrentTool(tool);
+						canvas.setCursor(new Cursor(0));
+					}
+					if (tool instanceof DeleteTool) {
+						// delete tools has a special mouse cursor
+						Toolkit localToolkit = Toolkit.getDefaultToolkit();
+
+						URL url = getClass().getResource(
+								"/assets/icons/deletecursor.gif");
+						Image image = getToolkit().getImage(url);
+						Point pt = new Point(5, 5);
+						Cursor deleteCursor = localToolkit.createCustomCursor(
+								image, pt, "Delete");
+						canvas.setCursor(deleteCursor);
+					}
+					currentTool = tool;
+				}
+
+			});
+
+			// set accelerator keys for tools
 			KeyStroke ks = tool.getKey();
 			if (ks != null) {
-				InputMap inputMap = btn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+				InputMap inputMap = btn
+						.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 				inputMap.put(ks, tool.getToolTip());
-				btn.getActionMap().put(tool.getToolTip(), new ButtonClicker(btn));
+				btn.getActionMap().put(tool.getToolTip(),
+						new ButtonClicker(btn));
 			}
-			
-			if(this.currentTool == null) {
+
+			// set the first tool as the current tool
+			if (this.currentTool == null) {
 				this.currentTool = tool;
 				btn.doClick();
 			}
 		}
 	}
 
-	public void actionPerformed(ActionEvent event) {
-		Tool tool = this.buttonsToTools.get(event.getSource());
-
-		if (tool != null) {
-			this.adapter.setAdapter(tool);
-			this.canvas.setCursor(new Cursor(0));
-		}
-		if (tool instanceof DeleteTool) {
-			Toolkit localToolkit = Toolkit.getDefaultToolkit();
-
-			URL url = getClass().getResource("/assets/icons/deletecursor.gif");
-			Image image = getToolkit().getImage(url);
-			Point pt = new Point(5, 5);
-			Cursor deleteCursor = localToolkit.createCustomCursor(image, pt,
-					"Delete");
-			this.canvas.setCursor(deleteCursor);
-		}
-		this.currentTool = tool;
-	}
-
+	/**
+	 * some tools require drawing on canvas
+	 * 
+	 * @param graphics
+	 *            graphics
+	 */
 	public void drawTool(Graphics graphics) {
 		if (this.currentTool == null)
 			return;
 		this.currentTool.draw(graphics);
 	}
 
+	/**
+	 * get current tool
+	 * 
+	 * @return tool
+	 */
 	public Tool getCurrentTool() {
 		return this.currentTool;
 	}
 
+	/**
+	 * the action wrapper for click events on buttons
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	private class ButtonClicker extends AbstractAction {
 
+		/**
+		 * button
+		 */
 		AbstractButton btn;
 
+		/**
+		 * constructor
+		 * 
+		 * @param b
+		 *            button
+		 */
 		public ButtonClicker(AbstractButton b) {
 			btn = b;
 		}
@@ -118,6 +187,5 @@ public class ToolBar extends JToolBar implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			this.btn.doClick();
 		}
-
 	}
 }

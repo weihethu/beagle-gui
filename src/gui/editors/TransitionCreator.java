@@ -32,25 +32,69 @@ import model.automata.Transition;
 import utils.Pair;
 import utils.StringUtil;
 
+/**
+ * transition creator & editor
+ * 
+ * @author Wei He
+ * 
+ */
 public class TransitionCreator {
+	/**
+	 * table for editing transitions
+	 */
 	private JTable editingTable = null;
+	/**
+	 * scroll pane for transition editing table
+	 */
 	private JScrollPane editingTableSp = null;
+	/**
+	 * transition
+	 */
 	private Transition transition = null;
+	/**
+	 * canvas
+	 */
 	private Canvas canvas = null;
+	/**
+	 * data in edit for transition, which is bounded to the editing table
+	 */
 	private List<Pair<String, Pair<String, String>>> dataInEdit;
+	/**
+	 * the maximum row height
+	 */
 	private static int MAX_ROW_HEIGHT = 150;
+	/**
+	 * preferred width for editing table scroll pane
+	 */
 	public static int WIDTH = 400;
+	/**
+	 * preferred height for editing table scroll pane
+	 */
 	public static int HEIGHT = 200;
 
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            canvas
+	 */
 	public TransitionCreator(Canvas canvas) {
 		this.canvas = canvas;
 		canvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent event) {
+				// if canvas got focus, then stop editing transition data
 				stopEditing();
 			}
 		});
 	}
 
+	/**
+	 * create table for editing transition data
+	 * 
+	 * @param transition
+	 *            transition
+	 * @return editing table
+	 */
 	private JTable createTable(Transition transition) {
 		TableModel tableModel = new AbstractTableModel() {
 
@@ -100,6 +144,8 @@ public class TransitionCreator {
 				}
 				if (rowIndex == this.getRowCount() - 1 && colIndex == 0
 						&& !strValue.isEmpty()) {
+					// if the 1st column i.e. labels has been filled in the last
+					// row, then insert a new empty row
 					insertEmptyRow();
 					this.fireTableRowsInserted(this.getRowCount() - 1,
 							this.getRowCount() - 1);
@@ -120,8 +166,11 @@ public class TransitionCreator {
 					int condition, boolean pressed) {
 				if (ks.getKeyCode() == KeyEvent.VK_DELETE
 						&& !ks.isOnKeyRelease()) {
+					// if table is being edited, then DELELE is likely meant to
+					// delete some characters in cell
 					if (editingTable.isEditing())
 						return false;
+					// delete selected rows
 					int selectedRows[] = editingTable.getSelectedRows();
 					if (selectedRows.length > 0) {
 						dataInEdit.removeAll(dataInEdit.subList(
@@ -152,15 +201,35 @@ public class TransitionCreator {
 
 	}
 
+	/**
+	 * insert a new empty row in data edited, the last row is always empty for
+	 * users to insert values
+	 */
 	private void insertEmptyRow() {
 		dataInEdit.add(new Pair<String, Pair<String, String>>("",
 				new Pair<String, String>(null, null)));
 	}
 
+	/**
+	 * create transition
+	 * 
+	 * @param fromState
+	 *            from State
+	 * @param toState
+	 *            to State
+	 */
 	public void createTransition(State fromState, State toState) {
 		editTransition(new Transition(fromState, toState), null);
 	}
 
+	/**
+	 * edit transition
+	 * 
+	 * @param transition
+	 *            transition
+	 * @param pt
+	 *            the location where editing table should pop from
+	 */
 	public void editTransition(Transition transition, Point pt) {
 		stopEditing();
 		this.transition = transition;
@@ -194,6 +263,9 @@ public class TransitionCreator {
 		canvas.repaint();
 	}
 
+	/**
+	 * stop editing
+	 */
 	private void stopEditing() {
 		if (this.editingTable == null || transition == null)
 			return;
@@ -214,9 +286,14 @@ public class TransitionCreator {
 		}
 	}
 
+	/**
+	 * save data editing
+	 * 
+	 * @return whether successfully saved
+	 */
 	private boolean save() {
-		// check validity
 		if (dataInEdit.size() > 0) {
+			// delete last row if empty
 			Pair<String, Pair<String, String>> lastRow = dataInEdit
 					.get(dataInEdit.size() - 1);
 			String label = lastRow.getFirst();
@@ -228,6 +305,7 @@ public class TransitionCreator {
 					&& (action == null || action.isEmpty()))
 				dataInEdit.remove(lastRow);
 		}
+		// check that labels should be valid & non-empty & not duplicate
 		Set<String> labels = new HashSet<String>();
 		for (int i = 0; i < dataInEdit.size(); i++) {
 			String label = dataInEdit.get(i).getFirst();
@@ -248,6 +326,7 @@ public class TransitionCreator {
 			}
 			labels.add(label);
 		}
+		// save to transition
 		this.transition.clear();
 		for (int i = 0; i < dataInEdit.size(); i++) {
 			this.transition.addLabel(dataInEdit.get(i).getFirst(), dataInEdit
@@ -258,6 +337,13 @@ public class TransitionCreator {
 		return true;
 	}
 
+	/**
+	 * a multi-line text area renderer for displaying actions column in editing
+	 * table
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	private class TextAreaRenderer extends JTextArea implements
 			TableCellRenderer {
 
@@ -276,12 +362,22 @@ public class TransitionCreator {
 
 	}
 
+	/**
+	 * a multi-line text area editor for editing actions column in editing table
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	private class TextAreaEditor extends AbstractCellEditor implements
 			TableCellEditor {
 
 		private JTextArea ta;
 		private int currentRow = -1;
 
+		/**
+		 * handler when text changes, increase editor height when starting new
+		 * lines, but not exceeding MAX_ROW_HEIGHT
+		 */
 		private void textEdit() {
 			if (currentRow >= 0) {
 				editingTable.setRowHeight(currentRow, Math.min(MAX_ROW_HEIGHT,

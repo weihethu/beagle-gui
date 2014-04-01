@@ -14,12 +14,38 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 
+/**
+ * Editor pane
+ * 
+ * @author Wei He
+ * 
+ */
 public class EditorPane extends JComponent {
+	/**
+	 * graph canvas
+	 */
 	private Canvas canvas;
+	/**
+	 * tool bar
+	 */
 	private ToolBar toolbar;
+	/**
+	 * object drawer
+	 */
 	private ObjectDrawer drawer;
+	/**
+	 * graph size slider
+	 */
 	private GraphSizeSlider slider;
 
+	/**
+	 * constructor
+	 * 
+	 * @param drawer
+	 *            object drawer
+	 * @param toolBox
+	 *            toolbox
+	 */
 	public EditorPane(ObjectDrawer drawer, ToolBox toolBox) {
 		this.drawer = drawer;
 		this.canvas = new Canvas(drawer, this);
@@ -48,10 +74,20 @@ public class EditorPane extends JComponent {
 		}
 	}
 
+	/**
+	 * get tool bar
+	 * 
+	 * @return tool bar
+	 */
 	public ToolBar getToolBar() {
 		return this.toolbar;
 	}
 
+	/**
+	 * get object drawer
+	 * 
+	 * @return drawer
+	 */
 	public ObjectDrawer getDrawer() {
 		return this.drawer;
 	}

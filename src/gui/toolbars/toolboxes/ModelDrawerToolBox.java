@@ -16,6 +16,12 @@ import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * the tool box for drawing models
+ * 
+ * @author Wei He
+ * 
+ */
 public class ModelDrawerToolBox implements ToolBox {
 
 	private ModelDrawer modelDrawer = null;

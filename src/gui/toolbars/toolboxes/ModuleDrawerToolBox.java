@@ -14,6 +14,12 @@ import java.util.List;
 
 import javax.swing.JToolBar;
 
+/**
+ * the tool box for drawing modules
+ * 
+ * @author Wei He
+ * 
+ */
 public class ModuleDrawerToolBox implements ToolBox {
 
 	@Override

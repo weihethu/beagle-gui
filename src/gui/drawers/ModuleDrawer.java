@@ -222,7 +222,7 @@ public class ModuleDrawer extends ObjectDrawer {
 			Note[] notes = getNotes();
 			for (Note note : notes) {
 				if (note.isVisible()) {
-					Rectangle rect = new Rectangle(note.getAutoPoint(),
+					Rectangle rect = new Rectangle(note.getPoint(),
 							new Dimension(note.getBounds().getSize()));
 					resultRect.add(rect);
 				}

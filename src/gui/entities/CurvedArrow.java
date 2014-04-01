@@ -15,28 +15,90 @@ import java.awt.image.BufferedImage;
 
 import model.automata.Transition;
 
+/**
+ * curved arrow for transition
+ * 
+ * @author Wei He
+ * 
+ */
 public class CurvedArrow {
+	/**
+	 * start point
+	 */
 	private Point startPt;
+	/**
+	 * end point
+	 */
 	private Point endPt;
+	/**
+	 * control point
+	 */
 	private Point controlPt;
+	/**
+	 * high point
+	 */
 	private Point highPt;
+	/**
+	 * curve
+	 */
 	private QuadCurve2D.Double curve;
+	/**
+	 * a parameter for the shape of curve
+	 */
 	private double curvy;
+	/**
+	 * transition
+	 */
 	private Transition transition;
+	/**
+	 * whether curve needs refreshed
+	 */
 	private boolean needsRefresh = true;
+	/**
+	 * angle constants when drawing arrows
+	 */
 	private static double ARROW_ANGLE = Math.PI / 10;
+	/**
+	 * length constants when drawing arrows
+	 */
 	private static double ARROW_LENGTH = 15.0;
+	/**
+	 * height constants when getting default control point
+	 */
 	private static double HEIGHT = 30;
+	/**
+	 * radius constants when showing control points
+	 */
 	private static int CONTROLPT_RADIUS = 5;
+	/**
+	 * highlight color
+	 */
 	private static Color HIGHLIGHT_COLOR = new Color(255, 0, 0, 128);
+	/**
+	 * label
+	 */
 	private String label = "";
-	private Rectangle2D bounds = new Rectangle(0, 0);
-	private static BufferedImage bufferedImg = new BufferedImage(1, 1,
-			BufferedImage.TYPE_INT_RGB);
-	private static Graphics GRAPHICS = bufferedImg.getGraphics();
-	private static FontMetrics METRICS = GRAPHICS.getFontMetrics();
+	/**
+	 * label bounds
+	 */
+	private Rectangle2D labelBounds = new Rectangle(0, 0);	
+	/**
+	 * transformation applied when drawing label
+	 */
 	private AffineTransform affineToText;
 
+	/**
+	 * constructor
+	 * 
+	 * @param start
+	 *            start point
+	 * @param end
+	 *            end point
+	 * @param curvy
+	 *            curvy value
+	 * @param transition
+	 *            transition
+	 */
 	public CurvedArrow(Point start, Point end, double curvy,
 			Transition transition) {
 		this.curve = new QuadCurve2D.Double();
@@ -48,29 +110,58 @@ public class CurvedArrow {
 		this.transition = transition;
 	}
 
+	/**
+	 * get start point
+	 * 
+	 * @return start point
+	 */
 	public Point getStartPoint() {
 		return startPt;
 	}
 
+	/**
+	 * set start point
+	 * 
+	 * @param startPt
+	 *            start point
+	 */
 	public void setStartPoint(Point startPt) {
 		this.startPt = startPt;
 		this.needsRefresh = true;
 	}
 
+	/**
+	 * get end point
+	 * 
+	 * @return end point
+	 */
 	public Point getEndPoint() {
 		return endPt;
 	}
 
+	/**
+	 * set end point
+	 * 
+	 * @param endPt
+	 *            end point
+	 */
 	public void setEndPoint(Point endPt) {
 		this.endPt = endPt;
 		this.needsRefresh = true;
 	}
 
+	/**
+	 * set curvy value
+	 * 
+	 * @param curvy
+	 *            curvy value
+	 */
 	private void setCurvy(double curvy) {
 		this.curvy = curvy;
 		this.needsRefresh = true;
 	}
 
+	// draw curved arrow when not highlighted
 	public void draw(Graphics2D graphics) {
 		graphics.setColor(Color.black);
 		if (this.needsRefresh)
@@ -80,6 +171,7 @@ public class CurvedArrow {
 		drawText(graphics);
 	}
 
+	// draw curved arrow when highlighted
 	public void drawHighlight(Graphics2D graphics) {
 		if (this.needsRefresh)
 			refreshCurve();
@@ -88,10 +180,11 @@ public class CurvedArrow {
 		tmpGraphics.setColor(HIGHLIGHT_COLOR);
 		tmpGraphics.draw(this.curve);
 		tmpGraphics.transform(this.affineToText);
-		tmpGraphics.fill(this.bounds);
+		tmpGraphics.fill(this.labelBounds);
 		tmpGraphics.dispose();
 	}
 
+	// draw arrow
 	private void drawArrow(Graphics2D graphics) {
 		double angle = Math.atan2(this.controlPt.y - this.endPt.y,
 				this.controlPt.x - this.endPt.x);
@@ -107,6 +200,7 @@ public class CurvedArrow {
 		graphics.drawLine(this.endPt.x, this.endPt.y, endX, endY);
 	}
 
+	// draw labels
 	private void drawText(Graphics2D graphics) {
 		Graphics2D tmpGraphics2D = (Graphics2D) graphics.create();
 		tmpGraphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -114,15 +208,17 @@ public class CurvedArrow {
 		tmpGraphics2D.transform(this.affineToText);
 
 		FontMetrics fontMetrics = tmpGraphics2D.getFontMetrics();
-		this.bounds = fontMetrics.getStringBounds(getLabel(), tmpGraphics2D);
+		this.labelBounds = fontMetrics.getStringBounds(getLabel(),
+				tmpGraphics2D);
 
 		int tmp = this.endPt.x < this.startPt.x ? 1 : 0;
-		double d1 = this.bounds.getWidth() / 2;
+		double d1 = this.labelBounds.getWidth() / 2;
 		double d2 = ((this.curvy < 0 ? 1 : 0) ^ tmp) != 0 ? fontMetrics
 				.getAscent() : -fontMetrics.getDescent();
 
-		this.bounds.setRect(this.bounds.getX() - d1, this.bounds.getY() + d2,
-				this.bounds.getWidth(), this.bounds.getHeight());
+		this.labelBounds.setRect(this.labelBounds.getX() - d1,
+				this.labelBounds.getY() + d2, this.labelBounds.getWidth(),
+				this.labelBounds.getHeight());
 
 		for (int i = 0; i < this.label.length(); i += 4) {
 			String str = this.label.substring(i,
@@ -135,23 +231,54 @@ public class CurvedArrow {
 		tmpGraphics2D.dispose();
 	}
 
+	/**
+	 * draw control points
+	 * 
+	 * @param graphics
+	 *            graphics
+	 */
+	public void drawControlPoint(Graphics2D graphics) {
+		graphics.setColor(Color.black);
+		graphics.drawOval(this.controlPt.x - CONTROLPT_RADIUS, this.controlPt.y
+				- CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS);
+	}
+
+	/**
+	 * set label
+	 * 
+	 * @param str
+	 *            label
+	 */
 	public void setLabel(String str) {
 		this.label = str;
-
-		this.bounds = METRICS.getStringBounds(getLabel(), GRAPHICS);
+		BufferedImage bufferedImg = new BufferedImage(1, 1,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics GRAPHICS = bufferedImg.getGraphics();
+		FontMetrics METRICS = GRAPHICS.getFontMetrics();
+		
+		this.labelBounds = METRICS.getStringBounds(getLabel(), GRAPHICS);
 		int tmp = this.endPt.x < this.startPt.x ? 1 : 0;
-		double d1 = this.bounds.getWidth() / 2.0;
+		double d1 = this.labelBounds.getWidth() / 2.0;
 		double d2 = ((this.curvy < 0 ? 1 : 0) ^ tmp) != 0 ? METRICS.getAscent()
 				: -METRICS.getDescent();
 
-		this.bounds.setRect(this.bounds.getX() - d1, this.bounds.getY() + d2,
-				this.bounds.getWidth(), this.bounds.getHeight());
+		this.labelBounds.setRect(this.labelBounds.getX() - d1,
+				this.labelBounds.getY() + d2, this.labelBounds.getWidth(),
+				this.labelBounds.getHeight());
 	}
 
+	/**
+	 * get label text
+	 * 
+	 * @return label
+	 */
 	public String getLabel() {
 		return this.label;
 	}
 
+	/**
+	 * refresh curve
+	 */
 	public void refreshCurve() {
 		this.needsRefresh = false;
 		double dx = this.endPt.x - this.startPt.x;
@@ -164,11 +291,13 @@ public class CurvedArrow {
 		double sin = (dist == 0 ? 0 : dy / dist);
 
 		if (this.transition.getControl() == null) {
+			// no control point
 			this.controlPt.x = (int) (midX + this.curvy * HEIGHT * sin);
 			this.controlPt.y = (int) (midY - this.curvy * HEIGHT * cos);
 			this.highPt.x = (int) (midX + this.curvy * HEIGHT * sin / 2.0);
 			this.highPt.y = (int) (midY - this.curvy * HEIGHT * cos / 2.0);
 		} else {
+			// control point set
 			this.controlPt.x = this.transition.getControl().x;
 			this.controlPt.y = this.transition.getControl().y;
 			this.highPt.x = (int) ((this.controlPt.x + midX) / 2.0);
@@ -183,22 +312,34 @@ public class CurvedArrow {
 			this.affineToText.rotate(Math.PI);
 	}
 
+	/**
+	 * get transition
+	 * 
+	 * @return transition
+	 */
 	public Transition getTransition() {
 		return transition;
 	}
-
-	public void drawControlPoint(Graphics2D graphics) {
-		graphics.setColor(Color.black);
-		graphics.drawOval(this.controlPt.x - CONTROLPT_RADIUS, this.controlPt.y
-				- CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS, 2 * CONTROLPT_RADIUS);
-	}
-
+	
+	/**
+	 * judge whether a point is near to the curved arrow
+	 * @param pt point
+	 * @param maxDist max distance allowed
+	 * @return whether a point is near to the curved arrow
+	 */
 	public boolean isNear(Point pt, int maxDist) {
 		if (this.needsRefresh)
 			refreshCurve();
 		return intersects(pt, maxDist, this.curve);
 	}
-
+	
+	/**
+	 * judge whether a point is near to curve recursively
+	 * @param pt point
+	 * @param maxDist max distance allowed
+	 * @param curve curve
+	 * @return whether a point is near a curve
+	 */
 	private boolean intersects(Point pt, int maxDist, QuadCurve2D.Double curve) {
 		if (!curve.intersects(pt.x - maxDist, pt.y - maxDist, 2 * maxDist,
 				2 * maxDist))
@@ -212,13 +353,22 @@ public class CurvedArrow {
 				|| intersects(pt, maxDist, rightCurve);
 	}
 
+	/**
+	 * get curved arrow bounds
+	 * 
+	 * @return bounds
+	 */
 	public Rectangle getBounds() {
 		if (this.needsRefresh)
 			refreshCurve();
 		Rectangle rect = this.curve.getBounds();
 		return rect;
 	}
-
+	
+	/**
+	 * get curve
+	 * @return curve
+	 */
 	public QuadCurve2D.Double getCurve() {
 		return this.curve;
 	}
