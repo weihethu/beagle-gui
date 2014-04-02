@@ -18,20 +18,38 @@ import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 
+/**
+ * delete tool
+ * 
+ * @author Wei He
+ * 
+ */
 public class DeleteTool extends Tool {
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            canvas
+	 * @param drawer
+	 *            object drawer
+	 */
 	public DeleteTool(Canvas canvas, ObjectDrawer drawer) {
 		super(canvas, drawer);
 	}
 
+	@Override
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/delete.gif");
 		return new ImageIcon(url);
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent event) {
 		if (getDrawer() instanceof ModuleDrawer) {
+			// if in a module's editor
 			ModuleDrawer drawer = (ModuleDrawer) getDrawer();
 			State state = drawer.stateAtPoint(event.getPoint());
+			// delete state
 			if (state != null) {
 				Module module = (Module) super.getObject();
 				if (module.getTransitionsFromState(state).length > 0
@@ -48,6 +66,7 @@ public class DeleteTool extends Tool {
 				return;
 			}
 
+			// delete transition
 			Transition transition = ((ModuleDrawer) getDrawer())
 					.transitionAtPoint(event.getPoint());
 			if (transition != null) {
@@ -64,8 +83,10 @@ public class DeleteTool extends Tool {
 				getCanvas().repaint();
 			}
 		} else if (getDrawer() instanceof ModelDrawer) {
+			// if in a model's editor
 			Module module = ((ModelDrawer) getDrawer()).moduleAtPoint(event
 					.getPoint());
+			// delete module
 			if (module != null) {
 				if (module.getStates().length > 0) {
 					if (JOptionPane
@@ -86,7 +107,7 @@ public class DeleteTool extends Tool {
 	public String getToolTip() {
 		return "Deleter";
 	}
-	
+
 	@Override
 	public KeyStroke getKey() {
 		return KeyStroke.getKeyStroke('d');

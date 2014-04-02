@@ -17,20 +17,44 @@ import javax.swing.JOptionPane;
 import utils.Config.OS_BIT_VERSION;
 import utils.Config.OS_TYPE;
 
+/**
+ * the utility class that invokes Beagle
+ * 
+ * @author Wei He
+ * 
+ */
 public class BeagleInvoker {
+	/**
+	 * beagle executable path
+	 */
 	private static String beagle_executable_path = null;
+	/**
+	 * path for storing temporary model files
+	 */
 	private static String tmpPath = null;
+	/**
+	 * the invoker instance
+	 */
 	private static BeagleInvoker invoker_instance = null;
+	/**
+	 * current running beagle process
+	 */
 	private Process currentProcess = null;
 
+	/**
+	 * constructor
+	 */
 	private BeagleInvoker() {
 		boolean auto_detect = Config.getInstance().get_auto_detect_os();
 		OS_TYPE os_type = OS_TYPE.others;
 		OS_BIT_VERSION os_bit = OS_BIT_VERSION.bit_32;
 
 		if (auto_detect) {
+			// automatic detecting os types & bit versions
 			String os_name = System.getProperty("os.name").toLowerCase();
 			if (os_name.contains("windows")) {
+				// to see why is that, see the stackoverflow thread:
+				// http://stackoverflow.com/questions/4748673/how-can-i-check-the-bitness-of-my-os-using-java-j2se-not-os-arch
 				os_type = OS_TYPE.windows;
 				String arch = System.getenv("PROCESSOR_ARCHITECTURE");
 				String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
@@ -86,12 +110,25 @@ public class BeagleInvoker {
 		this.currentProcess = null;
 	}
 
+	/**
+	 * get beagleInvoker instance
+	 * 
+	 * @return
+	 */
 	public static BeagleInvoker getIntance() {
 		if (invoker_instance == null)
 			invoker_instance = new BeagleInvoker();
 		return invoker_instance;
 	}
 
+	/**
+	 * call beagle process to translate elts to xml
+	 * 
+	 * @param filePath
+	 *            elts model file path
+	 * @return translating result, the 1st is the exit status of beagle process,
+	 *         and the 2nd is XML content or error message
+	 */
 	public Pair<Integer, String> elts2XML(String filePath) {
 		if (beagle_executable_path == null)
 			return new Pair<Integer, String>(1, "No beagle executable!");
@@ -132,6 +169,12 @@ public class BeagleInvoker {
 		}
 	}
 
+	/**
+	 * call beagle process to verify
+	 * 
+	 * @param verifierPane
+	 *            verifier pane
+	 */
 	public void verify(final VerifierPane verifierPane) {
 
 		if (beagle_executable_path == null) {
@@ -187,6 +230,7 @@ public class BeagleInvoker {
 			return;
 		}
 
+		// form arguments
 		String[] algorithmArgs = verifierPane.getArguments();
 		final String[] args = new String[algorithmArgs.length + 2];
 		args[0] = beagle_executable_path;
@@ -201,6 +245,9 @@ public class BeagleInvoker {
 			verifierPane.setProcessOutputStream(currentProcess
 					.getOutputStream());
 
+			// since verification may take some time, then monitoring its output
+			// and wait for exit in another threads, making this function
+			// non-blocking
 			Thread outputThread = new Thread(new Runnable() {
 
 				@Override
@@ -245,11 +292,22 @@ public class BeagleInvoker {
 		}
 	}
 
+	/**
+	 * terminate beagle process
+	 */
 	public void terminateProcess() {
 		if (currentProcess != null)
 			currentProcess.destroy();
 	}
 
+	/**
+	 * called when verification end
+	 * 
+	 * @param pane
+	 *            verifier pane
+	 * @param exitValue
+	 *            beagle process exit status
+	 */
 	private void onVerifyEnd(VerifierPane pane, int exitValue) {
 		currentProcess = null;
 		pane.setProcessOutputStream(null);
@@ -257,6 +315,11 @@ public class BeagleInvoker {
 				+ exitValue + "!", "Info", JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	/**
+	 * is beagle process running
+	 * 
+	 * @return a boolean indicator
+	 */
 	public boolean isProcessRunning() {
 		return this.currentProcess != null;
 	}

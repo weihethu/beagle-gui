@@ -11,16 +11,39 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Element;
 
+/**
+ * a panel which consists of a text area and corresponding line numbers to its
+ * left, this class is copied from web
+ * 
+ * @author Wei he
+ * 
+ */
 public class LineNumberingTextPanel extends JPanel {
+	/**
+	 * main text area
+	 */
 	private JTextArea jta;
+	/**
+	 * text area for showing line numbers
+	 */
 	private JTextArea lines;
-	private JCheckBoxMenuItem lineNumbersItem;
+	/**
+	 * scroll pane
+	 */
 	private JScrollPane jsp;
 
+	/**
+	 * get main text area
+	 * 
+	 * @return text area
+	 */
 	public JTextArea getTextArea() {
 		return jta;
 	}
 
+	/**
+	 * constructor
+	 */
 	public LineNumberingTextPanel() {
 		jsp = new JScrollPane();
 		jta = new JTextArea();

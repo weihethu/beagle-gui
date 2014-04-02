@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedWriter;
@@ -52,24 +53,78 @@ import events.TransitionEditEvent;
 import events.listeners.ObjectEditListener;
 import gui.Environment;
 
+/**
+ * verifier pane
+ * 
+ * @author Wei He
+ * 
+ */
 public class VerifierPane extends JPanel implements ObjectEditListener {
 
-	JSplitPane innerPane, outerPane;
+	/**
+	 * inner pane, which includes a model text area & properties grid
+	 */
+	JSplitPane innerPane;
+	/**
+	 * outer pane, which includes inner pane & console
+	 */
+	JSplitPane outerPane;
+	/**
+	 * model text area
+	 */
 	LineNumberingTextPanel modelText = null;
+	/**
+	 * whether is showing bdd algorithm options
+	 */
 	private boolean showBddOptions = true;
-	private JRadioButton bddRb = null, bmcRb = null;
-	private JComboBox<String> bddMethodCombo = null, bmcMethodCombo = null;
+	/**
+	 * radio button for bdd
+	 */
+	private JRadioButton bddRb = null;
+	/**
+	 * radio button for bmc
+	 */
+	private JRadioButton bmcRb = null;
+	/**
+	 * bdd method combo box
+	 */
+	private JComboBox<String> bddMethodCombo = null;
+	/**
+	 * bmc method combo box
+	 */
+	private JComboBox<String> bmcMethodCombo = null;
+	/**
+	 * tool bar
+	 */
 	private JToolBar toolbar = null;
+	/**
+	 * numeric spinner for setting bmc steps
+	 */
 	private JSpinner bmcStepSpinner = null;
+	/**
+	 * bmc steps label
+	 */
 	private JLabel bmcStepLabel = null;
+	/**
+	 * console text area
+	 */
 	private final JTextArea consoleTa;
+	/**
+	 * writer to the output stream of beagle process
+	 */
 	private BufferedWriter processWriter = null;
 
+	/**
+	 * create properties table
+	 * 
+	 * @return table
+	 */
 	private JTable createPropertiesTable() {
 		TableModel tableModel = new AbstractTableModel() {
 
 			@Override
 			public int getRowCount() {
+				// add an extra row for inserting new properties
 				return Environment.getInstance().getModel().getProperties().length + 1;
 			}
 
@@ -98,10 +153,12 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 				} else {
 					if (rowIndex < Environment.getInstance().getModel()
 							.getProperties().length) {
+						// change existing property
 						Environment.getInstance().getModel()
 								.setProperty(strValue, rowIndex);
 						this.fireTableCellUpdated(rowIndex, colIndex);
 					} else {
+						// add new property
 						Environment.getInstance().getModel()
 								.addProperty(strValue);
 						this.fireTableRowsInserted(rowIndex + 1, rowIndex + 1);
@@ -129,11 +186,11 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			public boolean processKeyBinding(KeyStroke ks, KeyEvent e,
 					int condition, boolean pressed) {
 				if (ks.getKeyCode() == KeyEvent.VK_DELETE
-						&& ks.isOnKeyRelease()) {
-					TableCellEditor editor = this.getCellEditor();
-					if (editor != null)
-						editor.stopCellEditing();
+						&& !ks.isOnKeyRelease()) {
+					if (this.isEditing())
+						return false;
 
+					// delete selected rows
 					int selectedRows[] = this.getSelectedRows();
 					if (selectedRows.length > 0) {
 						int startIndex = selectedRows[0];
@@ -156,6 +213,9 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		return table;
 	}
 
+	/**
+	 * constructor
+	 */
 	public VerifierPane() {
 		JPanel modelPanel = new JPanel();
 		modelPanel.setLayout(new BorderLayout());
@@ -182,6 +242,9 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		consoleTa = new JTextArea();
 		consoleTa.setEditable(true);
 
+		// the following code makes only the last line of consoleTa editable
+		// for details, see
+		// http://stackoverflow.com/questions/10030477/make-parts-of-a-jtextarea-non-editable-not-the-whole-jtextarea
 		((AbstractDocument) consoleTa.getDocument())
 				.setDocumentFilter(new DocumentFilter() {
 					@Override
@@ -216,16 +279,13 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 					}
 				});
 
-		consoleTa.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-			}
+		consoleTa.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					// when press ENTER, send the last line text to bealge
+					// process
 					int lastLineIndex = consoleTa.getLineCount() - 1;
 					try {
 						int startOffset = consoleTa
@@ -240,19 +300,16 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 					}
 				}
 			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
 		});
-
+		
+		//add context menu in consoleTa to clear text
 		JPopupMenu popup = new JPopupMenu();
 		JMenuItem item = new JMenuItem("Clear");
 		item.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//we need to reset document filter before we can clear text
 				DocumentFilter tmp = ((AbstractDocument) consoleTa
 						.getDocument()).getDocumentFilter();
 				((AbstractDocument) consoleTa.getDocument())
@@ -369,7 +426,10 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		});
 		reloadModelText();
 	}
-
+	
+	/**
+	 * fresh model text
+	 */
 	public void reloadModelText() {
 		modelText.getTextArea().setText(
 				ELTSGenerator
@@ -378,6 +438,7 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 
 	@Override
 	public void objectEdit(ObjectEditEvent event) {
+		//when model changes, refresh model text
 		if (event instanceof ModuleEditEvent) {
 			if (!((ModuleEditEvent) event).isMove())
 				reloadModelText();
@@ -390,7 +451,10 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			reloadModelText();
 		}
 	}
-
+	
+	/**
+	 * called when bdd & bmc radio buttons clicked
+	 */
 	private void onFunctionTypeChange() {
 		if (this.showBddOptions != bddRb.isSelected()) {
 			// switch ui
@@ -416,7 +480,11 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		}
 		this.showBddOptions = bddRb.isSelected();
 	}
-
+	
+	/**
+	 * get algorithm arguments
+	 * @return arguments
+	 */
 	public String[] getArguments() {
 		if (bddRb.isSelected()) {
 			return new String[] { "-bdd",
@@ -426,7 +494,10 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 					"-" + bmcMethodCombo.getSelectedItem().toString().trim(),
 					String.valueOf(bmcStepSpinner.getValue()) };
 	}
-
+	
+	/**
+	 * start verify
+	 */
 	private void startVerify() {
 		// Check model is not empty
 		Model model = Environment.getInstance().getModel();
@@ -443,12 +514,20 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 		}
 		BeagleInvoker.getIntance().verify(this);
 	}
-
+	
+	/**
+	 * append a new line in consoleTa
+	 * @param line
+	 */
 	public void appendLine(String line) {
 		this.consoleTa.append(line + "\n");
 		consoleTa.setCaretPosition(consoleTa.getText().length());
 	}
-
+	
+	/**
+	 * write to output stream of beagle process
+	 * @param str string
+	 */
 	private void writeToProcess(String str) {
 		if (this.processWriter != null) {
 			try {
@@ -459,12 +538,17 @@ public class VerifierPane extends JPanel implements ObjectEditListener {
 			}
 		}
 	}
-
+	
+	/**
+	 * set output stream of beagle process
+	 * @param stream output stream
+	 */
 	public void setProcessOutputStream(OutputStream stream) {
 		if (stream != null) {
 			this.processWriter = new BufferedWriter(new OutputStreamWriter(
 					stream));
 		} else {
+			// process exited
 			if (this.processWriter != null)
 				try {
 					this.processWriter.close();

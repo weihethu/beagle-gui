@@ -75,7 +75,6 @@ public class ToolBar extends JToolBar {
 		initBar();
 		canvas.addMouseListener(this.adapter);
 		canvas.addMouseMotionListener(this.adapter);
-		currentTool = null;
 	}
 
 	/**

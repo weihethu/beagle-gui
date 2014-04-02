@@ -20,18 +20,48 @@ import javax.swing.KeyStroke;
 import model.Module;
 import model.automata.State;
 
+/**
+ * transition creator tool
+ * 
+ * @author Wei He
+ * 
+ */
 public class TransitionTool extends Tool {
+	/**
+	 * from state of transition
+	 */
 	private State firstState;
+	/**
+	 * hover point when drawing a transition
+	 */
 	private Point hoverPt;
+	/**
+	 * stroke constant when drawing a transition
+	 */
 	private static Stroke STROKE = new BasicStroke(2.4F);
+	/**
+	 * color constant when drawing a transition
+	 */
 	private static Color COLOR = new Color(0.5F, 0.5F, 0.5F, 0.5F);
+	/**
+	 * transition creator
+	 */
 	private TransitionCreator creator = null;
 
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            graph canvas
+	 * @param drawer
+	 *            module drawer
+	 */
 	public TransitionTool(Canvas canvas, ModuleDrawer drawer) {
 		super(canvas, drawer);
 		creator = new TransitionCreator(canvas);
 	}
 
+	@Override
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/transition.gif");
 		return new ImageIcon(url);
@@ -91,7 +121,7 @@ public class TransitionTool extends Tool {
 				(int) this.firstState.getPoint().getY(),
 				(int) this.hoverPt.getX(), (int) this.hoverPt.getY());
 		graphics2D.setStroke(oldStroke);
-	}	
+	}
 
 	@Override
 	public KeyStroke getKey() {

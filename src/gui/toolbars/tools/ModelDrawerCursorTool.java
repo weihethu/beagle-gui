@@ -22,15 +22,39 @@ import javax.swing.KeyStroke;
 import model.Model;
 import model.Module;
 
+/**
+ * attribute editor tool when drawing models
+ * 
+ * @author Wei He
+ * 
+ */
 public class ModelDrawerCursorTool extends Tool {
+	/**
+	 * last clicked module
+	 */
 	private Module lastClickedModule = null;
+	/**
+	 * initial point clicked
+	 */
 	private Point initialPointClicked = new Point();
+	/**
+	 * context menu for modules
+	 */
 	private ModuleMenu moduleMenu = new ModuleMenu();
 
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            graph canvas
+	 * @param drawer
+	 *            model drawer
+	 */
 	public ModelDrawerCursorTool(Canvas canvas, ModelDrawer drawer) {
 		super(canvas, drawer);
 	}
 
+	@Override
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/arrow.gif");
 		return new ImageIcon(url);
@@ -41,6 +65,11 @@ public class ModelDrawerCursorTool extends Tool {
 		return "Attribute Editor";
 	}
 
+	/**
+	 * get model
+	 * 
+	 * @return model
+	 */
 	private Model getModel() {
 		return (Model) super.getObject();
 	}
@@ -52,12 +81,16 @@ public class ModelDrawerCursorTool extends Tool {
 
 	@Override
 	public void mouseClicked(MouseEvent event) {
+		Module module = getDrawer().moduleAtPoint(event.getPoint());
 		if (event.getClickCount() == 1) {
-			getModel().unselectAll();
-			getCanvas().repaint();
+			// unselect all modules
+			if (module == null) {
+				getModel().unselectAll();
+				getCanvas().repaint();
+			}
 		} else if (event.getClickCount() == 2
 				&& event.getButton() == MouseEvent.BUTTON1) {
-			Module module = getDrawer().moduleAtPoint(event.getPoint());
+			// edit modules
 			if (module != null)
 				editModule(module);
 		}
@@ -67,12 +100,14 @@ public class ModelDrawerCursorTool extends Tool {
 	public void mousePressed(MouseEvent event) {
 		this.initialPointClicked.setLocation(event.getPoint());
 		lastClickedModule = getDrawer().moduleAtPoint(event.getPoint());
-
+		// isPopupTrigger should be checked in both mousePressed and
+		// mouseReleased for proper cross-platform functionality
 		if (event.isPopupTrigger()) {
 			showPopup(event);
 		}
 		if (lastClickedModule != null) {
 			this.initialPointClicked.setLocation(lastClickedModule.getPoint());
+			// select the clicked module
 			if (!this.lastClickedModule.isSelected()) {
 				getModel().unselectAll();
 				this.lastClickedModule.setSelect(true);
@@ -99,6 +134,7 @@ public class ModelDrawerCursorTool extends Tool {
 			this.initialPointClicked.setLocation(currentPt);
 			getCanvas().repaint();
 		} else {
+			// select modules in selection box
 			int currentX = event.getPoint().x;
 			int currentY = event.getPoint().y;
 			int initX = this.initialPointClicked.x;
@@ -115,6 +151,8 @@ public class ModelDrawerCursorTool extends Tool {
 
 	@Override
 	public void mouseReleased(MouseEvent event) {
+		// isPopupTrigger should be checked in both mousePressed and
+		// mouseReleased for proper cross-platform functionality
 		if (event.isPopupTrigger()) {
 			showPopup(event);
 		}
@@ -123,26 +161,56 @@ public class ModelDrawerCursorTool extends Tool {
 		getCanvas().repaint();
 	}
 
+	/**
+	 * show popup menu for module
+	 * 
+	 * @param event
+	 *            mouse event
+	 */
 	private void showPopup(MouseEvent event) {
 		if (this.lastClickedModule != null)
 			this.moduleMenu.show(this.lastClickedModule, getCanvas(),
 					getCanvas().transfromFromCanvasToView(event.getPoint()));
 	}
 
+	/**
+	 * edit module
+	 * 
+	 * @param module
+	 *            module
+	 */
 	private void editModule(Module module) {
 		Environment.getInstance().openModuleEditor(module);
 	}
-	
+
 	@Override
 	public KeyStroke getKey() {
 		return KeyStroke.getKeyStroke('a');
 	}
 
+	/**
+	 * context menu to popup when right click modules
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	private class ModuleMenu extends JPopupMenu implements ActionListener {
+		/**
+		 * module
+		 */
 		private Module module;
+		/**
+		 * set name menu item
+		 */
 		private JMenuItem setName;
+		/**
+		 * edit module menu item
+		 */
 		private JMenuItem edit;
 
+		/**
+		 * constructor
+		 */
 		public ModuleMenu() {
 			this.setName = new JMenuItem("Set Name");
 			this.setName.addActionListener(this);
@@ -154,6 +222,16 @@ public class ModelDrawerCursorTool extends Tool {
 			add(this.edit);
 		}
 
+		/**
+		 * show menu
+		 * 
+		 * @param module
+		 *            module
+		 * @param parent
+		 *            parent
+		 * @param pt
+		 *            show position
+		 */
 		public void show(Module module, Component parent, Point pt) {
 			this.module = module;
 			show(parent, pt.x, pt.y);

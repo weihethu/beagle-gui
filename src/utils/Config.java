@@ -5,17 +5,71 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * utility class for reading configurations
+ * 
+ * @author Wei He
+ * 
+ */
 public class Config {
 
+	/**
+	 * OS types enumeration
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	public static enum OS_TYPE {
-		windows, linux, others, notset
+		/**
+		 * windows
+		 */
+		windows,
+		/**
+		 * linux
+		 */
+		linux,
+		/**
+		 * others
+		 */
+		others,
+		/**
+		 * not set
+		 */
+		notset
 	};
 
+	/**
+	 * OS bit versions enumeration
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	public static enum OS_BIT_VERSION {
-		bit_32, bit_64, notset
+		/**
+		 * 32 bit
+		 */
+		bit_32,
+		/**
+		 * 64 bit
+		 */
+		bit_64,
+		/**
+		 * not set
+		 */
+		notset
 	};
 
+	/**
+	 * config file path
+	 */
+	private static final String config_file_path = "beagle_gui.config";
+	/**
+	 * config instance
+	 */
 	private static Config config_instance = null;
+
+	// the following variable names are self-explanatory, so I add no comment
+
 	private static String AUTO_DETECT_OS_KEY = "auto_detect_os";
 	private static String OS_TYPE_KEY = "os_type";
 	private static String OS_BIT_VERSION_KEY = "os_bit_version";
@@ -66,18 +120,29 @@ public class Config {
 	private String elts_ext_val = ELTS_EXT_DEFAULT;
 	private String graph_ext_val = GRAPH_EXT_DEFAULT;
 
+	/**
+	 * get instance of Config
+	 * 
+	 * @return instance
+	 */
 	public static Config getInstance() {
 		if (config_instance == null)
 			config_instance = new Config();
 		return config_instance;
 	}
 
+	/**
+	 * private constructor
+	 */
 	private Config() {
 		init();
 	}
 
+	/**
+	 * read from config files
+	 */
 	private void init() {
-		String configFilePath = "beagle_gui.config";
+		String configFilePath = config_file_path;
 		File configFile = new File(configFilePath);
 		if (!configFile.exists() || !configFile.isFile())
 			return;
@@ -102,7 +167,7 @@ public class Config {
 								.toLowerCase();
 						String value = line.substring(firstCommaIndex + 1)
 								.trim();
-						
+
 						if (!value.isEmpty()) {
 							if (key.equalsIgnoreCase(AUTO_DETECT_OS_KEY)) {
 								if (value.equalsIgnoreCase("true"))
@@ -180,6 +245,9 @@ public class Config {
 			ex.printStackTrace();
 		}
 	}
+
+	// the following methods are simple and their names are self explanatory, so
+	// I add no comments
 
 	public boolean get_auto_detect_os() {
 		return (this.auto_detect_os_val || this.os_type_val == OS_TYPE.notset || this.os_bit_val == OS_BIT_VERSION.notset);

@@ -28,20 +28,56 @@ import model.Module;
 import model.automata.State;
 import model.automata.Transition;
 
+/**
+ * attribute editor tool when drawing modules
+ * 
+ * @author Wei He
+ * 
+ */
 public class ModuleDrawerCursorTool extends Tool {
+	/**
+	 * last clicked state
+	 */
 	private State lastClickedState = null;
+	/**
+	 * last clicked transition
+	 */
 	private Transition lastClickedTransition = null;
+	/**
+	 * initial point clicked
+	 */
 	private Point initialPointClicked = new Point();
+	/**
+	 * context menu to popup for editing states
+	 */
 	private StateMenu stateMenu = new StateMenu();
+	/**
+	 * selected transition
+	 */
 	private Transition selectedTransition = null;
+	/**
+	 * whether dragging control points of transition
+	 */
 	private boolean transitionInFlux = false;
+	/**
+	 * transition creator
+	 */
 	private TransitionCreator creator = null;
 
+	/**
+	 * constructor
+	 * 
+	 * @param canvas
+	 *            canvas
+	 * @param drawer
+	 *            module drawer
+	 */
 	public ModuleDrawerCursorTool(Canvas canvas, ModuleDrawer drawer) {
 		super(canvas, drawer);
 		creator = new TransitionCreator(canvas);
 	}
 
+	@Override
 	public Icon getIcon() {
 		URL url = getClass().getResource("/assets/icons/arrow.gif");
 		return new ImageIcon(url);
@@ -66,6 +102,7 @@ public class ModuleDrawerCursorTool extends Tool {
 		Transition transition = getDrawer().transitionAtPoint(event.getPoint());
 		if (transition != null) {
 			if (event.getClickCount() == 1) {
+				// change selected status of transition
 				if (transition.isSelected()) {
 					transition.setSelect(false);
 					this.selectedTransition = null;
@@ -77,6 +114,7 @@ public class ModuleDrawerCursorTool extends Tool {
 				}
 			} else if (event.getClickCount() == 2
 					&& event.getButton() == MouseEvent.BUTTON1) {
+				// edit transitions
 				if (this.selectedTransition != null)
 					this.selectedTransition.setSelect(false);
 				transition.setSelect(true);
@@ -84,7 +122,8 @@ public class ModuleDrawerCursorTool extends Tool {
 				editTransition(transition, event.getPoint());
 			}
 		} else {
-			if (event.getClickCount() == 1) {
+			State state = getDrawer().stateAtPoint(event.getPoint());
+			if (state == null && event.getClickCount() == 1) {
 				getModule().unselectAll();
 				getCanvas().repaint();
 			}
@@ -98,12 +137,14 @@ public class ModuleDrawerCursorTool extends Tool {
 		if (lastClickedState == null)
 			lastClickedTransition = getDrawer().transitionAtPoint(
 					event.getPoint());
-
+		// isPopupTrigger should be checked in both mousePressed and
+		// mouseReleased for proper cross-platform functionality
 		if (event.isPopupTrigger()) {
 			showPopup(event);
 		}
 		if (lastClickedState != null) {
 			this.initialPointClicked.setLocation(lastClickedState.getPoint());
+			// change selected status of clicked state
 			if (!this.lastClickedState.isSelected()) {
 				getModule().unselectAll();
 				this.lastClickedState.setSelect(true);
@@ -149,6 +190,7 @@ public class ModuleDrawerCursorTool extends Tool {
 			getCanvas().repaint();
 		} else {
 			if (!this.transitionInFlux) {
+				// select states in selection box
 				int currentX = event.getPoint().x;
 				int currentY = event.getPoint().y;
 				int initX = this.initialPointClicked.x;
@@ -172,6 +214,7 @@ public class ModuleDrawerCursorTool extends Tool {
 			if (this.transitionInFlux
 					|| (Point.distance(eventPt.x, eventPt.y, ctrlPt.getX(),
 							ctrlPt.getY())) < 15.0) {
+				// drag control points of curved arrows
 				this.selectedTransition.setControl(eventPt);
 				arrow.refreshCurve();
 				this.transitionInFlux = true;
@@ -183,6 +226,8 @@ public class ModuleDrawerCursorTool extends Tool {
 	@Override
 	public void mouseReleased(MouseEvent event) {
 		this.transitionInFlux = false;
+		// isPopupTrigger should be checked in both mousePressed and
+		// mouseReleased for proper cross-platform functionality
 		if (event.isPopupTrigger()) {
 			showPopup(event);
 		}
@@ -192,10 +237,24 @@ public class ModuleDrawerCursorTool extends Tool {
 		getCanvas().repaint();
 	}
 
+	/**
+	 * edit transition
+	 * 
+	 * @param transition
+	 *            transition
+	 * @param pt
+	 *            mouse event
+	 */
 	private void editTransition(Transition transition, Point pt) {
 		creator.editTransition(transition, pt);
 	}
 
+	/**
+	 * show popup menu for editing states
+	 * 
+	 * @param event
+	 *            mouse event
+	 */
 	private void showPopup(MouseEvent event) {
 		if (this.lastClickedState != null) {
 			this.stateMenu.show(this.lastClickedState, getCanvas(), getCanvas()
@@ -211,12 +270,30 @@ public class ModuleDrawerCursorTool extends Tool {
 	public KeyStroke getKey() {
 		return KeyStroke.getKeyStroke('a');
 	}
-	
+
+	/**
+	 * context menu to popup when right click states
+	 * 
+	 * @author Wei He
+	 * 
+	 */
 	private class StateMenu extends JPopupMenu implements ActionListener {
+		/**
+		 * state
+		 */
 		private State state;
+		/**
+		 * make initial check box menu item
+		 */
 		private JCheckBoxMenuItem makeInitial;
+		/**
+		 * set name menu item
+		 */
 		private JMenuItem setName;
 
+		/**
+		 * constructor
+		 */
 		public StateMenu() {
 			this.makeInitial = new JCheckBoxMenuItem("Initial");
 			this.makeInitial.addActionListener(this);
@@ -228,6 +305,16 @@ public class ModuleDrawerCursorTool extends Tool {
 			add(this.setName);
 		}
 
+		/**
+		 * popup menu
+		 * 
+		 * @param state
+		 *            state
+		 * @param parent
+		 *            parent component
+		 * @param pt
+		 *            popup location
+		 */
 		public void show(State state, Component parent, Point pt) {
 			this.state = state;
 			boolean isInitial = ModuleDrawerCursorTool.this.getModule()
@@ -253,6 +340,6 @@ public class ModuleDrawerCursorTool extends Tool {
 					return;
 				this.state.setName(newName);
 			}
-		}		
+		}
 	}
 }
